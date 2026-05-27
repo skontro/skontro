@@ -1,0 +1,1960 @@
+%% =====================================================================
+%% Skontro — Software Requirements Specification
+%% Template based on ISO/IEC/IEEE 29148:2018 (supersedes IEEE 830-1998)
+%% Compile with: tectonic srs.tex
+%% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+
+%% --- Encoding and language ---------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+%% --- Layout ------------------------------------------------------------
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Skontro --- Software Requirements Specification}
+\fancyhead[R]{\small Version 1.0}
+\fancyfoot[C]{\thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\definecolor{skontroBlue}{HTML}{2563EB}
+\definecolor{skontroBlueDark}{HTML}{1E40AF}
+\definecolor{skontroSlate}{HTML}{1F2937}
+\definecolor{skontroGrey}{HTML}{F3F4F6}
+\definecolor{skontroAccent}{HTML}{6366F1}
+\definecolor{skontroGreen}{HTML}{059669}
+\definecolor{skontroAmber}{HTML}{D97706}
+\definecolor{skontroRed}{HTML}{DC2626}
+
+\titleformat{\section}{\Large\bfseries\color{skontroSlate}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{skontroBlueDark}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{skontroBlueDark}}{\thesubsubsection}{0.5em}{}
+
+%% --- Tables and lists --------------------------------------------------
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=*,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,topsep=4pt}
+
+%% --- Hyperlinks --------------------------------------------------------
+\usepackage[colorlinks=true,
+            linkcolor=skontroBlue,
+            urlcolor=skontroBlue,
+            citecolor=skontroAccent]{hyperref}
+
+%% --- Code listings -----------------------------------------------------
+\usepackage{listings}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    frame=single,
+    framesep=4pt,
+    rulecolor=\color{skontroGrey}
+}
+
+%% --- Graphics ----------------------------------------------------------
+\usepackage{graphicx}
+\usepackage{float}
+
+%% --- Custom requirement environment -----------------------------------
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+
+\newtcolorbox{requirement}[3]{
+    enhanced,
+    breakable,
+    colback=skontroGrey,
+    colframe=skontroBlueDark,
+    boxrule=0.6pt,
+    arc=2pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    fonttitle=\bfseries\sffamily,
+    title={\textcolor{skontroSlate}{\texttt{#1}} \hfill
+           \textcolor{white}{\colorbox{skontroBlue}{\strut~#2~}} \hfill
+           \textit{#3}}
+}
+
+%% --- Title block -------------------------------------------------------
+\title{
+    \vspace*{2cm}
+    \Huge\bfseries\textcolor{skontroSlate}{Skontro} \\[0.3cm]
+    \Large Software Requirements Specification \\[1cm]
+    \large Version 1.0
+}
+\author{Zeeshan Ahmed Raja}
+\date{Berlin, 2026-05-27}
+
+%% =====================================================================
+\begin{document}
+%% =====================================================================
+
+\begin{titlepage}
+\maketitle
+\vfill
+\begin{center}
+    \begin{tabular}{rl}
+        \textbf{Status:} & Accepted \\
+        \textbf{Project:} & Skontro --- open-source German-compliant mini-ERP \\
+        \textbf{Repository:} & \url{https://github.com/skontro/skontro} \\
+        \textbf{Documentation:} & \url{https://docs.skontro.dev} \\
+        \textbf{License:} & MIT \\
+        \textbf{Standards basis:} & ISO/IEC/IEEE 29148:2018, EN 16931, \S14 UStG \\
+    \end{tabular}
+\end{center}
+\vspace*{2cm}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+%% =====================================================================
+\section{Introduction}
+%% =====================================================================
+
+\subsection{Purpose}
+
+This Software Requirements Specification (SRS) defines the functional and non-functional requirements for \textbf{Skontro}, an open-source self-hostable mini-ERP for German Small and Medium Enterprises (SMEs). The document serves as the contractual basis between the Vision and Scope document (the ``why'' and ``what for whom'') and the Software Design Document (the ``how'').
+
+The document follows ISO/IEC/IEEE 29148:2018 conventions, the current standard for software and systems engineering requirements processes (which supersedes IEEE 830-1998).
+
+\subsection{Document Conventions}
+
+Requirements in this document follow the format:
+
+\begin{itemize}
+    \item \textbf{Functional Requirements} are prefixed \texttt{FR-NNN} and describe \textit{what} the system shall do.
+    \item \textbf{Non-functional Requirements} are prefixed \texttt{NFR-NNN} and describe quality attributes (performance, security, usability, etc.).
+    \item \textbf{Interface Requirements} are prefixed \texttt{IR-NNN}.
+    \item Priorities follow the MoSCoW convention: \textbf{Must}, \textbf{Should}, \textbf{Could}, \textbf{Won't (this release)}.
+    \item Each requirement specifies a \textbf{Source} traceable to the Vision and Scope document or an Architecture Decision Record (ADR).
+    \item Each requirement specifies one or more \textbf{Acceptance criteria} that are testable.
+\end{itemize}
+
+The keywords \textbf{shall}, \textbf{should}, \textbf{may}, and \textbf{will} follow RFC 2119 conventions.
+
+\subsection{Intended Audience and Reading Suggestions}
+
+\begin{itemize}
+    \item \textbf{Engineers} should focus on Sections 2 and 3, especially the functional requirements catalogue and the external interface requirements.
+    \item \textbf{Operations engineers} should focus on Sections 3.3 (Performance), 3.4 (Reliability), and Appendix A.
+    \item \textbf{Compliance auditors} should focus on Section 3.6 (Compliance Requirements) and the references to external specifications.
+    \item \textbf{Project reviewers and external readers} should read Sections 1 and 2 for context, then sample the requirements catalogue in Section 3.
+\end{itemize}
+
+\subsection{Project Scope}
+
+For the complete project scope, see the Vision and Scope document at \url{https://docs.skontro.dev/vision/vision-and-scope/}. In brief: Skontro is an open-source mini-ERP targeting the German Mittelstand, with EN 16931-compliant e-invoicing, GoBD-aligned archival, and ML-assisted bookkeeping capabilities planned for v0.3.
+
+\subsection{References}
+
+\begin{enumerate}
+    \item Vision and Scope --- \url{https://docs.skontro.dev/vision/vision-and-scope/}
+    \item ADR 0001 --- Stack Choice
+    \item EN 16931 --- European standard for electronic invoicing
+    \item BMF letter, e-Rechnung guidance (most recent version)
+    \item Wachstumschancengesetz, BGBl. 2024 I Nr. 108
+    \item \S14 UStG, \S19 UStG --- Umsatzsteuergesetz
+    \item GoBD --- BMF letter dated 28.11.2019
+    \item ZUGFeRD 2.1 specification --- FeRD
+    \item XRechnung specification --- KoSIT
+    \item ISO/IEC/IEEE 29148:2018 --- Systems and software engineering --- Life cycle processes --- Requirements engineering
+    \item RFC 2119 --- Key words for use in RFCs to indicate requirement levels
+\end{enumerate}
+
+%% =====================================================================
+\section{Overall Description}
+%% =====================================================================
+
+\subsection{Product Perspective}
+
+Skontro is a standalone, self-hostable, multi-tenant mini-ERP. It is not a module of another system. It interacts with the following external systems and roles (a system context diagram appears in the arc42 architecture document, Section 3):
+
+\begin{itemize}
+    \item \textbf{Tenant Users} via web browser (Chrome, Firefox, Safari, Edge --- latest two stable versions)
+    \item \textbf{Steuerberater} (tax advisor) consuming DATEV-format exports from v0.2 onwards
+    \item \textbf{Invoice Recipients} consuming PDF/A-3 ZUGFeRD invoices via email or download
+    \item \textbf{S3-compatible Storage} (MinIO in development, AWS S3 or Hetzner Object Storage in production)
+    \item \textbf{KoSIT Validator} (continuous integration only, used to verify generated invoices)
+    \item \textbf{(Future)} SMTP provider, Sentry, Stripe, Peppol access point
+\end{itemize}
+
+\subsection{Product Functions}
+
+At v0.1.0 launch, Skontro shall provide the following high-level functions:
+
+\begin{itemize}
+    \item User authentication, registration, and tenant onboarding
+    \item Multi-tenant data isolation
+    \item Role-based access control (owner, admin, accountant, viewer)
+    \item Customer management (company and individual)
+    \item Product and service catalog management
+    \item Invoice lifecycle management (draft, issued, sent, paid, cancelled)
+    \item EN 16931 / ZUGFeRD 2.1 hybrid PDF/A-3 + XML invoice generation
+    \item Expense tracking with receipt upload (PDF, image formats)
+    \item Dashboard with key business metrics
+    \item Tenant settings management (company, tax, banking, invoicing defaults)
+\end{itemize}
+
+\subsection{User Classes and Characteristics}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{lXccc}
+\toprule
+\textbf{Class} & \textbf{Description} & \textbf{Tech Level} & \textbf{Frequency} & \textbf{Importance} \\
+\midrule
+Tenant Owner & Business owner, primary admin & Low--Medium & Daily & Critical \\
+Accountant & Internal or external bookkeeper & Medium & Daily & High \\
+Viewer & Read-only access (auditor, observer) & Any & Occasional & Medium \\
+External Auditor & Future: read-only audit access & High & Annual & Future \\
+API Integrator & Future: programmatic access & High & Continuous & Future \\
+System Administrator & Self-host operator & High & Setup + as-needed & High \\
+\bottomrule
+\end{tabularx}
+\caption{User classes for Skontro v0.1.0.}
+\end{table}
+
+\subsection{Operating Environment}
+
+\begin{itemize}
+    \item \textbf{Server OS:} Linux (Ubuntu 24.04 LTS reference); any Docker-compatible distribution
+    \item \textbf{Runtime:} Docker Engine 24+, Docker Compose v2+
+    \item \textbf{Languages:} PHP 8.3, Node 20 LTS, Python 3.12 (Python only required for v0.3 ML service)
+    \item \textbf{Datastores:} PostgreSQL 14+ (16 recommended), Redis 7+, S3-compatible object storage
+    \item \textbf{Client:} Modern evergreen browser, latest two stable versions of Chrome/Firefox/Safari/Edge; responsive from 375px viewport
+    \item \textbf{Network:} HTTPS only in production; HTTP on localhost permitted in development
+\end{itemize}
+
+\subsection{Design and Implementation Constraints}
+
+\begin{itemize}
+    \item Must use Laravel 11 and Vue 3 per \textbf{ADR 0001}
+    \item Must support self-hosting via \texttt{docker compose up} per \textbf{ADR 0001}
+    \item Must produce EN 16931-compliant e-invoices for all issued invoices
+    \item Must archive issued invoices for 10 years per GoBD (\S147 AO)
+    \item Multi-tenancy via single-database \texttt{tenant\_id} discriminator (architectural decision recorded in a future ADR)
+    \item API versioning via URL prefix \texttt{/api/v1}
+    \item All commits follow Conventional Commits 1.0.0
+    \item License: MIT
+\end{itemize}
+
+\subsection{User Documentation}
+
+The following user-facing documentation shall be maintained:
+
+\begin{itemize}
+    \item README at the repository root with quickstart
+    \item Documentation site at \url{https://docs.skontro.dev} (MkDocs Material)
+    \item API reference auto-generated from code (Laravel Scribe --- OpenAPI 3.0)
+    \item Operations runbook in \texttt{docs/operations/runbook.md}
+    \item In-app help text on complex flows (deferred to v0.2)
+\end{itemize}
+
+\subsection{Assumptions and Dependencies}
+
+\begin{itemize}
+    \item Postgres is available and reachable
+    \item Redis is available and reachable
+    \item S3-compatible storage is available and reachable
+    \item Working SMTP infrastructure available (v0.2+ requirement)
+    \item Customer-side Steuerberater accepts DATEV CSV (v0.2+, universal in Germany)
+    \item Tenant administrator can configure DNS and TLS for self-hosted deployment (v0.1 documents the procedure)
+\end{itemize}
+
+%% =====================================================================
+\section{Specific Requirements}
+%% =====================================================================
+
+\subsection{External Interface Requirements}
+
+\subsubsection{User Interfaces}
+
+\begin{requirement}{IR-001}{Must}{UI Framework}
+\textbf{Description.} The system shall provide a web-based Single Page Application built with Vue 3.
+
+\textbf{Rationale.} Aligns with ADR 0001 stack choice; meets the productivity targets of the project.
+
+\textbf{Source.} ADR 0001.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item The frontend bundle is served separately from the backend API
+    \item Routing is client-side using Vue Router
+    \item State management uses Pinia
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-002}{Should}{Accessibility}
+\textbf{Description.} The system should conform to WCAG 2.1 Level AA for the main workflows (login, dashboard, customer list, invoice editor, expense form).
+
+\textbf{Rationale.} German federal accessibility regulations (BFSG) progressively extend WCAG requirements; an open-source project should set a credible baseline.
+
+\textbf{Source.} V\&S \S1.3 BO-5.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Axe-core automated audit reports zero violations on the five main workflows
+    \item All interactive elements reachable via keyboard
+    \item All form fields have associated labels
+    \item Color contrast meets WCAG 2.1 AA on both light and dark themes
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-003}{Must}{Localization}
+\textbf{Description.} The system shall provide a German user interface as default and an English user interface as fallback.
+
+\textbf{Rationale.} Target market is German Mittelstand; compliance-relevant terminology must be in German.
+
+\textbf{Source.} V\&S \S3.2 Operating Environment.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item German is the default locale on first load
+    \item Users can switch to English via a settings toggle
+    \item All compliance-relevant fields (Rechnung, USt-ID, Steuernummer, GoBD, etc.) are preserved as German terms regardless of UI locale
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-004}{Must}{Browser Support}
+\textbf{Description.} The system shall support the latest two stable versions of Chrome, Firefox, Safari, and Edge.
+
+\textbf{Source.} V\&S \S3.2 Operating Environment.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Functional tests pass on each of Chrome, Firefox, Safari, Edge (latest two versions)
+    \item No reliance on proprietary browser APIs
+    \item Mobile responsive design from 375px viewport width
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Hardware Interfaces}
+
+Not applicable for v0.1.0. No direct hardware integration.
+
+\subsubsection{Software Interfaces}
+
+\begin{requirement}{IR-005}{Must}{Database Interface}
+\textbf{Description.} The system shall persist all relational data in PostgreSQL 14 or later.
+
+\textbf{Rationale.} ADR 0001 stack choice; jsonb support is required for storing parsed XRechnung XML in v0.2.
+
+\textbf{Source.} ADR 0001.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Migrations run cleanly against Postgres 14, 15, 16
+    \item No MySQL-specific or SQLite-specific SQL is used
+    \item All foreign keys explicit; no implicit relationships
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-006}{Must}{Cache and Queue Interface}
+\textbf{Description.} The system shall use Redis 7 or later for caching, session storage, and queued job processing.
+
+\textbf{Source.} ADR 0001.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Redis URL configurable via environment variable
+    \item Application degrades gracefully if Redis is temporarily unreachable (cache miss, no crash)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-007}{Must}{Object Storage Interface}
+\textbf{Description.} The system shall use S3-compatible object storage for receipt and document files.
+
+\textbf{Rationale.} S3 API is the industry standard, supported by MinIO (local development), AWS S3, Hetzner Object Storage, Backblaze B2, and others.
+
+\textbf{Source.} ADR 0001.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Storage backend configurable via environment variables (endpoint, region, bucket, access key, secret key)
+    \item All file access uses signed URLs with time-limited validity
+    \item Files keyed by SHA-256 hash to enable deduplication
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-008}{Could}{ML Service Interface}
+\textbf{Description.} The system may consume a private HTTP API exposed by a separate Python FastAPI service for machine-learning inference (receipt OCR, expense categorization, cash-flow forecasting, anomaly detection).
+
+\textbf{Rationale.} Planned for v0.3 per V\&S \S2.2.
+
+\textbf{Source.} V\&S \S2.2.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item The backend can call the ML service if its base URL is configured
+    \item If the ML service is unreachable or returns an error, the dependent feature gracefully degrades (manual entry remains available)
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Communications Interfaces}
+
+\begin{requirement}{IR-010}{Must}{REST API Protocol}
+\textbf{Description.} The system shall expose a versioned REST/JSON API under the URL prefix \texttt{/api/v1}.
+
+\textbf{Source.} (To be recorded in a future ADR on API versioning.)
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item All endpoints return JSON with the \texttt{Content-Type: application/json; charset=utf-8} header
+    \item All endpoints use standard HTTP verbs (GET, POST, PATCH, DELETE)
+    \item Error responses follow a consistent shape with \texttt{message}, \texttt{code}, and an optional \texttt{errors} object
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{IR-011}{Must}{HTTPS Only in Production}
+\textbf{Description.} The system shall accept HTTP only on localhost in development; production deployments shall enforce HTTPS.
+
+\textbf{Source.} Standard security practice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Production deployment runbook configures Caddy or equivalent for TLS termination
+    \item Application sends HSTS header with appropriate max-age
+\end{itemize}
+\end{requirement}
+
+\subsection{Functional Requirements}
+
+\subsubsection{Authentication and User Management}
+
+\begin{requirement}{FR-001}{Must}{User registration}
+\textbf{Description.} The system shall allow a new user to register an account by providing email, password, full name, company name, country code, and (optionally) a VAT ID.
+
+\textbf{Rationale.} Self-service onboarding is critical to the self-hostable, open-source model.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item A successful registration creates exactly one Tenant and one User in the same database transaction
+    \item The newly created User is assigned the \texttt{owner} role within the new Tenant
+    \item The response includes the user resource and a Sanctum access token
+    \item Duplicate email registration returns HTTP 422 with a clear error message
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-002}{Must}{Password policy}
+\textbf{Description.} The system shall enforce a minimum password strength of 12 characters including at least one digit and one symbol on registration and password change.
+
+\textbf{Rationale.} Modern password guidance (NIST SP 800-63B); reduces successful credential-stuffing.
+
+\textbf{Source.} NFR-009 (Security).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Registration with a password shorter than 12 characters returns HTTP 422
+    \item Registration with a password missing digits or symbols returns HTTP 422
+    \item The error response identifies which constraint failed
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-003}{Must}{Login}
+\textbf{Description.} The system shall authenticate a user via email and password, returning a Sanctum personal access token on success.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Successful login returns the user resource and an access token
+    \item Failed login (wrong password, unknown email) returns HTTP 401 with a generic ``invalid credentials'' message (no user-enumeration)
+    \item Login is rate-limited per IP and per email (see NFR-011)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-004}{Must}{Logout}
+\textbf{Description.} The system shall provide a logout endpoint that revokes the current access token.
+
+\textbf{Source.} Standard auth practice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Logout invalidates the current token only (other tokens for the same user remain valid)
+    \item Subsequent requests with the revoked token return HTTP 401
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-005}{Must}{Rate limiting on auth endpoints}
+\textbf{Description.} The system shall apply rate limiting of 5 requests per minute per IP on the login, registration, and password-reset endpoints.
+
+\textbf{Source.} NFR-011.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item The 6th request in 60 seconds returns HTTP 429
+    \item Response includes \texttt{Retry-After} header
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-006}{Must}{Token TTL}
+\textbf{Description.} The system shall issue access tokens with a 30-day time-to-live.
+
+\textbf{Source.} ADR (forthcoming) on auth strategy.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Tokens expire 30 days after issue
+    \item Expired tokens return HTTP 401
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-007}{Must}{User profile read}
+\textbf{Description.} The system shall provide an authenticated endpoint that returns the current user's profile information.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Returns id, email, full\_name, locale, role within current tenant
+    \item Does not return password hash or other sensitive fields
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-008}{Must}{Locale preference}
+\textbf{Description.} The system shall persist the user's locale preference (de or en) on the user record.
+
+\textbf{Source.} IR-003.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item PATCH to user profile accepts locale field
+    \item Subsequent API responses honor the locale for localized error messages
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-009}{Must}{Role assignment}
+\textbf{Description.} The system shall allow tenant owners and admins to assign one of four roles (owner, admin, accountant, viewer) to other users in their tenant.
+
+\textbf{Source.} V\&S \S2.1; ADR (forthcoming) on RBAC.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Role changes require owner or admin permission
+    \item Role changes are scoped to the current tenant; cannot affect users in other tenants
+    \item The change is audited (timestamp, actor, target, old role, new role)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-010}{Must}{Last-owner deletion protection}
+\textbf{Description.} The system shall prevent deletion or role demotion of the last user with owner role in a tenant.
+
+\textbf{Rationale.} Prevents a tenant from being locked out of admin access.
+
+\textbf{Source.} ADR (forthcoming) on RBAC.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Deleting the last owner returns HTTP 409 with a clear error
+    \item Demoting the last owner to any non-owner role returns HTTP 409
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Multi-tenancy and Data Isolation}
+
+\begin{requirement}{FR-011}{Must}{Tenant creation on registration}
+\textbf{Description.} The system shall create exactly one Tenant per successful user registration and associate the new user with that Tenant as its owner.
+
+\textbf{Source.} V\&S \S2.1; ADR (forthcoming) on multi-tenancy.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Tenant and User creation happen in a single database transaction
+    \item If User creation fails, the Tenant is rolled back
+    \item A unique slug is generated for the Tenant (URL-safe, derived from company name)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-012}{Must}{Data isolation between tenants}
+\textbf{Description.} The system shall prevent any tenant from reading, modifying, or deleting data belonging to another tenant.
+
+\textbf{Source.} ADR (forthcoming) on multi-tenancy.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Every tenant-owned Eloquent model uses the BelongsToTenant trait
+    \item The global scope filters all queries by the authenticated user's tenant\_id
+    \item Direct ID lookup of another tenant's record returns HTTP 404 (not 403)
+    \item Integration test suite includes a cross-tenant isolation test for every tenant-owned model
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-013}{Must}{Tenant-scoped numbering sequences}
+\textbf{Description.} The system shall provide atomic per-tenant sequential numbering for customers (K-YYYY-NNNNN), invoices (R-YYYY-NNNNN), and expenses (E-YYYY-NNNNN).
+
+\textbf{Rationale.} Each tenant maintains its own numbering; concurrent writes within a tenant must not collide.
+
+\textbf{Source.} ADR (forthcoming) on numbering strategy.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Sequence numbers are atomic under concurrent writes (row-level lock or sequence table)
+    \item Numbers reset annually based on document date year
+    \item No duplicate numbers within a (tenant, document\_type, year) triple
+    \item Concurrency test confirms 100 parallel inserts produce 100 distinct numbers
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-014}{Could}{Tenant switching}
+\textbf{Description.} The system may, in a future release, allow users belonging to multiple tenants to switch between them within a single session.
+
+\textbf{Source.} V\&S \S2.2 (deferred to v0.3+).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Not implemented in v0.1.0
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-015}{Must}{Tenant settings model}
+\textbf{Description.} The system shall provide a settings model per tenant containing company info, tax info, banking info, and invoicing defaults.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Settings are mutable only by users with owner or admin role
+    \item Settings include: company name, address; USt-ID, Steuernummer, Handelsregister; IBAN, BIC, bank name; default payment terms, default tax rate, default unit, notes\_top, notes\_bottom
+    \item USt-ID validation per BMF format (DE + 9 digits, checksum)
+    \item IBAN validation per ISO 13616 checksum
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Customer Management}
+
+\begin{requirement}{FR-016}{Must}{Create customer}
+\textbf{Description.} The system shall allow authenticated users with at least accountant role to create a customer record of type \texttt{company} or \texttt{individual}.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Required fields: type, contact\_name; for company type, additionally company\_name
+    \item Optional fields: address (street, postal code, city, country\_code), email, phone, VAT ID, notes
+    \item On creation, a customer number K-YYYY-NNNNN is generated atomically
+    \item Returns HTTP 201 with the created customer resource
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-017}{Must}{Read customer}
+\textbf{Description.} The system shall provide an endpoint to retrieve a single customer by ID within the current tenant.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Returns HTTP 404 if customer ID does not exist or belongs to a different tenant
+    \item Returns full customer resource including all fields
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-018}{Must}{Update customer}
+\textbf{Description.} The system shall allow authenticated users with at least accountant role to update a customer's mutable fields.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Customer number is immutable after creation
+    \item All other fields mutable via PATCH
+    \item Updates audited (timestamp, actor, changed fields)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-019}{Must}{Soft-delete customer}
+\textbf{Description.} The system shall support soft deletion of customers (mark as deleted but retain in database).
+
+\textbf{Rationale.} Customers may have associated invoices that must remain readable. Soft delete prevents accidental data loss.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Soft-deleted customers are excluded from list and search results by default
+    \item Existing invoices for soft-deleted customers remain accessible
+    \item Admins can restore soft-deleted customers
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-020}{Must}{List and search customers}
+\textbf{Description.} The system shall provide a paginated list endpoint supporting search by name, customer number, email, and VAT ID, plus sort by created\_at, name, or customer number.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Default page size 25, max page size 100
+    \item Search is case-insensitive substring match
+    \item Response includes total count, current page, last page
+    \item Excludes soft-deleted customers by default; \texttt{?include\_deleted=1} includes them
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-021}{Must}{VAT ID validation}
+\textbf{Description.} The system shall validate VAT IDs against the format pattern for the customer's country code.
+
+\textbf{Source.} EN 16931 requires a valid VAT ID on every B2B invoice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item DE VAT ID format: \texttt{DE} + 9 digits, valid checksum
+    \item AT, FR, NL, IT, ES, PL, BE, DK, SE, FI VAT ID format validated per country pattern
+    \item Invalid format returns HTTP 422 with field-specific error
+    \item v0.1 validates format only; online VIES verification deferred to v0.2
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-022}{Must}{EU country support}
+\textbf{Description.} The system shall support customers in all EU member states for address and VAT ID fields.
+
+\textbf{Source.} EN 16931.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Country code field uses ISO 3166-1 alpha-2 codes (DE, AT, FR, etc.)
+    \item All 27 EU member states selectable in UI
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Product and Service Catalog}
+
+\begin{requirement}{FR-023}{Must}{Create product or service}
+\textbf{Description.} The system shall allow authenticated users with at least accountant role to create a product or service in the catalog.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Required: name, unit\_price\_cents (integer), vat\_rate (one of 19, 7, 0)
+    \item Optional: description, unit (default \texttt{St\"uck}), sku
+    \item Returns HTTP 201 with created resource
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-024}{Must}{German VAT rate assignment}
+\textbf{Description.} The system shall allow assigning one of the German VAT rates (19\%, 7\%, 0\%) to each product or service.
+
+\textbf{Source.} \S12 (1) UStG (19\%), \S12 (2) UStG (7\%), \S4 UStG (0\%).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item VAT rate stored as integer (19, 7, 0)
+    \item No other VAT rates accepted in v0.1
+    \item Reverse-charge (\S13b UStG) deferred to v0.3
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-025}{Must}{Unit selection}
+\textbf{Description.} The system shall support the following units for products and services, each mapped to a UN/ECE Recommendation 20 unit code for ZUGFeRD output: St\"uck (H87), Stunde (HUR), Kilogramm (KGM), Meter (MTR), Quadratmeter (MTK), Tag (DAY), pauschal (LS).
+
+\textbf{Source.} EN 16931 requires UN/ECE Rec. 20 unit codes.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Unit selectable from the seven supported values
+    \item Each unit maps to its UN/ECE code at ZUGFeRD generation time
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-026}{Must}{Pricing in cents}
+\textbf{Description.} The system shall store all monetary amounts as integer cents (no floating-point).
+
+\textbf{Rationale.} Floating-point arithmetic on monetary amounts causes rounding errors that fail EN 16931 validation.
+
+\textbf{Source.} ADR (forthcoming) on monetary handling.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Database columns for monetary amounts use BIGINT or DECIMAL, never FLOAT or DOUBLE
+    \item Brick/Money or equivalent library used in application code
+    \item Unit prices displayed in EUR with 2 decimal places to users; stored as cents internally
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-027}{Must}{Archive product}
+\textbf{Description.} The system shall support archiving of products and services (mark as inactive but retain in catalog).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Archived products excluded from product picker on new invoices
+    \item Archived products remain readable; existing invoices referencing them unaffected
+    \item Archived products can be unarchived
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-028}{Should}{Optional SKU}
+\textbf{Description.} The system should allow assigning an optional SKU (stock-keeping unit) string to each product.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item SKU is optional and may be unique per tenant (not enforced as unique constraint in v0.1)
+    \item SKU appears on invoice line items when present
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Invoicing Core}
+
+\begin{requirement}{FR-029}{Must}{Create draft invoice}
+\textbf{Description.} The system shall allow authenticated users with at least accountant role to create an invoice in \texttt{draft} state.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Required: customer\_id; at least one line item
+    \item Optional: invoice\_date (default today), due\_date (default today + default\_payment\_terms), service\_period\_start, service\_period\_end, notes\_top, notes\_bottom
+    \item Returns HTTP 201 with the created invoice
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-030}{Must}{Invoice line items}
+\textbf{Description.} The system shall support adding multiple line items to an invoice. Each line item references a product or service from the catalog or contains free-form description, quantity, unit, unit price, and VAT rate.
+
+\textbf{Source.} EN 16931 invoice structure.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Each line item has: description, quantity (decimal), unit, unit\_price\_cents, vat\_rate
+    \item Line items can mix products from catalog and ad-hoc descriptions
+    \item Line items immutable once invoice is issued
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-031}{Must}{Invoice totals calculation with line-level VAT rounding}
+\textbf{Description.} The system shall calculate invoice totals by computing VAT per line item, rounding each line's VAT to two decimal places, then summing --- never by computing VAT on the document subtotal.
+
+\textbf{Rationale.} EN 16931 Business Rule BR-CO-17 mandates line-level VAT calculation. Document-level VAT rounding produces 1--2 cent differences that fail KoSIT validation on multi-rate invoices.
+
+\textbf{Source.} EN 16931 BR-CO-17.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item For each line: line\_net = quantity * unit\_price\_cents; line\_vat = round(line\_net * vat\_rate / 100, 2)
+    \item Document totals: subtotal = sum(line\_net); total\_vat = sum(line\_vat); total = subtotal + total\_vat
+    \item Per-VAT-rate subtotals exposed for ZUGFeRD XML output
+    \item Unit test corpus includes a multi-rate invoice case proving line-level rounding produces a different total than document-level rounding
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-032}{Must}{Invoice state machine}
+\textbf{Description.} The system shall enforce the following invoice state transitions: \texttt{draft} $\rightarrow$ \texttt{issued} $\rightarrow$ \texttt{sent} $\rightarrow$ (\texttt{partially\_paid} $|$ \texttt{paid}); any state except \texttt{paid} $\rightarrow$ \texttt{cancelled}.
+
+\textbf{Source.} ADR (forthcoming) on invoice state machine.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Invalid transitions return HTTP 409 with the current state in the error
+    \item State transitions are audited with timestamp and actor
+    \item Issued invoices are immutable for line items (only payment status can update)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-033}{Must}{Issue invoice}
+\textbf{Description.} The system shall provide an endpoint to transition a draft invoice to issued state. Issuing an invoice generates the invoice number (R-YYYY-NNNNN), sets issued\_at to current timestamp, and triggers ZUGFeRD PDF generation.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Issuing requires invoice in draft state
+    \item Issuing locks line items (immutable thereafter)
+    \item Issuing dispatches a job to generate the ZUGFeRD-compliant PDF/A-3 file (see FR-041 through FR-048)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-034}{Must}{Cancel invoice}
+\textbf{Description.} The system shall allow cancellation of any invoice in state \texttt{issued}, \texttt{sent}, or \texttt{partially\_paid}, with a mandatory cancellation reason.
+
+\textbf{Source.} GoBD requires reasons for state changes on financial documents.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Cancellation requires a non-empty reason string
+    \item Cancelled invoices appear in lists with the \texttt{cancelled} state filter
+    \item Cancelled invoices cannot be uncancelled (immutable after cancel)
+    \item Cannot cancel an invoice in \texttt{paid} state
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-035}{Must}{Mark invoice paid}
+\textbf{Description.} The system shall allow recording full or partial payment against an invoice.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Recording a payment captures: amount\_cents, payment\_date, payment\_method (cash, bank\_transfer, sepa\_direct\_debit, credit\_card, other), reference
+    \item If cumulative payments equal invoice total, state transitions to \texttt{paid}
+    \item If cumulative payments are less than invoice total, state transitions to \texttt{partially\_paid}
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-036}{Must}{Payment terms}
+\textbf{Description.} The system shall support configurable payment terms expressed in days (default 14 days, settable per tenant in settings).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Tenant settings define a default payment term in days
+    \item Per-invoice payment terms override the tenant default
+    \item Due date computed as invoice\_date + payment\_terms\_days
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-037}{Should}{Service period}
+\textbf{Description.} The system should allow recording an optional service period (start date, end date) on each invoice.
+
+\textbf{Rationale.} \S14 UStG requires service period when service was rendered over a period.
+
+\textbf{Source.} \S14 UStG.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Service period optional on invoice
+    \item When present, appears on the rendered PDF and in the ZUGFeRD XML
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-038}{Must}{Notes top and bottom}
+\textbf{Description.} The system shall support free-form note text above the line items table (\texttt{notes\_top}) and below it (\texttt{notes\_bottom}) on each invoice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Markdown not supported in v0.1; plain text only
+    \item Default values configurable per tenant in settings
+    \item Per-invoice values override tenant defaults
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-039}{Must}{Invoice numbering}
+\textbf{Description.} The system shall generate sequential invoice numbers per tenant per year in the format \texttt{R-YYYY-NNNNN}, atomic against concurrent issuance.
+
+\textbf{Source.} \S14 UStG requires unique sequential invoice numbers; FR-013.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Year prefix matches the invoice's issuance year
+    \item Sequence is monotonic and dense (no gaps) within a (tenant, year) pair
+    \item No duplicates under concurrent issuance (tested with 100 parallel issuance calls)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-040}{Should}{Customer default payment terms}
+\textbf{Description.} The system should allow setting customer-specific default payment terms that override the tenant default but can themselves be overridden per invoice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Customer record can have a payment\_terms\_days field (nullable)
+    \item When creating an invoice, the precedence is: invoice-specific > customer-specific > tenant default
+\end{itemize}
+\end{requirement}
+
+\subsubsection{E-Invoicing (ZUGFeRD)}
+
+\begin{requirement}{FR-041}{Must}{Generate ZUGFeRD XML}
+\textbf{Description.} The system shall generate a ZUGFeRD 2.1 EN16931-profile XML representation of each issued invoice, conformant to the EN 16931 European e-invoicing standard.
+
+\textbf{Source.} EN 16931; Wachstumschancengesetz mandate.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item XML structure follows ZUGFeRD 2.1 EN16931 profile schema
+    \item All \S14 UStG mandatory fields are present (see FR-043)
+    \item All UN/ECE Rec. 20 unit codes are correct per FR-025
+    \item Per-line VAT calculation per BR-CO-17 (FR-031)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-042}{Must}{Generate PDF/A-3 hybrid file}
+\textbf{Description.} The system shall produce a PDF/A-3 conformant file containing both the human-readable invoice rendering and the embedded \texttt{factur-x.xml} attachment.
+
+\textbf{Source.} ZUGFeRD 2.1 specification.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Output file passes verapdf PDF/A-3 conformance check
+    \item Embedded attachment is named exactly \texttt{factur-x.xml}
+    \item Attachment AFRelationship is set to \texttt{Source}
+    \item XMP metadata includes the ConformanceLevel marker
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-043}{Must}{\S14 UStG mandatory fields}
+\textbf{Description.} The system shall include all fields required by \S14 UStG on every issued invoice (both in the PDF rendering and in the embedded XML).
+
+\textbf{Source.} \S14 UStG.
+
+\textbf{Acceptance criteria.} Every issued invoice must include:
+\begin{itemize}
+    \item Full name and address of the issuing business
+    \item Full name and address of the recipient
+    \item Steuernummer or USt-ID of the issuer
+    \item Invoice date (Rechnungsdatum)
+    \item Invoice number (unique, sequential)
+    \item Description and quantity of goods or services
+    \item Service date or service period
+    \item Net amount per VAT rate, applicable VAT rate, VAT amount, gross amount
+    \item Any agreed price reductions (Skonto)
+    \item If applicable: reference to reverse-charge (\S13b UStG)
+    \item If applicable: reference to Kleinunternehmer status (\S19 UStG, v0.2)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-044}{Must}{KoSIT validation pass}
+\textbf{Description.} The system shall produce ZUGFeRD invoices that pass validation against the KoSIT validator (the official German XRechnung / ZUGFeRD reference validator).
+
+\textbf{Source.} V\&S \S1.3 BO-2.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item CI pipeline runs the KoSIT validator against a corpus of at least 10 test invoices covering edge cases (single-line, multi-rate, foreign customer, no service period, large quantities)
+    \item All test corpus invoices return zero validation errors
+    \item KoSIT pass rate $\geq$ 99\% per V\&S success metric
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-045}{Must}{UN/ECE Rec. 20 unit code mapping}
+\textbf{Description.} The system shall map internal unit identifiers to the corresponding UN/ECE Recommendation 20 unit codes in the ZUGFeRD XML output (see FR-025).
+
+\textbf{Source.} EN 16931 requires UN/ECE codes.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Mapping table: St\"uck $\rightarrow$ H87, Stunde $\rightarrow$ HUR, Kilogramm $\rightarrow$ KGM, Meter $\rightarrow$ MTR, Quadratmeter $\rightarrow$ MTK, Tag $\rightarrow$ DAY, pauschal $\rightarrow$ LS
+    \item All seven mappings tested
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-046}{Must}{Multi-VAT-rate handling}
+\textbf{Description.} The system shall correctly aggregate line items by VAT rate and output per-rate subtotals in the ZUGFeRD XML.
+
+\textbf{Source.} EN 16931 BR-CO-17 and BR-CO-18.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item For each distinct VAT rate appearing on an invoice, the XML contains a separate \texttt{ApplicableTradeTax} block with the correct net amount, rate, and VAT amount
+    \item Test corpus includes a three-line invoice mixing 19\% and 7\% rates
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-047}{Must}{Generation pipeline}
+\textbf{Description.} The system shall implement an invoice generation pipeline: invoice data $\rightarrow$ InvoiceCalculator $\rightarrow$ Blade template $\rightarrow$ Browsershot (Chromium) $\rightarrow$ Ghostscript (PDF/A-3 conversion with sRGB ICC profile) $\rightarrow$ horstoeko/zugferd (embed factur-x.xml) $\rightarrow$ final hybrid file.
+
+\textbf{Source.} ADR (forthcoming) on PDF generation pipeline.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Pipeline runs asynchronously as a queued job
+    \item Each step has a typed exception class for failure modes
+    \item Generation time p95 below 3 seconds on reference hardware
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-048}{Should}{Hybrid file download}
+\textbf{Description.} The system should provide an authenticated download endpoint returning the hybrid PDF/A-3 + XML file for an issued invoice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Endpoint returns 404 for draft invoices (no generated PDF yet)
+    \item Endpoint returns the file with \texttt{Content-Type: application/pdf} and correct \texttt{Content-Disposition} header
+    \item Filename follows pattern: \texttt{Rechnung-R-YYYY-NNNNN.pdf}
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Expense Tracking}
+
+\begin{requirement}{FR-049}{Must}{Create expense}
+\textbf{Description.} The system shall allow authenticated users with at least accountant role to create an expense record with vendor name, date, gross amount, VAT amount, VAT rate, category, and payment method.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Required: vendor, expense\_date, gross\_amount\_cents, vat\_rate, category
+    \item Optional: notes, vat\_amount\_cents (auto-calculated if not provided)
+    \item Expense number E-YYYY-NNNNN generated on creation
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-050}{Must}{Receipt file upload}
+\textbf{Description.} The system shall support attaching one or more receipt files to an expense in formats PDF, JPG, PNG, WebP, HEIC with maximum file size 10 MB per file.
+
+\textbf{Source.} V\&S \S2.1; GoBD requires retention of original receipts.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item MIME type validated (not just extension)
+    \item Files larger than 10 MB rejected with HTTP 422
+    \item Multiple receipts can be associated with a single expense
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-051}{Must}{SHA-256 deduplication}
+\textbf{Description.} The system shall compute the SHA-256 hash of every uploaded receipt and detect duplicate uploads.
+
+\textbf{Rationale.} Prevents the same receipt being attached twice (e.g., by accident or for fraud).
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item SHA-256 hash computed server-side on upload
+    \item Storage key in S3 is the hash (no duplicate storage)
+    \item If a duplicate hash is uploaded within the same tenant, the API returns a warning indicating the existing expense(s) referencing that hash
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-052}{Must}{Configurable expense categories}
+\textbf{Description.} The system shall maintain a per-tenant list of expense categories selectable at expense creation time.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Default categories seeded for new tenants in German: B\"uromaterial, Reisekosten, Bewirtung, Software, Hardware, Telekommunikation, Werbung, Sonstiges
+    \item Categories can be added, renamed, or archived (not deleted) by users with admin role
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-053}{Must}{Soft-delete expense}
+\textbf{Description.} The system shall support soft-deletion of expenses, with the constraint that issued expenses cannot be deleted (only cancelled).
+
+\textbf{Source.} GoBD principle of unalterability.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Soft-deleted expenses excluded from list and reporting by default
+    \item Original receipt files retained in storage even after soft-delete
+    \item Restore action available to users with admin role
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Dashboard}
+
+\begin{requirement}{FR-054}{Must}{Revenue widgets}
+\textbf{Description.} The system shall display revenue figures for the current calendar month and current year-to-date on the dashboard.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Excludes cancelled invoices
+    \item Includes only issued and paid invoices
+    \item Refreshes on dashboard load
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-055}{Must}{Open and overdue invoices widget}
+\textbf{Description.} The system shall display the count and total gross value of currently open invoices and currently overdue invoices.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Open: state in \{issued, sent, partially\_paid\}, due\_date $\geq$ today
+    \item Overdue: state in \{issued, sent, partially\_paid\}, due\_date $<$ today
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-056}{Must}{12-month timeline}
+\textbf{Description.} The system shall display a 12-month rolling revenue and expense timeline as a chart.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Bar or line chart with 12 monthly buckets ending current month
+    \item Revenue (green) and expenses (red) shown side-by-side or stacked
+    \item Renders below 2 seconds with demo data
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-057}{Must}{Top customers}
+\textbf{Description.} The system shall display the top 5 customers by paid revenue (current year-to-date) on the dashboard.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Sorted descending by paid revenue
+    \item Shows customer name and paid amount
+    \item Clicking a row opens the customer detail view
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Tenant Settings}
+
+\begin{requirement}{FR-058}{Must}{Company information}
+\textbf{Description.} The system shall allow users with admin role to maintain company information (name, address, country) for the tenant.
+
+\textbf{Source.} \S14 UStG (issuer information on invoices).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item All fields editable
+    \item Changes audited
+    \item Changes affect new invoices only; previously-issued invoices unchanged
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-059}{Must}{Tax information}
+\textbf{Description.} The system shall maintain tax-related identifiers per tenant: USt-ID, Steuernummer, Handelsregister entry.
+
+\textbf{Source.} \S14 UStG requires one of USt-ID or Steuernummer on every invoice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item USt-ID validated per FR-021 format
+    \item Steuernummer format-validated per state pattern
+    \item Handelsregister field optional, free-text format (e.g., ``HRB 12345 Amtsgericht Berlin'')
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-060}{Must}{Banking information}
+\textbf{Description.} The system shall maintain bank account information per tenant: IBAN, BIC, bank name.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item IBAN validated per ISO 13616 checksum
+    \item BIC validated per ISO 9362 format
+    \item Bank name free-text
+    \item Information appears in the standard footer of issued invoices
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-061}{Must}{Invoicing defaults}
+\textbf{Description.} The system shall maintain tenant-level invoicing defaults: default payment terms in days, default unit, default tax rate, default notes\_top, default notes\_bottom.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Defaults pre-fill the corresponding fields on new invoices
+    \item Defaults editable by admin role only
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{FR-062}{Should}{User management within tenant}
+\textbf{Description.} The system should allow tenant admins and owners to invite new users to their tenant (v0.2), change other users' roles, and remove users from their tenant.
+
+\textbf{Source.} V\&S \S2.1.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item v0.1 supports role change and user removal but not invitation flow (deferred to v0.2)
+    \item Last-owner protection (FR-010) applies
+\end{itemize}
+\end{requirement}
+
+\subsection{Performance Requirements}
+
+\begin{requirement}{NFR-001}{Must}{API response time p50}
+\textbf{Description.} The system shall respond to authenticated API requests within 200 milliseconds at the 50th percentile, measured on the reference hardware (Hetzner CX22).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Measured continuously in production via APM (e.g., Sentry Performance)
+    \item Excludes ZUGFeRD generation (asynchronous)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-002}{Should}{API response time p99}
+\textbf{Description.} The system should respond to authenticated API requests within 500 milliseconds at the 99th percentile on the reference hardware.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Measured continuously
+    \item Excludes long-running asynchronous operations
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-003}{Should}{Dashboard load time}
+\textbf{Description.} The dashboard should fully render in under 2 seconds on demo data on the reference hardware.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Time-to-interactive measured via Lighthouse on demo deployment
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-004}{Should}{PDF generation time}
+\textbf{Description.} The full ZUGFeRD invoice generation pipeline should complete in under 3 seconds at the 95th percentile for a typical multi-line invoice.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Measured in background job queue stats
+    \item Test invoice has 10 line items
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-005}{Must}{Query budget}
+\textbf{Description.} Index endpoints shall perform at most 5 database queries total (including N+1 prevention via eager loading).
+
+\textbf{Source.} V\&S \S1.6 R-3.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Laravel Telescope or query log assertions in feature tests verify query count
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-006}{Should}{CI build time}
+\textbf{Description.} The full CI test suite should complete within 5 minutes on standard GitHub-hosted runners.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Backend test suite + frontend test suite + linting + type-checking + docs build
+    \item Parallel job execution
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-007}{Should}{Concurrent users}
+\textbf{Description.} The reference deployment on Hetzner CX22 should support 100 concurrent authenticated users per tenant without exceeding the p99 response time target.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Load test with k6 or equivalent confirms target
+    \item Test scenario: mixed read/write workload representative of typical bookkeeping usage
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-008}{Should}{Receipt upload throughput}
+\textbf{Description.} The system should accept receipt uploads at sustained throughput of 10 concurrent uploads on the reference hardware without degrading other API performance.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Upload pipeline streams to S3-compatible storage; does not buffer entire file in PHP memory
+\end{itemize}
+\end{requirement}
+
+\subsection{Software System Attributes}
+
+\subsubsection{Security}
+
+\begin{requirement}{NFR-009}{Must}{Password hashing}
+\textbf{Description.} The system shall hash passwords using bcrypt with cost factor 12 or higher.
+
+\textbf{Source.} OWASP password storage guidance.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item bcrypt parameter cost $\geq$ 12
+    \item No plaintext passwords logged or stored
+    \item Password hash never returned in API responses
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-010}{Must}{Sanctum personal access tokens}
+\textbf{Description.} The system shall use Laravel Sanctum personal access tokens for API authentication, with a 30-day token TTL.
+
+\textbf{Source.} FR-006.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Tokens stored hashed in the database
+    \item Token revocation immediate on logout
+    \item Expired tokens automatically pruned by scheduled job
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-011}{Must}{Rate limiting on auth}
+\textbf{Description.} The system shall apply rate limiting of 5 requests per minute per IP on auth endpoints (login, registration, password reset).
+
+\textbf{Source.} FR-005.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Implemented via Laravel rate limiting middleware
+    \item 429 response with Retry-After header
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-012}{Must}{HTTPS-only in production}
+\textbf{Description.} Production deployments shall enforce HTTPS and send HSTS headers with appropriate max-age.
+
+\textbf{Source.} IR-011.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item TLS termination at reverse proxy (Caddy or equivalent)
+    \item HSTS max-age 31556952 (1 year) with includeSubDomains
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-013}{Must}{No PII in logs}
+\textbf{Description.} The system shall not log personally identifiable information (PII) in application logs.
+
+\textbf{Source.} GDPR/DSGVO data minimization.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Request loggers redact authentication headers, password fields, and tokens
+    \item User emails and names not included in standard request logs
+    \item Sentry's data scrubbing rules configured to strip PII before transmission
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-014}{Must}{Sanitized error messages}
+\textbf{Description.} Production error responses shall not expose stack traces or internal implementation details.
+
+\textbf{Source.} OWASP error handling guidance.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item APP\_DEBUG=false in production
+    \item Error responses contain only a generic message and error code
+    \item Detailed errors logged to Sentry, not returned to client
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-015}{Must}{File upload validation}
+\textbf{Description.} The system shall validate uploaded files via MIME type sniffing (not just extension), size limit, and reject any file matching known malicious signatures.
+
+\textbf{Source.} FR-050; OWASP file upload guidance.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item MIME type validated server-side via file content inspection
+    \item Maximum 10 MB enforced
+    \item Files stored with randomized keys (not user-controlled paths) to prevent path traversal
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-016}{Must}{SQL injection prevention}
+\textbf{Description.} The system shall use parameterized queries (via Eloquent or PDO) exclusively; no user input shall reach raw SQL expressions.
+
+\textbf{Source.} OWASP injection guidance.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item PHPStan rule level 8 enforces no \texttt{DB::raw()} with user-controlled input
+    \item Code review checklist includes injection check
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-017}{Must}{Content Security Policy}
+\textbf{Description.} Production responses shall include a Content Security Policy header that prevents inline scripts and external resource loading except from configured origins.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item CSP header defined at reverse proxy or application middleware
+    \item No \texttt{unsafe-inline} or \texttt{unsafe-eval} in script-src
+    \item Reporting endpoint configured for CSP violations
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-018}{Should}{Secrets management}
+\textbf{Description.} The system should load secrets (database credentials, S3 keys, SMTP credentials) exclusively from environment variables; secrets shall never appear in code or in the repository.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item \texttt{.env} file in .gitignore
+    \item \texttt{.env.example} committed with placeholder values
+    \item Production deploys secrets via the orchestration tool's secrets feature
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Usability}
+
+\begin{requirement}{NFR-019}{Should}{WCAG 2.1 AA}
+\textbf{Description.} The five main workflows shall conform to WCAG 2.1 Level AA.
+
+\textbf{Source.} IR-002.
+
+\textbf{Acceptance criteria.} See IR-002.
+\end{requirement}
+
+\begin{requirement}{NFR-020}{Must}{German default, English fallback}
+\textbf{Description.} German shall be the default UI locale; English shall be available as a fallback locale.
+
+\textbf{Source.} IR-003.
+
+\textbf{Acceptance criteria.} See IR-003.
+\end{requirement}
+
+\begin{requirement}{NFR-021}{Should}{Dark mode}
+\textbf{Description.} The system should provide a dark mode toggle, with the choice persisted on the user record.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Toggle accessible from the main navigation
+    \item Choice persists across sessions
+    \item Both modes meet color-contrast targets for WCAG 2.1 AA
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-022}{Must}{Mobile responsive}
+\textbf{Description.} The user interface shall be usable on viewport widths from 375px upward.
+
+\textbf{Source.} IR-004.
+
+\textbf{Acceptance criteria.} Manual test on Chrome DevTools device emulation for iPhone 13 mini.
+\end{requirement}
+
+\begin{requirement}{NFR-023}{Should}{Keyboard navigation}
+\textbf{Description.} All interactive elements shall be reachable and operable via keyboard alone.
+
+\textbf{Source.} IR-002; NFR-019.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Tab order is logical
+    \item Focus indicators visible on all interactive elements
+    \item Keyboard shortcuts documented in the docs site
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-024}{Should}{Screen reader compatibility}
+\textbf{Description.} Main workflows should be navigable using a screen reader.
+
+\textbf{Source.} IR-002.
+
+\textbf{Acceptance criteria.} Manual testing with NVDA on Windows.
+\end{requirement}
+
+\subsubsection{Reliability}
+
+\begin{requirement}{NFR-025}{Must}{Daily backups}
+\textbf{Description.} Production deployments shall back up the database daily, with backups retained for at least 7 days.
+
+\textbf{Source.} V\&S \S1.5 RPO target.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Daily \texttt{pg\_dump} via cron
+    \item Backups encrypted at rest
+    \item Documented restore procedure in operations runbook
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-026}{Must}{Documented restore procedure}
+\textbf{Description.} The operations runbook shall include a step-by-step database restore procedure verified by manual exercise.
+
+\textbf{Source.} NFR-025.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Restore procedure tested on a staging environment with timing measured
+    \item Procedure documented at \texttt{docs/operations/backup-and-restore.md}
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-027}{Should}{Production uptime}
+\textbf{Description.} The production demo should maintain uptime of at least 99\% measured on a rolling 30-day window.
+
+\textbf{Source.} V\&S \S1.5.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Monitored by Uptime Kuma or equivalent
+    \item Downtime budget: $\sim$7 hours per month
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-028}{Should}{RPO and RTO}
+\textbf{Description.} The system should have a recovery point objective (RPO) of 24 hours and a recovery time objective (RTO) of 4 hours.
+
+\textbf{Source.} V\&S risks mitigation.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Backup frequency at least daily (RPO)
+    \item Documented restore procedure completes in under 4 hours (RTO)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-029}{Could}{Graceful ML-service degradation}
+\textbf{Description.} When the ML service is unreachable (v0.3+), dependent features shall degrade gracefully.
+
+\textbf{Source.} IR-008.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Manual entry remains available for any field normally pre-filled by ML
+    \item A non-blocking warning informs the user that ML assistance is unavailable
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Maintainability}
+
+\begin{requirement}{NFR-030}{Must}{Test coverage}
+\textbf{Description.} The system shall maintain test coverage of at least 70\% line coverage and at least 60\% branch coverage.
+
+\textbf{Source.} V\&S \S1.5.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Coverage measured by Pest (PHP) and Vitest (JS)
+    \item Coverage reports published to Codecov on every push to main
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-031}{Must}{Static analysis clean}
+\textbf{Description.} The backend codebase shall pass PHPStan at level 8 with no errors.
+
+\textbf{Source.} Quality goal.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item PHPStan configured in CI
+    \item Level 8 enforced
+    \item No baseline file (every fix is real)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-032}{Must}{Frontend linting clean}
+\textbf{Description.} The frontend codebase shall pass ESLint with the configured ruleset and Prettier with default formatting.
+
+\textbf{Source.} Quality goal.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item ESLint and Prettier configured in CI
+    \item No warnings tolerated (CI fails on warnings)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-033}{Must}{Conventional Commits}
+\textbf{Description.} All commits shall follow Conventional Commits 1.0.0 format.
+
+\textbf{Source.} ADR 0002 (forthcoming).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item commitlint configured via husky commit-msg hook
+    \item Non-conforming commits rejected at the hook
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-034}{Must}{ADRs for architectural changes}
+\textbf{Description.} All architectural decisions touching data model, authentication, deployment, dependencies, or public API shall be recorded as ADRs.
+
+\textbf{Source.} arc42 \S9.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item ADRs stored in \texttt{docs/adr/}
+    \item Pull request template enforces consideration
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-035}{Must}{Public API versioning}
+\textbf{Description.} The public API shall be versioned via URL prefix; breaking changes require a major version bump with a deprecation window of at least 6 months for any deprecated endpoint.
+
+\textbf{Source.} IR-010.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item All v1 endpoints prefixed \texttt{/api/v1}
+    \item Deprecation announced in CHANGELOG and via \texttt{Deprecation} header
+\end{itemize}
+\end{requirement}
+
+\subsubsection{Portability}
+
+\begin{requirement}{NFR-036}{Must}{Docker Compose deployment}
+\textbf{Description.} The system shall deploy via \texttt{docker compose up} on any host with Docker Engine 24+ and Docker Compose v2+.
+
+\textbf{Source.} ADR 0001.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item All services defined in a single \texttt{docker-compose.yml}
+    \item No Kubernetes-specific or other orchestrator-specific configuration required for the reference deployment
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-037}{Should}{Multi-architecture support}
+\textbf{Description.} Docker images should be built for both amd64 and arm64 architectures.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item CI publishes multi-arch images via docker buildx
+    \item Images tested on at least one arm64 host (e.g., Apple Silicon, Hetzner ARM instance)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-038}{Must}{Postgres compatibility}
+\textbf{Description.} Migrations and queries shall run cleanly on Postgres 14, 15, and 16.
+
+\textbf{Source.} IR-005.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item CI matrix runs tests against all three Postgres versions
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-039}{Must}{No proprietary database features}
+\textbf{Description.} The system shall not depend on Postgres-specific extensions beyond what is included in the standard distribution.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item No \texttt{CREATE EXTENSION} requiring non-standard packages
+    \item All used extensions documented in deployment guide
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-040}{Must}{No proprietary OS or runtime dependencies}
+\textbf{Description.} The system shall not require any proprietary operating system or runtime (e.g., specific cloud vendor SDKs as hard dependencies).
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item S3 access via the generic AWS SDK (which works against MinIO, Hetzner, AWS, etc.)
+    \item No vendor lock-in code paths
+\end{itemize}
+\end{requirement}
+
+\subsection{Compliance Requirements}
+
+\begin{requirement}{NFR-041}{Must}{EN 16931 conformance}
+\textbf{Description.} All issued invoices shall conform to EN 16931 European e-invoicing standard.
+
+\textbf{Source.} Wachstumschancengesetz.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item KoSIT validator passes (FR-044)
+    \item All EN 16931 mandatory business rules satisfied (BR-01 through BR-66, BR-CO-01 through BR-CO-27 as applicable)
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-042}{Must}{ZUGFeRD 2.1 profile}
+\textbf{Description.} The system shall use the ZUGFeRD 2.1 EN16931 profile (not EXTENDED or MINIMUM) for generated hybrid invoices.
+
+\textbf{Source.} ADR (forthcoming) on ZUGFeRD profile selection.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item XML schema version 2.1 declared in output
+    \item Profile identifier set to \texttt{urn:cen.eu:en16931:2017}
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-043}{Must}{PDF/A-3 conformance}
+\textbf{Description.} The generated hybrid invoice file shall conform to PDF/A-3 (ISO 19005-3:2012).
+
+\textbf{Source.} ZUGFeRD 2.1 specification.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item verapdf validator passes
+    \item sRGB ICC profile embedded
+    \item Conformance level declared in XMP metadata
+\end{itemize}
+\end{requirement}
+
+\begin{requirement}{NFR-044}{Must}{\S14 UStG mandatory fields}
+\textbf{Description.} All issued invoices shall include every field required by \S14 UStG.
+
+\textbf{Source.} FR-043.
+
+\textbf{Acceptance criteria.} See FR-043.
+\end{requirement}
+
+\begin{requirement}{NFR-045}{Must}{10-year archival}
+\textbf{Description.} Issued invoices and associated receipts shall be retained for at least 10 years per \S147 AO.
+
+\textbf{Source.} GoBD.
+
+\textbf{Acceptance criteria:}
+\begin{itemize}
+    \item Soft-deleted invoices and expenses retain their underlying files
+    \item Periodic data-retention export documented in operations runbook (v0.2 implementation)
+    \item Original files (receipt PDFs, invoice PDF/A-3) preserved unchanged
+\end{itemize}
+\end{requirement}
+
+%% =====================================================================
+\appendix
+%% =====================================================================
+
+\section{Glossary}
+
+\begin{description}
+    \item[ADR] Architecture Decision Record. A short Markdown document recording one architectural decision.
+    \item[arc42] Architecture documentation template, 12 sections.
+    \item[DATEV] Dominant German accounting standard and software cooperative used by Steuerberater.
+    \item[Eloquent] Laravel's object-relational mapper.
+    \item[EN 16931] European standard for electronic invoicing.
+    \item[Factur-X] French/German hybrid PDF/A-3 + XML invoice standard, equivalent to ZUGFeRD 2.1.
+    \item[GoBD] Grunds\"atze zur ordnungsm\"a\ss igen F\"uhrung und Aufbewahrung von B\"uchern, Aufzeichnungen und Unterlagen in elektronischer Form sowie zum Datenzugriff --- German digital bookkeeping rules.
+    \item[Handelsregister] German commercial register; companies registered there have an HRB number.
+    \item[HGB] Handelsgesetzbuch --- German Commercial Code.
+    \item[Kleinunternehmer] Small business under \S19 UStG, exempted from charging VAT below a turnover threshold.
+    \item[KoSIT] Koordinierungsstelle f\"ur IT-Standards; maintains the XRechnung standard and reference validator.
+    \item[MoSCoW] Priority scheme: Must, Should, Could, Won't (this release).
+    \item[Mittelstand] German small and medium enterprises, the economic backbone of Germany.
+    \item[PDF/A-3] PDF archival format that supports embedded files (used to embed factur-x.xml).
+    \item[Sanctum] Laravel's first-party authentication package for APIs and SPAs.
+    \item[Skontro] German bookkeeping term: a subsidiary ledger kept alongside the main books.
+    \item[Steuerberater] German tax advisor; powerful gatekeeper in SME bookkeeping decisions.
+    \item[Steuernummer] German tax number, distinct from USt-ID.
+    \item[USt-ID] Umsatzsteuer-Identifikationsnummer; German VAT identification number (DE + 9 digits).
+    \item[UStG] Umsatzsteuergesetz --- German VAT Act.
+    \item[Wachstumschancengesetz] Growth Opportunities Act 2024; introduced the e-invoicing mandate.
+    \item[XRechnung] German XML invoice format, EN 16931 profile, mandated for B2G (business-to-government).
+    \item[ZUGFeRD] Zentraler User Guide des Forums elektronische Rechnung Deutschland; the hybrid PDF/A-3 + XML invoice standard.
+\end{description}
+
+\section{Requirements Traceability Matrix}
+
+This matrix maps each requirement to its source (Vision and Scope section or ADR) and tracks the implementation status. The matrix is populated as components are built; in this version (v1.0 of the SRS), most entries show \texttt{TBD} (to be determined) because implementation has not yet begun.
+
+\begin{longtable}{lll}
+\toprule
+\textbf{Requirement ID} & \textbf{Source} & \textbf{Implementation Status} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Requirement ID} & \textbf{Source} & \textbf{Implementation Status} \\
+\midrule
+\endhead
+FR-001 & V\&S \S2.1 & TBD \\
+FR-002 & NFR-009 & TBD \\
+FR-003 & V\&S \S2.1 & TBD \\
+FR-004 & Standard auth & TBD \\
+FR-005 & NFR-011 & TBD \\
+FR-006 & ADR (forthcoming) & TBD \\
+FR-007 & V\&S \S2.1 & TBD \\
+FR-008 & IR-003 & TBD \\
+FR-009 & V\&S \S2.1 & TBD \\
+FR-010 & ADR (forthcoming) & TBD \\
+FR-011 & V\&S \S2.1 & TBD \\
+FR-012 & ADR (forthcoming) & TBD \\
+FR-013 & ADR (forthcoming) & TBD \\
+FR-014 & V\&S \S2.2 & Deferred (v0.3) \\
+FR-015 & V\&S \S2.1 & TBD \\
+FR-016 & V\&S \S2.1 & TBD \\
+FR-017 & V\&S \S2.1 & TBD \\
+FR-018 & V\&S \S2.1 & TBD \\
+FR-019 & V\&S \S2.1 & TBD \\
+FR-020 & V\&S \S2.1 & TBD \\
+FR-021 & EN 16931 & TBD \\
+FR-022 & EN 16931 & TBD \\
+FR-023 & V\&S \S2.1 & TBD \\
+FR-024 & \S12 UStG & TBD \\
+FR-025 & EN 16931 & TBD \\
+FR-026 & ADR (forthcoming) & TBD \\
+FR-027 & V\&S \S2.1 & TBD \\
+FR-028 & V\&S \S2.1 & TBD \\
+FR-029 & V\&S \S2.1 & TBD \\
+FR-030 & EN 16931 & TBD \\
+FR-031 & EN 16931 BR-CO-17 & TBD \\
+FR-032 & ADR (forthcoming) & TBD \\
+FR-033 & V\&S \S2.1 & TBD \\
+FR-034 & GoBD & TBD \\
+FR-035 & V\&S \S2.1 & TBD \\
+FR-036 & V\&S \S2.1 & TBD \\
+FR-037 & \S14 UStG & TBD \\
+FR-038 & V\&S \S2.1 & TBD \\
+FR-039 & \S14 UStG & TBD \\
+FR-040 & V\&S \S2.1 & TBD \\
+FR-041 & EN 16931 & TBD \\
+FR-042 & ZUGFeRD 2.1 & TBD \\
+FR-043 & \S14 UStG & TBD \\
+FR-044 & V\&S \S1.3 BO-2 & TBD \\
+FR-045 & EN 16931 & TBD \\
+FR-046 & EN 16931 BR-CO-17 & TBD \\
+FR-047 & ADR (forthcoming) & TBD \\
+FR-048 & V\&S \S2.1 & TBD \\
+FR-049 & V\&S \S2.1 & TBD \\
+FR-050 & V\&S \S2.1, GoBD & TBD \\
+FR-051 & V\&S \S2.1 & TBD \\
+FR-052 & V\&S \S2.1 & TBD \\
+FR-053 & GoBD & TBD \\
+FR-054 & V\&S \S2.1 & TBD \\
+FR-055 & V\&S \S2.1 & TBD \\
+FR-056 & V\&S \S2.1 & TBD \\
+FR-057 & V\&S \S2.1 & TBD \\
+FR-058 & \S14 UStG & TBD \\
+FR-059 & \S14 UStG & TBD \\
+FR-060 & V\&S \S2.1 & TBD \\
+FR-061 & V\&S \S2.1 & TBD \\
+FR-062 & V\&S \S2.1 & Deferred (v0.2) \\
+IR-001 & ADR 0001 & TBD \\
+IR-002 & V\&S \S1.3 BO-5 & TBD \\
+IR-003 & V\&S \S3.2 & TBD \\
+IR-004 & V\&S \S3.2 & TBD \\
+IR-005 & ADR 0001 & TBD \\
+IR-006 & ADR 0001 & TBD \\
+IR-007 & ADR 0001 & TBD \\
+IR-008 & V\&S \S2.2 & Deferred (v0.3) \\
+IR-010 & ADR (forthcoming) & TBD \\
+IR-011 & Security practice & TBD \\
+NFR-001 & Performance target & TBD \\
+NFR-002 & Performance target & TBD \\
+NFR-003 & Performance target & TBD \\
+NFR-004 & Performance target & TBD \\
+NFR-005 & V\&S \S1.6 R-3 & TBD \\
+NFR-006 & Quality target & TBD \\
+NFR-007 & V\&S \S3.2 & TBD \\
+NFR-008 & V\&S \S2.1 & TBD \\
+NFR-009 & OWASP & TBD \\
+NFR-010 & FR-006 & TBD \\
+NFR-011 & FR-005 & TBD \\
+NFR-012 & IR-011 & TBD \\
+NFR-013 & GDPR & TBD \\
+NFR-014 & OWASP & TBD \\
+NFR-015 & OWASP, FR-050 & TBD \\
+NFR-016 & OWASP & TBD \\
+NFR-017 & Security practice & TBD \\
+NFR-018 & Security practice & TBD \\
+NFR-019 & IR-002 & TBD \\
+NFR-020 & IR-003 & TBD \\
+NFR-021 & V\&S \S2.1 & TBD \\
+NFR-022 & IR-004 & TBD \\
+NFR-023 & NFR-019 & TBD \\
+NFR-024 & NFR-019 & TBD \\
+NFR-025 & V\&S \S1.5 & TBD \\
+NFR-026 & NFR-025 & TBD \\
+NFR-027 & V\&S \S1.5 & TBD \\
+NFR-028 & V\&S \S1.6 & TBD \\
+NFR-029 & IR-008 & Deferred (v0.3) \\
+NFR-030 & V\&S \S1.5 & TBD \\
+NFR-031 & Quality goal & TBD \\
+NFR-032 & Quality goal & TBD \\
+NFR-033 & ADR 0002 & TBD \\
+NFR-034 & arc42 \S9 & TBD \\
+NFR-035 & IR-010 & TBD \\
+NFR-036 & ADR 0001 & TBD \\
+NFR-037 & Quality goal & TBD \\
+NFR-038 & IR-005 & TBD \\
+NFR-039 & IR-005 & TBD \\
+NFR-040 & V\&S \S3.2 & TBD \\
+NFR-041 & Wachstumschancengesetz & TBD \\
+NFR-042 & ADR (forthcoming) & TBD \\
+NFR-043 & ZUGFeRD 2.1 & TBD \\
+NFR-044 & FR-043 & TBD \\
+NFR-045 & GoBD & TBD \\
+\bottomrule
+\end{longtable}
+
+\section{Revision History}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{llll}
+\toprule
+\textbf{Version} & \textbf{Date} & \textbf{Author} & \textbf{Change} \\
+\midrule
+1.0 & 2026-05-27 & Z.~A.~Raja & Initial release. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%% =====================================================================
+\end{document}
