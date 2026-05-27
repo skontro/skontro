@@ -156,8 +156,8 @@ Localisation defaults to German for the entire user interface; English is provid
 
 - BMF e-Rechnung guidance — `https://www.bundesfinanzministerium.de/` (search: "E-Rechnung")
 - EN 16931 — European standard for electronic invoicing (CEN)
-- ZUGFeRD 2.1 specification — `https://www.ferd-net.de/standards/zugferd-2.1/`
-- XRechnung specification — KoSIT — `https://www.xoev.de/xrechnung`
+- ZUGFeRD — FeRD landing page (currently ZUGFeRD 2.4; v0.1 targets 2.1) — `https://www.ferd-net.de/standards/zugferd`
+- XRechnung — XStandards Einkauf (canonical since 2023, formerly KoSIT) — `https://xeinkauf.de/xrechnung/`
 - KoSIT validator — `https://github.com/itplr-kosit/validator`
 - GoBD letter — BMF letter of 28 November 2019
 - §14 UStG and §19 UStG — Umsatzsteuergesetz
