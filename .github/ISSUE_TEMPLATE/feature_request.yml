@@ -1,0 +1,60 @@
+name: Feature request
+description: Propose a new feature or enhancement for Skontro.
+title: "[FEAT] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing an idea. Please describe the problem before jumping to a solution — it helps us evaluate alternatives.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What user-facing or operational problem are you trying to solve? Who is affected?
+      placeholder: As a tax advisor, I cannot bulk-export invoices for a client in DATEV format, so monthly reconciliation takes hours...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe the feature, API, UI, or behavior you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider? Why did you reject them?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-version
+    attributes:
+      label: Target version
+      description: Which milestone do you think this should land in?
+      options:
+        - v0.2
+        - v0.3
+        - v0.4
+        - backlog
+      default: 3
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List concrete, testable conditions that must be true for this feature to be considered done.
+      placeholder: |
+        - [ ] CLI command `skontro export datev --client <id> --month <YYYY-MM>` produces a valid DATEV ASCII export
+        - [ ] Export passes DATEV format checker
+        - [ ] Documented in docs/user-guide/datev-export.md
+    validations:
+      required: true

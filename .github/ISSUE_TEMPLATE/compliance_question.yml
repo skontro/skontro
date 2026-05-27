@@ -1,0 +1,59 @@
+name: Compliance question
+description: Report a possible deviation from a German or EU e-invoicing / bookkeeping standard.
+title: "[COMP] "
+labels: ["compliance", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to flag behavior that may not conform to a regulatory standard or specification. Please cite the relevant clause and a reference URL so we can verify quickly.
+
+  - type: dropdown
+    id: standard
+    attributes:
+      label: Which standard?
+      description: Select the specification this question relates to.
+      options:
+        - XRechnung
+        - ZUGFeRD
+        - DATEV
+        - GoBD
+        - "§14 UStG"
+        - EN 16931
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: clause
+    attributes:
+      label: Specific clause / section (if known)
+      description: e.g. "XRechnung 3.0.2 — BR-CO-15", "GoBD Rz. 58", "§14 Abs. 4 Satz 1 Nr. 6 UStG"
+      placeholder: "EN 16931 BT-30"
+    validations:
+      required: false
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: What does Skontro currently do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior per spec
+      description: What does the standard require?
+    validations:
+      required: true
+
+  - type: input
+    id: reference
+    attributes:
+      label: Reference URL
+      description: Link to the official specification, KoSIT document, BMF letter, or other authoritative source.
+      placeholder: "https://xeinkauf.de/dokumente/"
+    validations:
+      required: true

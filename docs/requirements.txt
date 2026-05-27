@@ -1,0 +1,14 @@
+# Material theme for MkDocs — provides the look, navigation, search, and most UX features.
+mkdocs-material==9.5.49
+
+# Mermaid diagram support — renders ```mermaid fenced blocks as SVG diagrams in the docs.
+mkdocs-mermaid2-plugin==1.2.1
+
+# Swagger / OpenAPI renderer — embeds Swagger UI for API specs referenced from Markdown.
+mkdocs-render-swagger-plugin==0.1.2
+
+# Image lightbox — enables click-to-zoom and gallery view for screenshots and diagrams.
+mkdocs-glightbox==0.4.0
+
+# PyMdown extensions — adds admonitions, tabs, code highlighting, snippets, and more Markdown features used by Material.
+pymdown-extensions==10.12
