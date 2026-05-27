@@ -22,6 +22,9 @@ Entries are grouped under the following change types:
 - Homepage feature card for Vision and Scope updated to surface the 1 Jan 2027 / 2028 e-Rechnung deadlines and link to the published document.
 - Software Requirements Specification v1.0 published as LaTeX-compiled PDF at `docs/formal/srs/srs.pdf` (~38 pages, 117 numbered requirements: 62 functional, 45 non-functional, 10 interface) following ISO/IEC/IEEE 29148:2018 structure; includes complete Requirements Traceability Matrix.
 - Requirements site section at <https://docs.skontro.dev/requirements/> links to the SRS PDF; homepage Requirements feature card updated to surface the new artifact.
+- arc42 architecture document sections 1–4 published at <https://docs.skontro.dev/architecture/01-introduction-and-goals/>: introduction & goals (three priority-ordered quality goals — compliance correctness, maintainability, demonstrability — and seven stakeholder profiles), constraints (15 technical, 5 organizational, 9 convention), context & scope (business + technical context, Mermaid system context diagram, external entity table), solution strategy (three-deployable-unit decomposition, approach to each quality goal, organizational decisions).
+- ADR 0002 — Multi-tenancy: single database with `tenant_id` discriminator, with three alternatives evaluated (database-per-tenant, schema-per-tenant, hybrid).
+- Homepage Architecture feature card updated to surface the published sections.
 
 ### Changed
 
