@@ -599,6 +599,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -608,6 +619,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#download" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Categories
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compliance basis
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1469,6 +1526,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#download" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categories" class="md-nav__link">
+    <span class="md-ellipsis">
+      Categories
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance-basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compliance basis
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1499,10 +1591,37 @@
 
 
 <h1 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This section will be completed in a subsequent milestone.</p>
-</div>
+<p>The Software Requirements Specification (SRS) for Skontro follows the ISO/IEC/IEEE 29148:2018 structure. The authoritative version is the LaTeX-compiled PDF.</p>
+<h2 id="download">Download<a class="headerlink" href="#download" title="Permanent link">&para;</a></h2>
+<p><a class="md-button md-button--primary" href="../formal/srs/srs.pdf"><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v2H5.5V9H8c.8 0 1.5.7 1.5 1.5zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5zm4-3H17v1h1.5V13H17v2h-1.5V9h3zm-6.5 0h1v3h-1zm-5 0h1v1H7z"/></svg></span> <strong>Software Requirements Specification (PDF, v1.0)</strong></a></p>
+<p>Approximately 40 pages. Contains:</p>
+<ul>
+<li>62 Functional Requirements (FR-001 through FR-062)</li>
+<li>45 Non-Functional Requirements (NFR-001 through NFR-045) covering performance, security, usability, reliability, maintainability, portability, and compliance</li>
+<li>10 Interface Requirements (IR-001 through IR-011)</li>
+<li>Complete Requirements Traceability Matrix</li>
+</ul>
+<h2 id="categories">Categories<a class="headerlink" href="#categories" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Authentication and user management:</strong> FR-001 through FR-010</li>
+<li><strong>Multi-tenancy:</strong> FR-011 through FR-015</li>
+<li><strong>Customer management:</strong> FR-016 through FR-022</li>
+<li><strong>Product and service catalog:</strong> FR-023 through FR-028</li>
+<li><strong>Invoicing core:</strong> FR-029 through FR-040</li>
+<li><strong>E-invoicing (ZUGFeRD):</strong> FR-041 through FR-048</li>
+<li><strong>Expense tracking:</strong> FR-049 through FR-053</li>
+<li><strong>Dashboard:</strong> FR-054 through FR-057</li>
+<li><strong>Tenant settings:</strong> FR-058 through FR-062</li>
+</ul>
+<h2 id="compliance-basis">Compliance basis<a class="headerlink" href="#compliance-basis" title="Permanent link">&para;</a></h2>
+<p>The SRS references:</p>
+<ul>
+<li>EN 16931 — European standard for electronic invoicing</li>
+<li>Wachstumschancengesetz (BGBl. 2024 I Nr. 108) — the legislative driver</li>
+<li>§14 UStG, §19 UStG — German VAT Act</li>
+<li>GoBD — German digital bookkeeping rules</li>
+<li>ZUGFeRD 2.1 — hybrid PDF/A-3 + XML format specification</li>
+</ul>
 
 
 
