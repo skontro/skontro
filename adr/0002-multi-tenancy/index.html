@@ -12,22 +12,26 @@
         <meta name="author" content="Zeeshan Ahmed Raja">
       
       
+        <link rel="canonical" href="https://docs.skontro.dev/adr/0002-multi-tenancy/">
+      
+      
+        <link rel="prev" href="../0001-stack-choice/">
       
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Skontro Documentation</title>
+        <title>0002 — Multi-tenancy - Skontro Documentation</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,14 +50,23 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-  </head>
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -71,6 +84,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#0002-multi-tenancy-via-single-database-with-tenant_id-discriminator" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,7 +101,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="Skontro Documentation" class="md-header__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
+    <a href="../.." title="Skontro Documentation" class="md-header__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -103,7 +121,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              0002 — Multi-tenancy
             
           </span>
         </div>
@@ -221,7 +239,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -240,7 +258,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/vision/vision-and-scope/" class="md-tabs__link">
+        <a href="../../vision/vision-and-scope/" class="md-tabs__link">
           
   
   Vision
@@ -258,7 +276,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/requirements/" class="md-tabs__link">
+        <a href="../../requirements/" class="md-tabs__link">
           
   
   Requirements
@@ -276,7 +294,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/architecture/01-introduction-and-goals/" class="md-tabs__link">
+        <a href="../../architecture/01-introduction-and-goals/" class="md-tabs__link">
           
   
   Architecture
@@ -294,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/compliance/overview/" class="md-tabs__link">
+        <a href="../../compliance/overview/" class="md-tabs__link">
           
   
   Compliance
@@ -312,7 +330,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/api/overview/" class="md-tabs__link">
+        <a href="../../api/overview/" class="md-tabs__link">
           
   
   API
@@ -330,7 +348,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/operations/deployment/" class="md-tabs__link">
+        <a href="../../operations/deployment/" class="md-tabs__link">
           
   
   Operations
@@ -348,7 +366,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/testing/test-plan/" class="md-tabs__link">
+        <a href="../../testing/test-plan/" class="md-tabs__link">
           
   
   Testing
@@ -362,11 +380,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/adr/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   ADRs
@@ -405,7 +425,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="Skontro Documentation" class="md-nav__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
+    <a href="../.." title="Skontro Documentation" class="md-nav__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -435,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -495,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/vision/vision-and-scope/" class="md-nav__link">
+      <a href="../../vision/vision-and-scope/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -563,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/requirements/" class="md-nav__link">
+      <a href="../../requirements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -584,7 +604,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/requirements/srs/" class="md-nav__link">
+      <a href="../../requirements/srs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -652,7 +672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/01-introduction-and-goals/" class="md-nav__link">
+      <a href="../../architecture/01-introduction-and-goals/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -673,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/02-constraints/" class="md-nav__link">
+      <a href="../../architecture/02-constraints/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -694,7 +714,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/03-context-and-scope/" class="md-nav__link">
+      <a href="../../architecture/03-context-and-scope/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -715,7 +735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/04-solution-strategy/" class="md-nav__link">
+      <a href="../../architecture/04-solution-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -736,7 +756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/05-building-block-view/" class="md-nav__link">
+      <a href="../../architecture/05-building-block-view/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -757,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/06-runtime-view/" class="md-nav__link">
+      <a href="../../architecture/06-runtime-view/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -778,7 +798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/07-deployment-view/" class="md-nav__link">
+      <a href="../../architecture/07-deployment-view/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -799,7 +819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/08-crosscutting-concepts/" class="md-nav__link">
+      <a href="../../architecture/08-crosscutting-concepts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -820,7 +840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/09-architecture-decisions/" class="md-nav__link">
+      <a href="../../architecture/09-architecture-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -841,7 +861,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/10-quality-requirements/" class="md-nav__link">
+      <a href="../../architecture/10-quality-requirements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -862,7 +882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/11-risks-and-tech-debt/" class="md-nav__link">
+      <a href="../../architecture/11-risks-and-tech-debt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -883,7 +903,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/architecture/12-glossary/" class="md-nav__link">
+      <a href="../../architecture/12-glossary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -951,7 +971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/compliance/overview/" class="md-nav__link">
+      <a href="../../compliance/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -972,7 +992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/compliance/e-rechnung/" class="md-nav__link">
+      <a href="../../compliance/e-rechnung/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -993,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/compliance/zugferd/" class="md-nav__link">
+      <a href="../../compliance/zugferd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1014,7 +1034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/compliance/gobd/" class="md-nav__link">
+      <a href="../../compliance/gobd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1035,7 +1055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/compliance/vat-handling/" class="md-nav__link">
+      <a href="../../compliance/vat-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1103,7 +1123,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/api/overview/" class="md-nav__link">
+      <a href="../../api/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1171,7 +1191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/operations/deployment/" class="md-nav__link">
+      <a href="../../operations/deployment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1192,7 +1212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/operations/runbook/" class="md-nav__link">
+      <a href="../../operations/runbook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1213,7 +1233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/operations/monitoring/" class="md-nav__link">
+      <a href="../../operations/monitoring/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1234,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/operations/incident-response/" class="md-nav__link">
+      <a href="../../operations/incident-response/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1302,7 +1322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/testing/test-plan/" class="md-nav__link">
+      <a href="../../testing/test-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1327,25 +1347,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1356,7 +1381,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             ADRs
@@ -1370,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/adr/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1391,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/adr/0001-stack-choice/" class="md-nav__link">
+      <a href="../0001-stack-choice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1409,10 +1434,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/adr/0002-multi-tenancy/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    0002 — Multi-tenancy
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1421,6 +1466,146 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risks-accepted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks accepted
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-a-database-per-tenant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative A — Database-per-tenant
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-b-schema-per-tenant-within-a-single-postgres-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative B — Schema-per-tenant within a single Postgres database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-c-hybrid-small-tenants-pooled-large-tenants-on-their-own-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative C — Hybrid (small tenants pooled, large tenants on their own database)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revision-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revision History
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1450,6 +1635,136 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risks-accepted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks accepted
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-a-database-per-tenant" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative A — Database-per-tenant
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-b-schema-per-tenant-within-a-single-postgres-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative B — Schema-per-tenant within a single Postgres database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-c-hybrid-small-tenants-pooled-large-tenants-on-their-own-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative C — Hybrid (small tenants pooled, large tenants on their own database)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revision-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revision History
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1461,8 +1776,166 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+    <a href="https://github.com/skontro/skontro/edit/main/docs/adr/0002-multi-tenancy.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/skontro/skontro/raw/main/docs/adr/0002-multi-tenancy.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+    </a>
+  
+
+
+<h1 id="0002-multi-tenancy-via-single-database-with-tenant_id-discriminator">0002. Multi-tenancy via Single Database with tenant_id Discriminator<a class="headerlink" href="#0002-multi-tenancy-via-single-database-with-tenant_id-discriminator" title="Permanent link">&para;</a></h1>
+<ul>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-05-27</li>
+<li><strong>Deciders:</strong> Zeeshan Ahmed Raja (sole maintainer, v0.1.0)</li>
+<li><strong>Consulted:</strong> —</li>
+<li><strong>Informed:</strong> Future contributors via this ADR; SRS §3.2.2 (FR-011 through FR-015); arc42 §2.1 TC-13.</li>
+</ul>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
+<p>Skontro is a multi-tenant SaaS-style application that can also be self-hosted. Multi-tenancy is a foundational architectural decision: it shapes the data model, the authentication and authorization layer, the migration strategy, the backup strategy, and the operational footprint.</p>
+<p>Three patterns dominate the literature:</p>
+<ol>
+<li><strong>Database-per-tenant</strong> — each tenant gets its own database. Strong isolation, large operational overhead (migrations N times, backups N times).</li>
+<li><strong>Schema-per-tenant</strong> — each tenant gets its own schema within a single Postgres database. Medium isolation, medium operational overhead.</li>
+<li><strong>Single database with <code>tenant_id</code> discriminator</strong> — every tenant-owned row carries a <code>tenant_id</code> column; isolation is enforced in application code. Light operational overhead, isolation depends on application correctness.</li>
+</ol>
+<p>The decision must support:</p>
+<ul>
+<li><strong>Operational simplicity.</strong> One database to back up, one set of migrations to run, one connection pool. Aligns with OC-2 (solo maintainer) and OC-3 (~€15/month budget).</li>
+<li><strong>Reasonable isolation guarantees.</strong> Cross-tenant data leakage would be catastrophic both legally (GDPR/DSGVO) and reputationally.</li>
+<li><strong>A path to scale.</strong> v0.1 reference deployment supports up to ~50 tenants. Beyond that, sharding strategies may need development — but the decision today should not foreclose them.</li>
+</ul>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
+<p>Skontro will use <strong>single database with a <code>tenant_id</code> discriminator column</strong> on every tenant-owned table, enforced by:</p>
+<ol>
+<li>
+<p>A <strong><code>BelongsToTenant</code> Eloquent trait</strong> applied to every tenant-owned model, which:</p>
+<ul>
+<li>Adds a global scope filtering all queries by the authenticated user's tenant</li>
+<li>Automatically sets <code>tenant_id</code> on <code>creating</code> events to the authenticated user's tenant</li>
+</ul>
+</li>
+<li>
+<p><strong>Service-level guarantees in the authentication layer</strong> that bind every authenticated request to exactly one tenant via the Sanctum token's owning user.</p>
+</li>
+<li>
+<p><strong>Direct cross-tenant ID lookups return HTTP 404, not 403.</strong> This is a deliberate choice: 403 leaks the existence of the resource (the recipient learns a resource with that ID exists somewhere); 404 does not.</p>
+</li>
+<li>
+<p><strong>An integration test in the test suite for every tenant-owned model</strong>, asserting that User A from Tenant 1 cannot read, modify, or delete records of User B from Tenant 2.</p>
+</li>
+<li>
+<p><strong>Per-tenant atomic sequences for customer / invoice / expense numbers</strong> (FR-013). Implemented via a <code>numbering_sequences</code> table with row-level locks on increment, scoped to <code>(tenant_id, document_type, year)</code>.</p>
+</li>
+</ol>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>One database.</strong> One <code>pg_dump</code> to back up, one set of migrations to run, one connection pool to size. Operational cost scales with usage, not with tenant count.</li>
+<li><strong>Cross-tenant queries are trivially possible for reporting.</strong> Aggregate metrics (e.g., "across all tenants on this instance, how many invoices were issued in March?") are simple SQL — no cross-database UNION ALL gymnastics.</li>
+<li><strong>Tractable for a solo maintainer.</strong> No tenant onboarding automation that creates databases. No tenant-aware migration runner.</li>
+<li><strong>Cost-efficient.</strong> Hetzner CX22 can comfortably host ~50 tenants in a single Postgres database.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Isolation depends on application correctness.</strong> A bug in the global scope, in a manual query that bypasses Eloquent, or in a raw SQL statement, can leak data across tenants.<ul>
+<li><em>Mitigation:</em> The <code>BelongsToTenant</code> trait is the only sanctioned access path. PHPStan level 8 flags raw queries. Code review checklist includes a "did this touch tenant data?" item. CI integration tests cover cross-tenant isolation for every tenant-owned model.</li>
+</ul>
+</li>
+<li><strong>No per-tenant encryption at rest.</strong> All tenants share the same database encryption (which is at the storage layer, not per-row).<ul>
+<li><em>Mitigation:</em> Tenants with stronger isolation needs are documented as needing the self-host option, where they get their own deployment entirely.</li>
+</ul>
+</li>
+<li><strong>Schema changes affect all tenants simultaneously.</strong> A migration that introduces a new column applies to all tenants at once.<ul>
+<li><em>Mitigation:</em> Migrations are backward-compatible by convention (additive changes preferred; destructive changes happen in multi-step migrations).</li>
+</ul>
+</li>
+<li><strong>Scale ceiling.</strong> Beyond ~50 tenants or a particular tenant becoming very large, the single-DB model may need to be sharded.<ul>
+<li><em>Mitigation:</em> The <code>tenant_id</code> discriminator makes future sharding strategies viable — extract a tenant by selecting all rows with that <code>tenant_id</code>, dump them, and restore into a new database. The application code does not need to change if the connection-resolution layer learns to pick a database per <code>tenant_id</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="risks-accepted">Risks accepted<a class="headerlink" href="#risks-accepted" title="Permanent link">&para;</a></h3>
+<ul>
+<li>If a future architectural review concludes that per-tenant isolation needs are stronger than the application-enforced model provides, a migration to schema-per-tenant or database-per-tenant is possible but expensive. Acceptable: for the v0.1 target user (Mittelstand businesses self-hosting or using a hosted instance with reasonable expectations), application-enforced isolation is sufficient.</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">&para;</a></h2>
+<h3 id="alternative-a-database-per-tenant">Alternative A — Database-per-tenant<a class="headerlink" href="#alternative-a-database-per-tenant" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> Strongest possible isolation. Per-tenant backups and restores. Per-tenant scale tuning.</li>
+<li><strong>Con:</strong> N times the operational overhead. Migrations must be applied tenant-by-tenant. Tenant onboarding requires automated database provisioning. Cross-tenant reporting is hard. Connection pooling complicated.</li>
+<li><strong>Verdict:</strong> Rejected. The operational cost is incompatible with OC-2 (solo maintainer).</li>
+</ul>
+<h3 id="alternative-b-schema-per-tenant-within-a-single-postgres-database">Alternative B — Schema-per-tenant within a single Postgres database<a class="headerlink" href="#alternative-b-schema-per-tenant-within-a-single-postgres-database" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> Postgres schemas provide stronger logical separation than the discriminator model. Per-tenant <code>search_path</code> enforces isolation at the session level.</li>
+<li><strong>Con:</strong> Postgres has a soft upper limit on schema count (thousands work, but tooling like <code>pg_dump</code> becomes slow). Migrations must be applied per schema. Search across tenants requires explicit cross-schema queries.</li>
+<li><strong>Verdict:</strong> Rejected for v0.1. Could be revisited if a tenant emerges with strong-isolation requirements that the discriminator model cannot satisfy.</li>
+</ul>
+<h3 id="alternative-c-hybrid-small-tenants-pooled-large-tenants-on-their-own-database">Alternative C — Hybrid (small tenants pooled, large tenants on their own database)<a class="headerlink" href="#alternative-c-hybrid-small-tenants-pooled-large-tenants-on-their-own-database" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> The advantages of both other models in principle.</li>
+<li><strong>Con:</strong> Requires a tenant-routing layer in the application that can route a request to the right database. Code complexity, error surface area, and operational tooling all expand.</li>
+<li><strong>Verdict:</strong> Rejected for v0.1. Worth revisiting if a tenant with strong-isolation needs becomes a real customer.</li>
+</ul>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Laravel multi-tenancy patterns — <code>https://laravel.com/docs/11.x</code> (search: multi-tenancy)</li>
+<li>Spatie laravel-multitenancy — <code>https://github.com/spatie/laravel-multitenancy</code></li>
+<li>SRS §3.2.2 (FR-011 through FR-015) — multi-tenancy functional requirements</li>
+<li>arc42 §2.1 TC-13 — technical constraint</li>
+<li>arc42 §4.4 — solution-strategy reference</li>
+</ul>
+<hr />
+<h2 id="revision-history">Revision History<a class="headerlink" href="#revision-history" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-05-27</td>
+<td>Zeeshan Ahmed Raja</td>
+<td>Initial decision recorded.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1482,6 +1955,28 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../0001-stack-choice/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 0001 — Stack Choice">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                0001 — Stack Choice
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -1524,11 +2019,13 @@
       <div class="md-progress" data-md-component="progress" role="progressbar"></div>
     
     
-    <script id="__config" type="application/json">{"base": "/", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.edit", "content.action.view"], "search": "/assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="/assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
     
-  </body>
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
 </html>

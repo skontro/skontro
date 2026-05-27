@@ -688,6 +688,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    1. Introduction and Goals
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -697,6 +708,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-requirements-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Requirements Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-quality-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Quality Goals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-stakeholders" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Stakeholders
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1442,6 +1499,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../adr/0002-multi-tenancy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0002 — Multi-tenancy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1468,6 +1546,41 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-requirements-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Requirements Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-quality-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Quality Goals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-stakeholders" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Stakeholders
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1499,10 +1612,144 @@
 
 
 <h1 id="1-introduction-and-goals">1. Introduction and Goals<a class="headerlink" href="#1-introduction-and-goals" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Work in Progress</p>
-<p>This section will be completed in a subsequent milestone.</p>
+<div class="admonition info">
+<p class="admonition-title">About this document</p>
+<p>This document describes the software architecture of <strong>Skontro</strong> following the <a href="https://arc42.org">arc42</a> template. It is published alongside the <a href="../../vision/vision-and-scope/">Vision and Scope</a> (the "why and for whom") and the <a href="../../formal/srs/srs.pdf">Software Requirements Specification</a> (the "what shall it do"). This arc42 document answers "how is it built and how does it hang together."</p>
 </div>
+<h2 id="11-requirements-overview">1.1 Requirements Overview<a class="headerlink" href="#11-requirements-overview" title="Permanent link">&para;</a></h2>
+<p>Skontro is an open-source self-hostable mini-ERP for the German Mittelstand. The system addresses the regulatory shift toward mandatory electronic invoicing introduced by the Wachstumschancengesetz (BGBl. 2024 I Nr. 108): all German B2B businesses must be able to receive EN 16931-compliant e-invoices from <strong>1 January 2025</strong>, all businesses with prior-year turnover above €800,000 must issue them from <strong>1 January 2027</strong>, and all businesses including Kleinunternehmer under §19 UStG from <strong>1 January 2028</strong>.</p>
+<p>Existing commercial software (sevDesk, Lexware, Candis, Moss) is closed-source SaaS in the €15–€120 per company per month range. Existing open-source ERPs (ERPNext, Odoo Community, Dolibarr) do not include German compliance in upstream distributions. Skontro fills this gap.</p>
+<p>A condensed feature summary follows. The full requirements catalogue is in the <a href="../../formal/srs/srs.pdf">SRS PDF</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Multi-tenant authentication, RBAC (owner / admin / accountant / viewer)</td>
+<td>SRS §3.2.1, §3.2.2</td>
+</tr>
+<tr>
+<td>Customer and product/service catalogue with EU country support</td>
+<td>SRS §3.2.3, §3.2.4</td>
+</tr>
+<tr>
+<td>Invoice lifecycle (draft → issued → sent → paid/partially paid → cancelled)</td>
+<td>SRS §3.2.5</td>
+</tr>
+<tr>
+<td>EN 16931 / ZUGFeRD 2.1 hybrid PDF/A-3 + XML generation, KoSIT-validated</td>
+<td>SRS §3.2.6</td>
+</tr>
+<tr>
+<td>Expense tracking with receipt upload (PDF/JPG/PNG/WebP/HEIC), SHA-256 deduplication</td>
+<td>SRS §3.2.7</td>
+</tr>
+<tr>
+<td>Dashboard with revenue, open/overdue invoices, 12-month timeline, top customers</td>
+<td>SRS §3.2.8</td>
+</tr>
+<tr>
+<td>Tenant settings: company info, USt-ID, Steuernummer, Handelsregister, IBAN/BIC</td>
+<td>SRS §3.2.9</td>
+</tr>
+<tr>
+<td>DATEV export, inbound XRechnung parsing, USt-VA preview (v0.2+)</td>
+<td>V&amp;S §2.2</td>
+</tr>
+<tr>
+<td>ML layer: receipt OCR, expense categorization, cash-flow forecasting (v0.3+)</td>
+<td>V&amp;S §2.2</td>
+</tr>
+<tr>
+<td>Self-hosting via <code>docker compose up</code>; no Kubernetes requirement</td>
+<td>ADR 0001</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-quality-goals">1.2 Quality Goals<a class="headerlink" href="#12-quality-goals" title="Permanent link">&para;</a></h2>
+<p>The architecture optimizes for three quality attributes, in this priority order. Every architectural decision is evaluated against these.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Goal</th>
+<th>Scenario</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Compliance correctness</strong></td>
+<td>Every issued invoice passes the official KoSIT validator (the German XRechnung/ZUGFeRD reference validator) with zero errors. Validation runs on every CI build against a curated test corpus.</td>
+<td>The whole project's value proposition rests on producing legally usable invoices. A wrong invoice is worse than no invoice — it can trigger tax-deduction rejection by the recipient.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Maintainability</strong></td>
+<td>A developer joining the project can navigate from "I need to change how VAT is calculated" to the relevant code in under 5 minutes. Test coverage is ≥70% line / ≥60% branch. PHPStan level 8 passes with no baseline. ESLint and Prettier clean.</td>
+<td>Skontro is a solo-maintainer project. Future contributors and future-me must be able to make changes without rediscovering the system every time.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Demonstrability</strong></td>
+<td>The full documentation set (V&amp;S, SRS, arc42, compliance documents, ADRs, API reference, operations runbook) is published at <code>docs.skontro.dev</code>, kept current with every release, and downloadable as PDFs where appropriate (SRS, SDD, formal documents). The reference deployment runs at <code>app.skontro.dev</code> with ≥99% uptime measured over rolling 30-day windows.</td>
+<td>Skontro exists in part as a portfolio piece. Engineering rigour is the message; the rigour must be visible from a single click on a public URL.</td>
+</tr>
+</tbody>
+</table>
+<p>These three goals occasionally conflict. <strong>Compliance correctness wins.</strong> Example: if a refactor would simplify the codebase (maintainability +) but introduce any risk to invoice generation (compliance −), the refactor is rejected or paired with extensive test coverage of the invoice pipeline.</p>
+<h2 id="13-stakeholders">1.3 Stakeholders<a class="headerlink" href="#13-stakeholders" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Contact</th>
+<th>Expectations of the architecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Project maintainer (Zeeshan Ahmed Raja)</td>
+<td>hauptraja@github</td>
+<td>A buildable, testable, deployable system that demonstrates senior-level engineering practices and serves as Berlin-job-search portfolio evidence.</td>
+</tr>
+<tr>
+<td>Mittelstand business owner</td>
+<td>Indirect via downstream adopters</td>
+<td>A self-hostable system that produces legally usable invoices, doesn't require monthly payments, keeps customer data on infrastructure they control, and runs without specialized ops staff.</td>
+</tr>
+<tr>
+<td>Steuerberater (tax advisor)</td>
+<td>Indirect via clients</td>
+<td>DATEV CSV export that imports cleanly into DATEV Unternehmen Online (v0.2). Audit-trail integrity that holds up in case of a Betriebsprüfung.</td>
+</tr>
+<tr>
+<td>In-house bookkeeper / accountant</td>
+<td>Indirect via tenant admin</td>
+<td>Speed and predictability on routine entry. German UI. Undo capability. Receipt deduplication so the same expense isn't logged twice by mistake.</td>
+</tr>
+<tr>
+<td>Self-host operator</td>
+<td>Indirect via deployment guide</td>
+<td>A <code>docker compose up</code> that works, a documented backup/restore procedure, observable system state via logs and metrics.</td>
+</tr>
+<tr>
+<td>Open-source contributor</td>
+<td>GitHub</td>
+<td>Clear contribution guidelines, responsive maintainer, ADRs explaining the non-obvious decisions, test suite that runs locally without exotic setup.</td>
+</tr>
+<tr>
+<td>Compliance reviewer (BMF, KoSIT, Wirtschaftsprüfer)</td>
+<td>Indirect via audit</td>
+<td>Documented EN 16931 / ZUGFeRD conformance, §14 UStG mandatory fields verification, GoBD archival policy, explicit disclaimer that Skontro is a reference implementation, not certified software.</td>
+</tr>
+</tbody>
+</table>
 
 
 
