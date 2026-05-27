@@ -108,7 +108,7 @@ Shared infrastructure:
 - Laravel 11 documentation — <https://laravel.com/docs/11.x>
 - Vue 3 documentation — <https://vuejs.org>
 - `horstoeko/zugferd` — <https://github.com/horstoeko/zugferd>
-- FeRD ZUGFeRD specification — <https://www.ferd-net.de/standards/zugferd-2.1/>
+- FeRD ZUGFeRD specification — <https://www.ferd-net.de/standards/zugferd>
 
 ---
 
