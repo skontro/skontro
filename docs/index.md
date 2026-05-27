@@ -9,7 +9,7 @@
 
     ---
 
-    The problem Skontro addresses, who it serves, and what's in scope.
+    Why Skontro exists, the German e-Rechnung deadlines (1 Jan 2027 / 2028), the gap in open-source German tooling, and the scope of v0.1.0 through v0.4.
 
     [:octicons-arrow-right-24: Read the Vision & Scope](vision/vision-and-scope.md)
 
