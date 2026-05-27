@@ -7,46 +7,51 @@ This section delimits Skontro from its external collaborators. It documents two 
 The diagram below shows Skontro and its external collaborators. Each connection is a domain-level interaction expressed in business terms (the technical protocol is in §3.2).
 
 ```mermaid
-flowchart TB
-    %% External actors
-    TU[Tenant User<br/>browser]:::actor
-    SB[Steuerberater<br/>tax advisor]:::actor
-    IR[Invoice Recipient<br/>customer of tenant]:::actor
+flowchart LR
+    subgraph PEOPLE["People"]
+        direction TB
+        TU[Tenant User<br/>browser]
+        SB[Steuerberater<br/>tax advisor]
+        IR[Invoice Recipient]
+    end
 
-    %% System under design
-    SK[Skontro<br/>mini-ERP]:::system
+    SK(["Skontro<br/>mini-ERP"])
 
-    %% Future actors
-    SR[Sentry<br/>error tracking, future]:::future
-    SM[SMTP provider<br/>email delivery, v0.2+]:::future
+    subgraph INFRA["Infrastructure (v0.1)"]
+        direction TB
+        PG[(PostgreSQL)]
+        RD[(Redis)]
+        S3[(S3-compatible<br/>object storage)]
+    end
 
-    %% External infrastructure
-    S3[(S3-compatible<br/>object storage)]:::infra
-    PG[(PostgreSQL)]:::infra
-    RD[(Redis)]:::infra
-    KV[KoSIT Validator<br/>CI only]:::infra
+    subgraph FUTURE["CI &amp; future external systems"]
+        direction TB
+        KV[KoSIT Validator<br/>CI only]
+        SM[SMTP provider<br/>v0.2+]
+        SR[Sentry<br/>future]
+    end
 
-    %% Edges with semantic labels
-    TU -- "creates invoices,<br/>uploads receipts,<br/>views dashboard" --> SK
-    SK -- "renders UI,<br/>delivers PDFs" --> TU
-
-    SK -- "DATEV CSV export<br/>(v0.2+)" --> SB
-
-    SK -- "issues ZUGFeRD<br/>PDF/A-3 invoices" --> IR
+    TU <==>|"create invoices,<br/>upload receipts,<br/>view dashboard"| SK
+    SK ==>|"DATEV CSV (v0.2+)"| SB
+    SK ==>|"ZUGFeRD PDF/A-3 invoice"| IR
 
     SK <--> PG
     SK <--> RD
     SK <--> S3
 
-    SK -. "(CI only)<br/>validation pass" .-> KV
+    SK -.->|"validation pass"| KV
+    SK -.->|"invoice email"| SM
+    SK -.->|"error reports"| SR
 
-    SK -. "(future)<br/>error reports" .-> SR
-    SK -. "(v0.2+)<br/>invoice email" .-> SM
+    classDef system fill:#2563EB,color:#FFFFFF,stroke:#1E40AF,stroke-width:2px
+    classDef actor fill:#F3F4F6,stroke:#6B7280,stroke-width:1px,color:#111827
+    classDef infra fill:#FEF3C7,stroke:#D97706,stroke-width:1px,color:#111827
+    classDef future fill:#E0E7FF,stroke:#6366F1,stroke-width:1px,stroke-dasharray:4,color:#111827
 
-    classDef system fill:#2563EB,color:white,stroke:#1E40AF,stroke-width:2px
-    classDef actor fill:#F3F4F6,stroke:#6B7280,stroke-width:1px
-    classDef infra fill:#FEF3C7,stroke:#D97706,stroke-width:1px
-    classDef future fill:#E0E7FF,stroke:#6366F1,stroke-width:1px,stroke-dasharray:4
+    class SK system
+    class TU,SB,IR actor
+    class PG,RD,S3 infra
+    class KV,SM,SR future
 ```
 
 The diagram shows the system at architecture Level 1 (C4 notation): Skontro is the single box in the centre, surrounded by external actors, downstream consumers, and infrastructure dependencies. The interactions are described in §3.2.
