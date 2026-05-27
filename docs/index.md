@@ -17,7 +17,7 @@
 
     ---
 
-    The Software Requirements Specification with functional and non-functional requirements.
+    Software Requirements Specification (PDF) — 62 functional, 45 non-functional, 10 interface requirements. ISO/IEC/IEEE 29148 format.
 
     [:octicons-arrow-right-24: Browse requirements](requirements/index.md)
 
