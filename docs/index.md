@@ -25,9 +25,9 @@
 
     ---
 
-    arc42-structured architecture document covering decisions, runtime, deployment.
+    arc42-structured architecture document. Sections 1–4 published: introduction & goals, constraints, context & scope, solution strategy. Sections 5–12 expand as the build progresses.
 
-    [:octicons-arrow-right-24: Open the architecture doc](architecture/01-introduction-and-goals.md)
+    [:octicons-arrow-right-24: Read the architecture doc](architecture/01-introduction-and-goals.md)
 
 - :material-scale-balance:{ .lg .middle } **Compliance**
 
