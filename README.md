@@ -57,6 +57,3 @@ Conduct: `conduct@skontro.dev`
 Released under the [MIT License](LICENSE).
 
 ---
-
-*This README is intentionally minimal. Full polish Day 29 of the 35-day
-build plan.*
