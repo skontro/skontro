@@ -20,6 +20,8 @@ Entries are grouped under the following change types:
 
 - Vision and Scope document v1.0 published at <https://docs.skontro.dev/vision/vision-and-scope/>: business case, six SMART business objectives, Karl-Wiegers-format vision statement, seven success metrics, ten enumerated risks, scope of v0.1.0 through v0.4, explicit out-of-scope list, seven stakeholder profiles, operating environment, references.
 - Homepage feature card for Vision and Scope updated to surface the 1 Jan 2027 / 2028 e-Rechnung deadlines and link to the published document.
+- Software Requirements Specification v1.0 published as LaTeX-compiled PDF at `docs/formal/srs/srs.pdf` (~38 pages, 117 numbered requirements: 62 functional, 45 non-functional, 10 interface) following ISO/IEC/IEEE 29148:2018 structure; includes complete Requirements Traceability Matrix.
+- Requirements site section at <https://docs.skontro.dev/requirements/> links to the SRS PDF; homepage Requirements feature card updated to surface the new artifact.
 
 ### Changed
 
