@@ -28,8 +28,19 @@ Entries are grouped under the following change types:
 
 ### Security
 
-## [0.0.1] - 2026-05-26
+## [0.0.1] - 2026-05-27
 
 ### Added
 
-- Repository initialized; governance files committed.
+- Repository initialized with MIT license.
+- Governance files: `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, contact `conduct@skontro.dev`), `CONTRIBUTING.md`, `SECURITY.md` (private vulnerability reporting via `security@skontro.dev`, 90-day disclosure), `CHANGELOG.md`.
+- Tooling configuration: multi-language `.gitignore` (Node, PHP/Laravel, Python, LaTeX, OS, IDE, draw.io, MkDocs `site/`), `.editorconfig` (UTF-8, LF, language-specific indents).
+- GitHub configuration: issue templates (bug, feature, compliance question with standards dropdown), PR template with documentation-update checklist and self-review checklist, `CODEOWNERS` (`* @hauptraja`), Dependabot for npm/composer/pip/github-actions/docker.
+- GitHub Actions workflow for documentation site: builds with `mkdocs build --strict` on PR, deploys with `mkdocs gh-deploy --force` on push to `main`; Python 3.12 with pip cache keyed on `docs/requirements.txt`.
+- VS Code workspace settings: recommended extensions, format-on-save defaults with language-specific indents, Laravel + Vue debug profiles.
+- MkDocs Material documentation site scaffolding deployed at <https://docs.skontro.dev>: full navigation tree (vision, requirements, architecture/arc42 12 sections, compliance, API, operations, testing, ADRs), system+light+dark palette toggle, Inter + JetBrains Mono fonts, Mermaid diagram support, English + German search.
+- ADR 0001 — Stack Choice: Laravel 11 + Vue 3 + PostgreSQL + Python FastAPI ML service, with five alternatives evaluated.
+- Custom domain `docs.skontro.dev` configured via `docs/CNAME` with HTTPS enforcement (TLS provisioning auto-completes within 24 hours of domain verification).
+
+[Unreleased]: https://github.com/skontro/skontro/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/skontro/skontro/releases/tag/v0.0.1
