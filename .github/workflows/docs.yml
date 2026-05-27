@@ -28,7 +28,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Detect mkdocs config
+        id: detect
+        run: |
+          if [ -f mkdocs.yml ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "mkdocs.yml not present yet; skipping build."
+          fi
+
       - name: Set up Python
+        if: steps.detect.outputs.present == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -36,9 +47,11 @@ jobs:
           cache-dependency-path: docs/requirements.txt
 
       - name: Install docs dependencies
+        if: steps.detect.outputs.present == 'true'
         run: pip install -r docs/requirements.txt
 
       - name: Build docs (strict)
+        if: steps.detect.outputs.present == 'true'
         run: mkdocs build --strict
 
   deploy:
