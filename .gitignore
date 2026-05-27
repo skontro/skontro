@@ -1,0 +1,154 @@
+# =============================================================================
+# Skontro — .gitignore
+# Multi-language: Node.js, PHP/Laravel, Python, LaTeX, OS, editors, tools.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Node.js / pnpm / npm
+# -----------------------------------------------------------------------------
+node_modules/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn/
+.eslintcache
+
+# -----------------------------------------------------------------------------
+# PHP / Laravel
+# -----------------------------------------------------------------------------
+/vendor/
+.env
+.env.backup
+.env.*.local
+.env.production
+.phpunit.cache
+.phpunit.result.cache
+.php-cs-fixer.cache
+auth.json
+
+# Laravel runtime directories — ignore contents, keep .gitkeep
+storage/logs/*
+!storage/logs/.gitkeep
+storage/framework/cache/*
+!storage/framework/cache/.gitkeep
+storage/framework/sessions/*
+!storage/framework/sessions/.gitkeep
+storage/framework/views/*
+!storage/framework/views/.gitkeep
+bootstrap/cache/*
+!bootstrap/cache/.gitkeep
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+*.egg
+dist/
+build/
+
+# -----------------------------------------------------------------------------
+# LaTeX — ignore build artifacts, KEEP final *.pdf outputs
+# -----------------------------------------------------------------------------
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.lof
+*.lot
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+# Note: *.pdf is intentionally NOT ignored.
+
+# -----------------------------------------------------------------------------
+# macOS
+# -----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Icon?
+._*
+
+# -----------------------------------------------------------------------------
+# Windows
+# -----------------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# -----------------------------------------------------------------------------
+# Linux
+# -----------------------------------------------------------------------------
+*~
+.directory
+.Trash-*
+.fuse_hidden*
+.nfs*
+
+# -----------------------------------------------------------------------------
+# VS Code — ignore everything except shared templates
+# -----------------------------------------------------------------------------
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/extensions.json.example
+!.vscode/settings.json.example
+
+# -----------------------------------------------------------------------------
+# JetBrains (PhpStorm, IntelliJ, PyCharm)
+# -----------------------------------------------------------------------------
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# -----------------------------------------------------------------------------
+# draw.io / diagrams.net backups
+# -----------------------------------------------------------------------------
+*.bkp
+*.dtmp
+
+# -----------------------------------------------------------------------------
+# MkDocs build output
+# -----------------------------------------------------------------------------
+site/
+
+# -----------------------------------------------------------------------------
+# Misc
+# -----------------------------------------------------------------------------
+*.swp
+*.swo
+*.bak
+*.tmp
+.tmp/
+coverage/
+.cache/
