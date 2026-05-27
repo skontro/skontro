@@ -1,0 +1,154 @@
+site_name: Skontro Documentation
+site_url: https://docs.skontro.dev
+site_description: Open-source German-compliant mini-ERP for the Mittelstand. EN 16931 e-invoicing, ZUGFeRD 2.1, GoBD archival.
+site_author: Zeeshan Ahmed Raja
+
+repo_url: https://github.com/skontro/skontro
+repo_name: skontro/skontro
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2026 Zeeshan Ahmed Raja and Skontro contributors
+
+theme:
+  name: material
+  language: en
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 4
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+plugins:
+  - search:
+      lang:
+        - en
+        - de
+  - mermaid2
+  - glightbox
+  # Enable once OpenAPI spec is generated
+  # - render_swagger
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/skontro/skontro
+      name: Skontro on GitHub
+
+nav:
+  - Home: index.md
+  - Vision:
+      - vision/vision-and-scope.md
+  - Requirements:
+      - Overview: requirements/index.md
+      - Software Requirements Specification: requirements/srs.md
+  - Architecture:
+      - 1. Introduction and Goals: architecture/01-introduction-and-goals.md
+      - 2. Constraints: architecture/02-constraints.md
+      - 3. Context and Scope: architecture/03-context-and-scope.md
+      - 4. Solution Strategy: architecture/04-solution-strategy.md
+      - 5. Building Block View: architecture/05-building-block-view.md
+      - 6. Runtime View: architecture/06-runtime-view.md
+      - 7. Deployment View: architecture/07-deployment-view.md
+      - 8. Crosscutting Concepts: architecture/08-crosscutting-concepts.md
+      - 9. Architecture Decisions: architecture/09-architecture-decisions.md
+      - 10. Quality Requirements: architecture/10-quality-requirements.md
+      - 11. Risks and Technical Debt: architecture/11-risks-and-tech-debt.md
+      - 12. Glossary: architecture/12-glossary.md
+  - Compliance:
+      - Overview: compliance/overview.md
+      - E-Rechnung (EN 16931): compliance/e-rechnung.md
+      - ZUGFeRD 2.1: compliance/zugferd.md
+      - GoBD: compliance/gobd.md
+      - VAT Handling (UStG): compliance/vat-handling.md
+  - API:
+      - Overview: api/overview.md
+  - Operations:
+      - Deployment: operations/deployment.md
+      - Runbook: operations/runbook.md
+      - Monitoring: operations/monitoring.md
+      - Incident Response: operations/incident-response.md
+  - Testing:
+      - Test Plan: testing/test-plan.md
+  - ADRs:
+      - Index: adr/index.md
+      - 0001 — Stack Choice: adr/0001-stack-choice.md
