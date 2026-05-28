@@ -17,6 +17,15 @@ pest()->extend(TestCase::class)
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature', 'Unit');
 
+// The cookie-auth endpoints rely on the session middleware that Sanctum's
+// statefulApi() attaches only to requests it recognises as coming from the
+// SPA frontend (matched by Origin/Referer against the stateful domains). The
+// real SPA always sends that header; these tests simulate it so the
+// register/login/logout session calls run as they do in the browser.
+pest()->beforeEach(function () {
+    $this->withHeader('Origin', config('app.url'));
+})->in('Feature/Auth', 'Feature/Tenancy');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
