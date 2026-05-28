@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\EnsureRole;
+use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,7 +14,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Treat same-top-level-domain SPA requests as stateful so they
+        // authenticate via the session cookie (with CSRF protection) rather
+        // than bearer tokens. Wires Sanctum's stateful guard correctly on
+        // Laravel 11 — the older EnsureFrontendRequestsAreStateful entry is
+        // not needed.
+        $middleware->statefulApi();
+
+        $middleware->alias([
+            'tenant' => ResolveTenant::class,
+            'role' => EnsureRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

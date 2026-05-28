@@ -65,8 +65,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    environment:
-      APP_ENV: local
     volumes:
       - ./backend:/var/www/html
     networks:
