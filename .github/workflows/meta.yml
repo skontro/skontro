@@ -1,0 +1,14 @@
+name: meta
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  meta:
+    name: meta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Meta gate
+        run: echo "always-running required check"

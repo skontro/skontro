@@ -16,8 +16,8 @@ defaults:
     working-directory: backend
 
 jobs:
-  test:
-    name: test
+  backend-test:
+    name: backend-test
     runs-on: ubuntu-latest
 
     services:
