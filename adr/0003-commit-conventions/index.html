@@ -12,13 +12,13 @@
         <meta name="author" content="Zeeshan Ahmed Raja">
       
       
-        <link rel="canonical" href="https://docs.skontro.dev/compliance/overview/">
+        <link rel="canonical" href="https://docs.skontro.dev/adr/0003-commit-conventions/">
       
       
-        <link rel="prev" href="../../architecture/12-glossary/">
+        <link rel="prev" href="../0002-multi-tenancy/">
       
       
-        <link rel="next" href="../e-rechnung/">
+        <link rel="next" href="../0004-documentation-framework/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Overview - Skontro Documentation</title>
+        <title>0003 — Commit Conventions - Skontro Documentation</title>
       
     
     
@@ -87,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#compliance-overview" class="md-skip">
+        <a href="#0003-adopt-conventional-commits-100-with-commitlint-enforcement" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              0003 — Commit Conventions
             
           </span>
         </div>
@@ -310,13 +310,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../compliance/overview/" class="md-tabs__link">
           
   
   Compliance
@@ -384,11 +382,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../adr/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   ADRs
@@ -930,30 +930,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -964,7 +959,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             Compliance
@@ -975,30 +970,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../compliance/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1007,80 +982,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#the-regulatory-landscape" class="md-nav__link">
-    <span class="md-ellipsis">
-      The regulatory landscape
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#compliance-regimes-covered" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compliance regimes covered
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-skontro-does" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Skontro does
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-skontro-does-not-do" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Skontro does not do
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-compliance-is-verified" class="md-nav__link">
-    <span class="md-ellipsis">
-      How compliance is verified
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1093,7 +994,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../e-rechnung/" class="md-nav__link">
+      <a href="../../compliance/e-rechnung/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1114,7 +1015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../zugferd/" class="md-nav__link">
+      <a href="../../compliance/zugferd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1135,7 +1036,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gobd/" class="md-nav__link">
+      <a href="../../compliance/gobd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1156,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vat-handling/" class="md-nav__link">
+      <a href="../../compliance/vat-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1448,25 +1349,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1477,7 +1383,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             ADRs
@@ -1491,7 +1397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1512,7 +1418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/0001-stack-choice/" class="md-nav__link">
+      <a href="../0001-stack-choice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1533,7 +1439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/0002-multi-tenancy/" class="md-nav__link">
+      <a href="../0002-multi-tenancy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1551,10 +1457,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../adr/0003-commit-conventions/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    0003 — Commit Conventions
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1563,6 +1489,170 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      The convention
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enforcement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risks-accepted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks accepted
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-a-no-convention-free-form-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative A — No convention (free-form commits)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-b-gitmoji-emoji-prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative B — Gitmoji (emoji prefixes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-c-a-custom-internal-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative C — A custom internal convention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revision-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revision History
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1575,7 +1665,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../adr/0004-documentation-framework/" class="md-nav__link">
+      <a href="../0004-documentation-framework/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1623,47 +1713,128 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-regulatory-landscape" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
-      The regulatory landscape
+      Context
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#compliance-regimes-covered" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
-      Compliance regimes covered
+      Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      The convention
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#what-skontro-does" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#enforcement" class="md-nav__link">
     <span class="md-ellipsis">
-      What Skontro does
+      Enforcement
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#what-skontro-does-not-do" class="md-nav__link">
-    <span class="md-ellipsis">
-      What Skontro does not do
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-compliance-is-verified" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
-      How compliance is verified
+      Consequences
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risks-accepted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks accepted
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-a-no-convention-free-form-commits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative A — No convention (free-form commits)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-b-gitmoji-emoji-prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative B — Gitmoji (emoji prefixes)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-c-a-custom-internal-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative C — A custom internal convention
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1671,6 +1842,15 @@
   <a href="#references" class="md-nav__link">
     <span class="md-ellipsis">
       References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revision-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revision History
     </span>
   </a>
   
@@ -1691,7 +1871,7 @@
                   
 
   
-    <a href="https://github.com/skontro/skontro/edit/main/docs/compliance/overview.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/skontro/skontro/edit/main/docs/adr/0003-commit-conventions.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -1700,157 +1880,139 @@
     
       
     
-    <a href="https://github.com/skontro/skontro/raw/main/docs/compliance/overview.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/skontro/skontro/raw/main/docs/adr/0003-commit-conventions.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="compliance-overview">Compliance Overview<a class="headerlink" href="#compliance-overview" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Reference implementation, not certified accounting software</p>
-<p>Skontro is an open-source software project provided under the MIT License (see <a href="https://github.com/skontro/skontro/blob/main/LICENSE">LICENSE</a>). It implements German invoicing and bookkeeping requirements to the best of the maintainer's understanding of the relevant standards and regulations. It is <strong>not</strong> certified by a Wirtschaftsprüfer or any other independent body. Production use for regulated bookkeeping requires verification by the operator's Steuerberater. The MIT License disclaims all warranties, including fitness for any particular purpose.</p>
-</div>
-<p>This document summarises which German and European compliance regimes Skontro addresses and where the detail lives.</p>
-<h2 id="the-regulatory-landscape">The regulatory landscape<a class="headerlink" href="#the-regulatory-landscape" title="Permanent link">&para;</a></h2>
-<p>Germany's electronic invoicing landscape changed in 2024 with the <strong>Wachstumschancengesetz</strong> (BGBl. 2024 I Nr. 108), which phases in mandatory structured electronic invoicing for B2B business in three steps:</p>
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Obligation</th>
-<th>Affected businesses</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1 January 2025</td>
-<td><strong>Receive obligation</strong></td>
-<td>All German B2B businesses must be technically capable of receiving EN 16931-compliant e-invoices</td>
-</tr>
-<tr>
-<td>1 January 2027</td>
-<td><strong>Issue obligation, phase 1</strong></td>
-<td>Businesses with prior-year turnover above €800,000</td>
-</tr>
-<tr>
-<td>1 January 2028</td>
-<td><strong>Issue obligation, phase 2</strong></td>
-<td>All businesses, including Kleinunternehmer under §19 UStG</td>
-</tr>
-</tbody>
-</table>
-<p>After the applicable transition period, plain PDFs and paper invoices no longer qualify for VAT deduction by the recipient — only structured EN 16931-compliant formats do. This single regulatory change drives most of Skontro's design.</p>
-<h2 id="compliance-regimes-covered">Compliance regimes covered<a class="headerlink" href="#compliance-regimes-covered" title="Permanent link">&para;</a></h2>
-<p>Skontro addresses five compliance regimes. Each has its own detailed document.</p>
-<table>
-<thead>
-<tr>
-<th>Regime</th>
-<th>Scope</th>
-<th>Document</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>EN 16931 e-invoicing</strong></td>
-<td>Structured invoice format mandated by the Wachstumschancengesetz. Skontro generates the hybrid PDF/A-3 + XML variant (ZUGFeRD 2.1, EN16931 profile).</td>
-<td><a href="../e-rechnung/">E-Rechnung →</a></td>
-</tr>
-<tr>
-<td><strong>ZUGFeRD 2.1</strong></td>
-<td>The specific hybrid PDF/A-3 + XML standard used for outbound invoices.</td>
-<td><a href="../zugferd/">ZUGFeRD →</a></td>
-</tr>
-<tr>
-<td><strong>GoBD</strong></td>
-<td>German rules for digital bookkeeping: immutability, traceability, retention, audit access. Aligned with 2024 and 2025 BMF updates.</td>
-<td><a href="../gobd/">GoBD →</a></td>
-</tr>
-<tr>
-<td><strong>§14 UStG mandatory fields</strong></td>
-<td>The fields every German invoice must contain to qualify for VAT deduction.</td>
-<td><a href="../vat-handling/">VAT handling →</a></td>
-</tr>
-<tr>
-<td><strong>VAT rates and special cases</strong></td>
-<td>19% standard (§12 (1) UStG), 7% reduced (§12 (2) UStG), 0% / exempt (§4 UStG), reverse-charge (§13b UStG), Kleinunternehmer (§19 UStG).</td>
-<td><a href="../vat-handling/">VAT handling →</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="what-skontro-does">What Skontro does<a class="headerlink" href="#what-skontro-does" title="Permanent link">&para;</a></h2>
-<p>For each regime, Skontro:</p>
+<h1 id="0003-adopt-conventional-commits-100-with-commitlint-enforcement">0003. Adopt Conventional Commits 1.0.0 with commitlint Enforcement<a class="headerlink" href="#0003-adopt-conventional-commits-100-with-commitlint-enforcement" title="Permanent link">&para;</a></h1>
 <ul>
-<li><strong>EN 16931 / ZUGFeRD 2.1.</strong> Generates conformant hybrid PDF/A-3 + XML invoices for all issued invoices, using the maintained PHP library <code>horstoeko/zugferd</code>. Validates output against the official KoSIT validator on every CI build over a curated test corpus.</li>
-<li><strong>GoBD.</strong> Treats issued invoices as immutable; records all state transitions with timestamp and actor in an audit trail; retains invoices and source receipts indefinitely (no automatic purge); v0.2 adds an append-only audit log meeting the GoBD principle of unalterability.</li>
-<li><strong>§14 UStG.</strong> Includes all mandatory fields in every issued invoice: full names and addresses, Steuernummer or USt-ID, sequential invoice number, invoice date, service date or period, quantity and description, net amount per VAT rate, applicable VAT rate, VAT amount, gross amount, any agreed price reductions, and applicable special-case references (reverse-charge, Kleinunternehmer).</li>
-<li><strong>VAT.</strong> Supports the four German VAT rates (19%, 7%, 0%, reverse-charge §13b) for v0.1. Adds Kleinunternehmer §19 UStG mode in v0.2. Computes VAT per line item with line-level rounding per EN 16931 BR-CO-17 — never on the document subtotal, which would silently fail validation on multi-rate invoices.</li>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-05-28</li>
+<li><strong>Deciders:</strong> Zeeshan Ahmed Raja (sole maintainer, v0.1.0)</li>
+<li><strong>Consulted:</strong> —</li>
+<li><strong>Informed:</strong> Future contributors via this ADR; SRS NFR-033; CONTRIBUTING.md.</li>
 </ul>
-<h2 id="what-skontro-does-not-do">What Skontro does not do<a class="headerlink" href="#what-skontro-does-not-do" title="Permanent link">&para;</a></h2>
-<p>Honest scope boundaries that every reader should understand:</p>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
+<p>Skontro will accumulate hundreds of commits across the build phase and beyond. The commit history is one of the primary artefacts of an open-source project. Good commit messages make:</p>
 <ul>
-<li><strong>Certified GoBD or HGB conformance.</strong> Skontro implements the spirit of GoBD but is not certified. Production use requires the operator's Steuerberater to confirm the implementation meets the operator's specific obligations.</li>
-<li><strong>Tax filing automation.</strong> Skontro produces DATEV-compatible exports (v0.2+) that the Steuerberater can import. Skontro does not file with the Finanzamt.</li>
-<li><strong>VIES online VAT-ID verification.</strong> v0.1 validates VAT-ID format only. Online verification against the EU VIES service is added in v0.2.</li>
-<li><strong>Payroll (Lohnbuchhaltung).</strong> Out of scope. Skontro is an invoicing and expense ERP, not a payroll system.</li>
-<li><strong>Real-time reporting to authorities (CTC).</strong> Skontro does not implement Continuous Transaction Control reporting. If Germany adopts a CTC model in the future, the architecture supports adding it, but it is not in current scope.</li>
-<li><strong>Banking integrations beyond SEPA export.</strong> Direct PSD2 / FinTS / HBCI integration is intentionally not pursued.</li>
+<li>The git log itself readable as a project history</li>
+<li>Generating CHANGELOGs automatic</li>
+<li>Generating release notes automatic</li>
+<li>Code review faster (the reviewer sees intent in the subject line)</li>
+<li>Onboarding new contributors easier (they can see the convention by reading the log)</li>
 </ul>
-<h2 id="how-compliance-is-verified">How compliance is verified<a class="headerlink" href="#how-compliance-is-verified" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Mechanism</th>
-<th>Frequency</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>KoSIT validation</strong></td>
-<td>Every CI build</td>
-<td>Test corpus of at least 10 invoices covering single-line, multi-rate, foreign-customer, no-service-period, and large-quantity edge cases. Build fails on any validation error.</td>
-</tr>
-<tr>
-<td><strong>PDF/A-3 conformance</strong></td>
-<td>Every CI build</td>
-<td>verapdf validator confirms the hybrid PDF/A-3 + XML output meets ISO 19005-3:2012.</td>
-</tr>
-<tr>
-<td><strong>§14 UStG field coverage</strong></td>
-<td>Unit test suite</td>
-<td>Tests assert each mandatory field appears in both the rendered PDF and the embedded XML for every test invoice.</td>
-</tr>
-<tr>
-<td><strong>GoBD immutability</strong></td>
-<td>Integration tests</td>
-<td>Tests assert that issued invoices cannot be modified, that cancellation requires a reason, and that all state transitions are recorded.</td>
-</tr>
-<tr>
-<td><strong>DATEV CSV format</strong></td>
-<td>Integration tests (v0.2+)</td>
-<td>Tests assert generated exports parse cleanly when fed to a DATEV import simulator.</td>
-</tr>
-<tr>
-<td><strong>External review</strong></td>
-<td>Discretionary</td>
-<td>The maintainer welcomes external review by Steuerberater or Wirtschaftsprüfer. No formal certification programme is planned.</td>
-</tr>
-</tbody>
-</table>
+<p>Bad commit messages — "fixed stuff", "wip", "update", "yolo" — make the log worthless. The cost is paid by everyone who ever reads the project, including future-me.</p>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
+<p>Skontro adopts <strong>Conventional Commits 1.0.0</strong> as the commit-message convention, enforced by a <strong>commitlint commit-msg Git hook</strong> managed via <strong>husky</strong>.</p>
+<h3 id="the-convention">The convention<a class="headerlink" href="#the-convention" title="Permanent link">&para;</a></h3>
+<p>```text
+<type>(<optional scope>): <description></p>
+<p><optional body></p>
+<p><optional footer(s)>
+```</p>
+<p><strong>Types</strong> (lowercase):</p>
+<ul>
+<li><code>feat</code> — a new user-facing feature</li>
+<li><code>fix</code> — a bug fix</li>
+<li><code>docs</code> — documentation-only changes</li>
+<li><code>style</code> — code-style changes (formatting, missing semicolons, etc.; no logic change)</li>
+<li><code>refactor</code> — code change that neither fixes a bug nor adds a feature</li>
+<li><code>perf</code> — performance improvement</li>
+<li><code>test</code> — adding or correcting tests</li>
+<li><code>build</code> — changes to build system or external dependencies</li>
+<li><code>ci</code> — changes to CI configuration</li>
+<li><code>chore</code> — other changes that don't fit the above categories</li>
+</ul>
+<p><strong>Subject</strong>:</p>
+<ul>
+<li>Imperative mood: "add login" not "added login" or "adds login"</li>
+<li>Lowercase first letter</li>
+<li>No period at end</li>
+<li>50 characters or less ideally</li>
+</ul>
+<p><strong>Scope</strong> (optional): a one-word indicator of the area of change, in parentheses. Examples: <code>feat(auth): ...</code>, <code>docs(arc42): ...</code>, <code>fix(invoicing): ...</code>. Common scopes: <code>auth</code>, <code>invoicing</code>, <code>expenses</code>, <code>dashboard</code>, <code>compliance</code>, <code>arc42</code>, <code>srs</code>, <code>adr</code>, <code>vision</code>, <code>home</code>, <code>vscode</code>, <code>ci</code>, <code>deps</code>.</p>
+<p><strong>Breaking changes</strong> are marked by adding <code>!</code> after the type/scope or by including <code>BREAKING CHANGE:</code> in the footer. Major version bumps follow.</p>
+<h3 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h3>
+<p>Three layers:</p>
+<ol>
+<li><strong>commitlint</strong> (<code>@commitlint/cli</code> + <code>@commitlint/config-conventional</code>) validates every commit message against the convention.</li>
+<li><strong>husky</strong> manages a <code>commit-msg</code> Git hook that runs commitlint on every <code>git commit</code>.</li>
+<li><strong>CI check</strong> runs commitlint over the PR's commit range to catch any commits that bypassed the local hook (e.g., from a fresh clone where husky hasn't installed yet).</li>
+</ol>
+<p>Non-conforming commits are rejected at the local hook; if one slips through, CI catches it on the PR.</p>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Readable history.</strong> <code>git log --oneline</code> is genuinely useful, not a wall of "wip" and "stuff".</li>
+<li><strong>Automatic CHANGELOG generation.</strong> Tools like <code>conventional-changelog</code> can produce a CHANGELOG section from any commit range. Skontro's CHANGELOG is currently maintained manually, but the convention keeps the option open.</li>
+<li><strong>Automatic semantic-version bumping.</strong> <code>feat</code> commits suggest a minor bump; <code>fix</code> suggest a patch; <code>feat!</code> or <code>BREAKING CHANGE:</code> suggest a major. Useful in release automation later.</li>
+<li><strong>Clearer PR titles.</strong> PR titles follow the same convention, making the merged log of PRs equally readable.</li>
+<li><strong>Discipline cost is low.</strong> The rules are small enough to internalize in an afternoon.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>One-time setup per fresh clone.</strong> Anyone contributing must run <code>npm install</code> (or equivalent) for the husky hook to install. The CI fallback covers misses.</li>
+<li><strong>Occasional friction.</strong> A hurried commit gets rejected for a missing type prefix; the contributor has to fix the message and commit again. Mild irritation, no real cost.</li>
+</ul>
+<h3 id="risks-accepted">Risks accepted<a class="headerlink" href="#risks-accepted" title="Permanent link">&para;</a></h3>
+<ul>
+<li>If a contributor consistently bypasses the hook (e.g., <code>git commit --no-verify</code>), CI catches it but the contributor's local history may have non-conforming commits before they push. The squash-merge default cleans this up at merge time; the merged commit on <code>main</code> always uses the PR title, which is the controlled point.</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">&para;</a></h2>
+<h3 id="alternative-a-no-convention-free-form-commits">Alternative A — No convention (free-form commits)<a class="headerlink" href="#alternative-a-no-convention-free-form-commits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> Zero friction.</li>
+<li><strong>Con:</strong> History becomes worthless within months. Contributors learn no useful skill from the project's commit style.</li>
+<li><strong>Verdict:</strong> Rejected.</li>
+</ul>
+<h3 id="alternative-b-gitmoji-emoji-prefixes">Alternative B — Gitmoji (emoji prefixes)<a class="headerlink" href="#alternative-b-gitmoji-emoji-prefixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> Visually distinctive.</li>
+<li><strong>Con:</strong> Emoji rendering inconsistent across terminals and Git hosting providers. Less machine-parsable. Niche convention; fewer engineers know it on sight.</li>
+<li><strong>Verdict:</strong> Rejected.</li>
+</ul>
+<h3 id="alternative-c-a-custom-internal-convention">Alternative C — A custom internal convention<a class="headerlink" href="#alternative-c-a-custom-internal-convention" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> Tailored to the project's specifics.</li>
+<li><strong>Con:</strong> No tooling support; would have to write custom validators; no transferable skill for contributors.</li>
+<li><strong>Verdict:</strong> Rejected.</li>
+</ul>
+<hr />
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Wachstumschancengesetz — BGBl. 2024 I Nr. 108</li>
-<li>§14 UStG, §19 UStG, §12 (1)/(2) UStG, §4 UStG, §13b UStG — Umsatzsteuergesetz</li>
-<li>§147 AO — Abgabenordnung, retention periods</li>
-<li>GoBD — BMF-Schreiben vom 28. November 2019 (foundational), 11. März 2024 (data access update), July 2025 (e-invoicing alignment)</li>
-<li>EN 16931 — European standard for electronic invoicing</li>
-<li>ZUGFeRD 2.1 — FeRD specification</li>
-<li>KoSIT — Koordinierungsstelle für IT-Standards, XRechnung specification and reference validator</li>
-<li><code>horstoeko/zugferd</code> — PHP library used for ZUGFeRD generation</li>
+<li>Conventional Commits 1.0.0 — <code>https://www.conventionalcommits.org/en/v1.0.0/</code></li>
+<li>commitlint — <code>https://commitlint.js.org/</code></li>
+<li>husky — <code>https://typicode.github.io/husky/</code></li>
+<li>SRS NFR-033 — Conventional Commits requirement</li>
+<li>CONTRIBUTING.md — contributor guidance</li>
 </ul>
+<hr />
+<h2 id="revision-history">Revision History<a class="headerlink" href="#revision-history" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-05-28</td>
+<td>Zeeshan Ahmed Raja</td>
+<td>Initial decision recorded.</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -1888,7 +2050,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../architecture/12-glossary/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 12. Glossary">
+          <a href="../0002-multi-tenancy/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 0002 — Multi-tenancy">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1898,20 +2060,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                12. Glossary
+                0002 — Multi-tenancy
               </div>
             </div>
           </a>
         
         
           
-          <a href="../e-rechnung/" class="md-footer__link md-footer__link--next" aria-label="Next: E-Rechnung (EN 16931)">
+          <a href="../0004-documentation-framework/" class="md-footer__link md-footer__link--next" aria-label="Next: 0004 — Documentation Framework">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                E-Rechnung (EN 16931)
+                0004 — Documentation Framework
               </div>
             </div>
             <div class="md-footer__button md-icon">
