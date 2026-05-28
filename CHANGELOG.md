@@ -18,7 +18,15 @@ Entries are grouped under the following change types:
 
 ### Added
 
+- Docker Compose development environment: Postgres 16, Redis 7, MinIO, PHP 8.3 backend, nginx, Vite frontend.
+- Laravel 11 backend scaffold in `backend/` with `/api/v1/health` endpoint and Pest smoke test.
+- Vue 3 + TypeScript + Vite frontend scaffold in `frontend/` with an in-browser API health check.
+- CI pipelines: `backend / test` (Pint, PHPStan level 8, Pest against a Postgres 16 service container) and `frontend / test` (ESLint, `vue-tsc` type-check, Vitest, production build).
+- Makefile of developer convenience commands (`up`, `down`, `build`, `logs`, `shell-backend`, `shell-frontend`, `migrate`, `fresh`, `test`, `lint`, `stan`, `pint`).
+
 ### Changed
+
+- Branch protection on `main` now requires the `backend / test` and `frontend / test` checks to pass.
 
 ### Deprecated
 
