@@ -33,9 +33,9 @@
 
     ---
 
-    EN 16931, ZUGFeRD 2.1, GoBD, and §14 UStG — how Skontro addresses each.
+    EN 16931 e-invoicing, ZUGFeRD 2.1, GoBD digital bookkeeping (with 2024 and 2025 BMF updates), §14 UStG mandatory fields, German VAT rates. Reference implementation, not certified.
 
-    [:octicons-arrow-right-24: Read compliance documents](compliance/overview.md)
+    [:octicons-arrow-right-24: Read the compliance documents](compliance/overview.md)
 
 </div>
 
