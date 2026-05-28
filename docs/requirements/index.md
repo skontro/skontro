@@ -25,6 +25,23 @@ Approximately 40 pages. Contains:
 - **Dashboard:** FR-054 through FR-057
 - **Tenant settings:** FR-058 through FR-062
 
+## Implementation status
+
+The authoritative Requirements Traceability Matrix lives in the SRS PDF. This
+table tracks the build status of the requirements realized so far; it is updated
+honestly as each milestone lands, and a requirement stays `TBD` until code and
+tests actually exist for it.
+
+| Requirements | Area | Status | Realized by |
+|---|---|---|---|
+| FR-001 – FR-010 | Authentication & user management | Implemented | Registration, login, logout, current-user endpoints; cookie-session auth. Tests: `tests/Feature/Auth/*`. |
+| FR-011 – FR-014 | Multi-tenancy: model, scoping, stamping, isolation | Implemented | `BelongsToTenant` trait + `TenantScope` global scope; `ResolveTenant` middleware. Tests: `tests/Unit/Tenancy/TenantScopeTest.php`, `tests/Feature/Tenancy/CrossTenantAccessTest.php`. |
+| FR-015 | Cross-tenant resource access (404-not-403) | Partial — contract defined, resource layer pending | Contract captured as a pending test (`CrossTenantAccessTest`); enforced once the first tenant-owned resource endpoint (Customers) lands. |
+| FR-016 – FR-062 | Customers, catalog, invoicing, e-invoicing, expenses, dashboard, settings | TBD | Subsequent milestones. |
+
+Security NFRs realized alongside the above: NFR-009 (session security), NFR-010
+(Sanctum), NFR-011 (password hashing), NFR-013 (generic auth-failure messaging).
+
 ## Compliance basis
 
 The SRS references:
