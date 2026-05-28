@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
+            // Every user belongs to exactly one tenant (ADR 0002). Tenants
+            // soft-delete, so restrict rather than cascade — a tenant cannot be
+            // hard-deleted out from under its users.
+            $table->foreignId('tenant_id')->constrained()->restrictOnDelete();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('role')->default('member');
             $table->rememberToken();
             $table->timestamps();
         });
