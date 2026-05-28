@@ -18,6 +18,10 @@ Entries are grouped under the following change types:
 
 ### Added
 
+- Single-database multi-tenancy with automatic tenant-scoped queries (ADR 0002).
+- Role-based access control (owner/admin/member) with route-level role gates.
+- SPA authentication via Sanctum cookie sessions: register, login, logout, current-user.
+- Tenant isolation test suites at the model and HTTP layers.
 - Docker Compose development environment: Postgres 16, Redis 7, MinIO, PHP 8.3 backend, nginx, Vite frontend.
 - Laravel 11 backend scaffold in `backend/` with `/api/v1/health` endpoint and Pest smoke test.
 - Vue 3 + TypeScript + Vite frontend scaffold in `frontend/` with an in-browser API health check.
