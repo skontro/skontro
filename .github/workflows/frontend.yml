@@ -16,8 +16,8 @@ defaults:
     working-directory: frontend
 
 jobs:
-  test:
-    name: test
+  frontend-test:
+    name: frontend-test
     runs-on: ubuntu-latest
 
     steps:
