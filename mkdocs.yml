@@ -153,3 +153,5 @@ nav:
       - Index: adr/index.md
       - 0001 — Stack Choice: adr/0001-stack-choice.md
       - 0002 — Multi-tenancy: adr/0002-multi-tenancy.md
+      - 0003 — Commit Conventions: adr/0003-commit-conventions.md
+      - 0004 — Documentation Framework: adr/0004-documentation-framework.md
