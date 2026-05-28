@@ -1,0 +1,107 @@
+name: skontro
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: skontro_postgres
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-skontro}
+      POSTGRES_USER: ${DB_USERNAME:-skontro}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-skontro} -d ${DB_DATABASE:-skontro}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - skontro
+
+  redis:
+    image: redis:7-alpine
+    container_name: skontro_redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - skontro
+
+  minio:
+    image: minio/minio:latest
+    container_name: skontro_minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - skontro
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: skontro_backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: local
+    volumes:
+      - ./backend:/var/www/html
+    networks:
+      - skontro
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: skontro_nginx
+    depends_on:
+      - backend
+    ports:
+      - "${APP_PORT:-8000}:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - skontro
+
+  frontend:
+    image: node:20-alpine
+    container_name: skontro_frontend
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host"
+    ports:
+      - "${VITE_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+    networks:
+      - skontro
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  skontro:
+    driver: bridge
