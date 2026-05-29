@@ -8,6 +8,9 @@ import CustomerFormView from '@/views/customers/CustomerFormView.vue'
 import ProductListView from '@/views/products/ProductListView.vue'
 import ProductDetailView from '@/views/products/ProductDetailView.vue'
 import ProductFormView from '@/views/products/ProductFormView.vue'
+import InvoiceListView from '@/views/invoices/InvoiceListView.vue'
+import InvoiceEditorView from '@/views/invoices/InvoiceEditorView.vue'
+import InvoiceDetailView from '@/views/invoices/InvoiceDetailView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import RegisterView from '@/views/auth/RegisterView.vue'
 
@@ -28,6 +31,10 @@ const router = createRouter({
         { path: 'products/new', name: 'product-new', component: ProductFormView },
         { path: 'products/:id', name: 'product-detail', component: ProductDetailView },
         { path: 'products/:id/edit', name: 'product-edit', component: ProductFormView },
+        { path: 'invoices', name: 'invoices', component: InvoiceListView },
+        { path: 'invoices/new', name: 'invoice-new', component: InvoiceEditorView },
+        { path: 'invoices/:id', name: 'invoice-detail', component: InvoiceDetailView },
+        { path: 'invoices/:id/edit', name: 'invoice-edit', component: InvoiceEditorView },
       ],
     },
     { path: '/login', name: 'login', component: LoginView, meta: { guestOnly: true } },
