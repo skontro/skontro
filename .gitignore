@@ -153,3 +153,6 @@ site/
 .tmp/
 coverage/
 .cache/
+
+# Maintainer's private working notes — never committed
+private/
