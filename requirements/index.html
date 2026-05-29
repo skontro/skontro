@@ -1752,8 +1752,44 @@ tests actually exist for it.</p>
 <td><code>Country</code> enum, 27 ISO 3166-1 alpha-2 member states.</td>
 </tr>
 <tr>
-<td>FR-023 – FR-062</td>
-<td>Catalog, invoicing, e-invoicing, expenses, dashboard, settings</td>
+<td>FR-023</td>
+<td>Create product/service</td>
+<td>Implemented</td>
+<td><code>ProductController</code> + <code>StoreProductRequest</code> behind auth + tenant + role. Tests: <code>tests/Feature/Products/ProductCrudTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-024</td>
+<td>German VAT rates 19/7/0</td>
+<td>Implemented</td>
+<td><code>VatRate</code> enum (int-backed); decimal-string multipliers for <code>brick/money</code>. Tests: <code>tests/Unit/Enums/VatRateTest.php</code>, validation test in <code>ProductCrudTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-025</td>
+<td>Seven units → UN/ECE Rec 20 codes</td>
+<td>Implemented</td>
+<td><code>Unit</code> enum carrying <code>uneceCode()</code> (H87/HUR/KGM/MTR/MTK/DAY/LS). Tests: <code>tests/Unit/Enums/UnitTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-026</td>
+<td>Money as integer cents (no floats)</td>
+<td>Implemented</td>
+<td><code>unit_price_cents</code> <code>BIGINT</code> + <code>MoneyCast</code>/<code>Money</code> over <code>brick/money</code>. Evidence: the <code>information_schema</code> column-type assertion and the float-rejection test (<code>tests/Unit/Money/MoneyCastTest.php</code>, <code>tests/Unit/Models/ProductTest.php</code>).</td>
+</tr>
+<tr>
+<td>FR-027</td>
+<td>Archive / unarchive (not delete)</td>
+<td>Implemented</td>
+<td><code>is_active</code> flag + archive/unarchive endpoints; no destroy route (the 405 test proves it). Tests: <code>tests/Feature/Products/ProductCrudTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-028</td>
+<td>Optional SKU</td>
+<td>Implemented (optional; <strong>not</strong> unique-constrained in v0.1)</td>
+<td>Nullable <code>sku</code> column; a partial unique index on <code>(tenant_id, sku)</code> is the path if per-tenant uniqueness is ever required.</td>
+</tr>
+<tr>
+<td>FR-029 – FR-062</td>
+<td>Invoicing, e-invoicing, expenses, dashboard, settings</td>
 <td>TBD</td>
 <td>Subsequent milestones. (FR-040 per-customer payment terms has its data field laid on the customer record.)</td>
 </tr>

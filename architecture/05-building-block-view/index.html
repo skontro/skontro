@@ -449,9 +449,55 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#54-and-beyond">
+<a class="md-nav__link" href="#54-product-catalog-the-moneyunits-value-layer">
 <span class="md-ellipsis">
-      5.4 and beyond
+      5.4 Product catalog &amp; the money/units value layer
+    </span>
+</a>
+<nav aria-label="5.4 Product catalog &amp; the money/units value layer" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-cents-boundary">
+<span class="md-ellipsis">
+      The cents boundary
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unit-codes-live-on-the-enum">
+<span class="md-ellipsis">
+      Unit codes live on the enum
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#archive-not-delete">
+<span class="md-ellipsis">
+      Archive, not delete
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_3">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_3">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#55-and-beyond">
+<span class="md-ellipsis">
+      5.5 and beyond
     </span>
 </a>
 </li>
@@ -818,9 +864,55 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#54-and-beyond">
+<a class="md-nav__link" href="#54-product-catalog-the-moneyunits-value-layer">
 <span class="md-ellipsis">
-      5.4 and beyond
+      5.4 Product catalog &amp; the money/units value layer
+    </span>
+</a>
+<nav aria-label="5.4 Product catalog &amp; the money/units value layer" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-cents-boundary">
+<span class="md-ellipsis">
+      The cents boundary
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#unit-codes-live-on-the-enum">
+<span class="md-ellipsis">
+      Unit codes live on the enum
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#archive-not-delete">
+<span class="md-ellipsis">
+      Archive, not delete
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_3">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_3">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#55-and-beyond">
+<span class="md-ellipsis">
+      5.5 and beyond
     </span>
 </a>
 </li>
@@ -1177,10 +1269,155 @@ in the correct annual sequence rather than the sequence of its insertion date.</
 </tr>
 </tbody>
 </table>
-<h2 id="54-and-beyond">5.4 and beyond<a class="headerlink" href="#54-and-beyond" title="Permanent link">¶</a></h2>
-<p>The remaining building blocks (catalog, invoicing core, e-invoicing, expense
-tracking, dashboard, tenant settings) are documented as each is built in its
-milestone.</p>
+<h2 id="54-product-catalog-the-moneyunits-value-layer">5.4 Product catalog &amp; the money/units value layer<a class="headerlink" href="#54-product-catalog-the-moneyunits-value-layer" title="Permanent link">¶</a></h2>
+<p>The catalog is the second tenant-owned business resource, and like customers it
+adds no isolation machinery of its own — <code>Product</code> uses <code>BelongsToTenant</code>, so
+tenant scoping, stamping, and the cross-tenant 404 are all inherited from §5.1.
+What the catalog introduces instead are two primitives that invoicing depends on
+and will reuse unchanged: a <strong>money value layer</strong> that keeps money as integer
+cents everywhere, and a <strong>unit enum that carries its UN/ECE code</strong> for EN 16931
+line output.</p>
+<h3 id="the-cents-boundary">The cents boundary<a class="headerlink" href="#the-cents-boundary" title="Permanent link">¶</a></h3>
+<p>The decisive rule for money is FR-026 / TC-12: money is <strong>integer cents, never a
+float</strong>. This milestone makes that rule executable rather than aspirational. The
+amount is integer cents at every hop — the client form, the wire, the column, and
+back — and the only thing that ever performs money arithmetic or formatting is
+<code>brick/money</code>, which uses arbitrary-precision <code>BigDecimal</code> internally. A PHP
+float is not merely discouraged; it is <strong>rejected</strong> at the cast boundary rather
+than silently rounded.</p>
+<pre class="mermaid"><code>flowchart LR
+    eur["EUR input '120,00'"] --&gt;|eurosToCents| cents[integer cents 12000]
+    cents --&gt;|HTTP JSON| api[StoreProductRequest<br/>validates integer]
+    api --&gt; col[(unit_price_cents<br/>BIGINT)]
+    col --&gt;|price accessor| money[brick/money Money]
+    money --&gt;|Money::format| out["'120,00 €'"]
+    float[PHP float] -.-&gt;|rejected by MoneyCast| money
+</code></pre>
+<p>Two pieces enforce this rather than leave it to reviewer vigilance. The column is
+a <code>BIGINT</code> (<code>unsignedBigInteger</code>) — a test queries <code>information_schema</code> to assert
+the stored type is an integer family, so even a regression in application code
+cannot make the schema floating point. And <code>MoneyCast::set</code> accepts a <code>Money</code> or
+integer-like cents and <strong>throws</strong> on anything else, so the one mistake FR-026
+exists to prevent — constructing money from a float — fails loudly at the seam.
+On the client the same discipline holds in miniature: <code>eurosToCents</code> converts the
+EUR field to integer cents before the request, and the only division by 100 is in
+<code>centsToEuros</code>, a one-way render for the eye that is never fed back into storage.</p>
+<p>A deliberate modeling choice worth recording: the column is named
+<code>unit_price_cents</code> so the "this is cents" fact is never lost, and <code>Product</code>
+exposes it through a <code>price</code> accessor returning a <code>brick/money</code> <code>Money</code>. The
+reusable <code>MoneyCast</code> stays available for models whose attribute is literally the
+money name; this model uses the accessor instead. One money approach per model —
+never both, since registering <code>price</code> in <code>casts()</code> and as an accessor would
+collide.</p>
+<h3 id="unit-codes-live-on-the-enum">Unit codes live on the enum<a class="headerlink" href="#unit-codes-live-on-the-enum" title="Permanent link">¶</a></h3>
+<p>EN 16931 requires a UN/ECE Recommendation 20 unit code on every invoice line. The
+<code>Unit</code> enum carries that code on each case (<code>Stück → H87</code>, <code>Stunde → HUR</code>,
+<code>Kilogramm → KGM</code>, <code>Meter → MTR</code>, <code>Quadratmeter → MTK</code>, <code>Tag → DAY</code>,
+<code>pauschal → LS</code>), so invoicing reads <code>$unit-&gt;uneceCode()</code> directly with <strong>no
+separate lookup table to drift out of sync</strong>. The backed value is the German
+display label; the UN/ECE code is the machine code emitted into ZUGFeRD/XRechnung.
+Placing the mapping on the enum now, ahead of invoicing needing it, is the same
+move as putting numbering on a generic service: the dependency inherits a correct
+implementation instead of reinventing one.</p>
+<h3 id="archive-not-delete">Archive, not delete<a class="headerlink" href="#archive-not-delete" title="Permanent link">¶</a></h3>
+<p>Products are <strong>archived</strong>, never deleted (FR-027). Archiving is an <code>is_active</code>
+flag, not a soft delete: an archived product stays fully readable because an
+invoice line may reference it indefinitely, but the <code>active()</code> scope drops it from
+the product picker for new invoices. There is deliberately <strong>no destroy
+endpoint</strong> — a <code>DELETE</code> returns 405, proven by test — because a product that an
+invoice depends on must always resolve.</p>
+<h3 id="building-blocks_3">Building blocks<a class="headerlink" href="#building-blocks_3" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Type</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Product</code></td>
+<td>Eloquent model (<code>BelongsToTenant</code>)</td>
+<td>The catalog model. UUID-keyed externally; integer-cents pricing via a <code>price</code> accessor; <code>active()</code> and case-insensitive <code>search()</code> scopes. No tenant-ownership code of its own.</td>
+</tr>
+<tr>
+<td><code>VatRate</code></td>
+<td>Backed enum (int)</td>
+<td>The three German rates 19/7/0 (FR-024); multipliers returned as decimal <strong>strings</strong> for <code>brick/money</code> arithmetic, never floats.</td>
+</tr>
+<tr>
+<td><code>Unit</code></td>
+<td>Backed enum (string)</td>
+<td>The seven supported units (FR-025), each carrying its UN/ECE Rec 20 code via <code>uneceCode()</code>.</td>
+</tr>
+<tr>
+<td><code>Money</code> (support)</td>
+<td>Value helper</td>
+<td>The single place integer cents become a German EUR string and back, over <code>brick/money</code>.</td>
+</tr>
+<tr>
+<td><code>MoneyCast</code></td>
+<td>Eloquent cast</td>
+<td>Bridges an integer-cents column and a <code>brick/money</code> <code>Money</code>; throws on a float (FR-026). Reusable; not used by <code>Product</code>, which uses the accessor.</td>
+</tr>
+<tr>
+<td><code>StoreProductRequest</code>, <code>UpdateProductRequest</code></td>
+<td>Form requests</td>
+<td>Validated create/update; price arrives as integer cents. The update request omits <code>is_active</code> — archiving is an explicit action, not a silent field write.</td>
+</tr>
+<tr>
+<td><code>ProductController</code></td>
+<td>Resource controller</td>
+<td>CRUD + archive/unarchive + paginated search. No <code>destroy</code>. Contains zero ownership or tenant-assignment code.</td>
+</tr>
+<tr>
+<td><code>ProductResource</code></td>
+<td>API resource</td>
+<td>Exposes <code>unit_price_cents</code>, a formatted <code>unit_price_formatted</code>, and <code>unit_code</code> — so the client computes on cents, displays the string, and has the EN 16931 code ready.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interfaces_3">Interfaces<a class="headerlink" href="#interfaces_3" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Producer</th>
+<th>Consumer</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET/POST/PATCH /api/v1/products</code>, <code>…/{product}/archive</code>, <code>…/unarchive</code></td>
+<td><code>ProductController</code></td>
+<td>SPA, API clients</td>
+<td>Reads behind <code>auth:sanctum</code> + <code>tenant</code>; writes additionally behind <code>role:admin</code>. No <code>DELETE</code> (products archive).</td>
+</tr>
+<tr>
+<td><code>unit_price_cents</code> (integer cents)</td>
+<td>client <code>eurosToCents</code> / API</td>
+<td><code>unit_price_cents</code> <code>BIGINT</code> column</td>
+<td>Money crosses every boundary as integer cents; a float is rejected at <code>MoneyCast</code>.</td>
+</tr>
+<tr>
+<td><code>Unit::uneceCode()</code></td>
+<td><code>Unit</code> enum</td>
+<td>Invoicing (later), <code>ProductResource</code></td>
+<td>The EN 16931 line-unit code, on the enum, so there is no separate mapping table.</td>
+</tr>
+<tr>
+<td>Route-model binding <code>{product}</code></td>
+<td><code>SubstituteBindings</code> (after <code>ResolveTenant</code>)</td>
+<td><code>ProductController</code></td>
+<td>Resolves the UUID through the tenant scope, so cross-tenant lookups 404 automatically.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="55-and-beyond">5.5 and beyond<a class="headerlink" href="#55-and-beyond" title="Permanent link">¶</a></h2>
+<p>The remaining building blocks (invoicing core, e-invoicing, expense tracking,
+dashboard, tenant settings) are documented as each is built in its milestone.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
