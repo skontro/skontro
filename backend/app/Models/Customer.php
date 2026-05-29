@@ -14,6 +14,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+/**
+ * @property CustomerType $type
+ * @property ?Country $country_code
+ */
 class Customer extends Model
 {
     use BelongsToTenant;

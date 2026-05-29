@@ -45,13 +45,5 @@ test('registration always creates a fresh tenant and ignores any tenant_id input
         ->and(Tenant::count())->toBe(2);
 });
 
-/**
- * Forward-looking contract for the resource layer (Customers, next milestone):
- * requesting another tenant's resource by UUID must return 404, not 403 — a
- * 403 would confirm the resource exists, leaking information across the tenant
- * boundary. Marked pending until the first tenant-owned resource endpoint
- * exists to test against.
- */
-test('cross-tenant resource access returns 404 not 403', function () {
-    expect(true)->toBeTrue();
-})->todo('Implement when the first tenant-owned resource endpoint (Customers) lands.');
+// The 404-not-403 cross-tenant resource contract is now implemented and
+// proven in tests/Feature/Customers/CustomerTenantIsolationTest.php.
