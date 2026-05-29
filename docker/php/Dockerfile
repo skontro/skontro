@@ -6,6 +6,7 @@ RUN apk add --no-cache \
     libpng-dev \
     libzip-dev \
     icu-dev \
+    icu-data-full \
     postgresql-dev \
     oniguruma-dev \
     $PHPIZE_DEPS
