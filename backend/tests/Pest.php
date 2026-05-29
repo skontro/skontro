@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Tenant;
 use Tests\TestCase;
 
 /*
@@ -52,7 +53,18 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Bind a tenant into the request context the way ResolveTenant will at runtime,
+ * so the TenantScope global scope filters subsequent queries to it.
+ */
+function actAsTenant(Tenant $tenant): void
 {
-    // ..
+    app()->instance('currentTenant', $tenant);
+    app()->instance('currentTenantId', $tenant->id);
+}
+
+function clearTenantContext(): void
+{
+    app()->forgetInstance('currentTenant');
+    app()->forgetInstance('currentTenantId');
 }
