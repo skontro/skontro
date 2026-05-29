@@ -47,7 +47,19 @@ tests actually exist for it.
 | FR-026 | Money as integer cents (no floats) | Implemented | `unit_price_cents` `BIGINT` + `MoneyCast`/`Money` over `brick/money`. Evidence: the `information_schema` column-type assertion and the float-rejection test (`tests/Unit/Money/MoneyCastTest.php`, `tests/Unit/Models/ProductTest.php`). |
 | FR-027 | Archive / unarchive (not delete) | Implemented | `is_active` flag + archive/unarchive endpoints; no destroy route (the 405 test proves it). Tests: `tests/Feature/Products/ProductCrudTest.php`. |
 | FR-028 | Optional SKU | Implemented (optional; **not** unique-constrained in v0.1) | Nullable `sku` column; a partial unique index on `(tenant_id, sku)` is the path if per-tenant uniqueness is ever required. |
-| FR-029 – FR-062 | Invoicing, e-invoicing, expenses, dashboard, settings | TBD | Subsequent milestones. (FR-040 per-customer payment terms has its data field laid on the customer record.) |
+| FR-029 | Create draft invoice | Implemented | `InvoiceController::store` behind auth + tenant + role; at least one line required. Tests: `tests/Feature/Invoices/InvoiceCrudTest.php`. |
+| FR-030 | Line items (catalog or ad-hoc) | Implemented | `InvoiceLine` with optional `product_id`; lines frozen after issue. Tests: `tests/Feature/Invoices/InvoiceLifecycleTest.php`, `tests/Unit/Models/InvoiceTest.php`. |
+| FR-031 | Line-level VAT rounding (EN 16931 BR-CO-17) | Implemented | `InvoiceCalculator` in `BigDecimal`, `HALF_UP`, per line then summed. Evidence: the line-vs-document divergence test (30 vs 29 cents) in `tests/Unit/Invoicing/InvoiceCalculatorTest.php`. |
+| FR-032 | Invoice state machine | Implemented | `InvoiceStateMachine` (one transition table, 409 on illegal) + [ADR 0005](../adr/0005-invoice-state-machine.md). Tests: `tests/Unit/Invoicing/InvoiceStateMachineTest.php`. |
+| FR-033 | Issue: mint number, lock lines, dispatch document job | Implemented (document job is a **stub**; real ZUGFeRD is FR-041+) | `InvoiceActionController::issue` mints `R-YYYY-NNNNN` via `SequenceGenerator`, freezes lines, dispatches `GenerateInvoiceDocument`. Tests: `tests/Feature/Invoices/InvoiceLifecycleTest.php` (incl. `Queue::assertPushed`). |
+| FR-034 | Cancel with reason | Implemented | `cancel` requires a reason; a paid invoice cannot be cancelled (409). Tests: `tests/Feature/Invoices/InvoiceLifecycleTest.php`. |
+| FR-035 | Record payment | Implemented | `Payment` + `recordPayment`; cumulative amount drives partially_paid/paid. Tests: `tests/Feature/Invoices/InvoiceLifecycleTest.php`. |
+| FR-036 | Payment terms | Implemented | `Invoice::resolvePaymentTerms` derives the due date. Tests: `tests/Unit/Models/InvoiceTest.php`, `tests/Feature/Invoices/InvoiceCrudTest.php`. |
+| FR-037 | Service period | Implemented | `service_period_start`/`_end` stored and surfaced in `InvoiceResource`. |
+| FR-038 | Notes (top / bottom) | Implemented | `notes_top` / `notes_bottom` per invoice. |
+| FR-039 | Invoice numbering (`R-YYYY-NNNNN`) | Implemented | Via `SequenceGenerator` on issue; unique per tenant. Tests: `tests/Feature/Invoices/InvoiceLifecycleTest.php`. |
+| FR-040 | Customer default payment-terms precedence | Implemented | `resolvePaymentTerms`: invoice &gt; customer &gt; tenant default (14). Tests: `tests/Unit/Models/InvoiceTest.php`. |
+| FR-041 – FR-062 | E-invoicing (ZUGFeRD), expenses, dashboard, settings | TBD | Subsequent milestones. Issuing already dispatches the document job (a stub); the real `GenerateInvoiceDocument` (ZUGFeRD 2.1 PDF/A-3) is the next milestone, and the per-rate VAT breakdown, UN/ECE unit codes, and invoice numbering it needs are already in place. |
 
 Security NFRs realized alongside the above: NFR-009 (session security), NFR-010
 (Sanctum), NFR-011 (password hashing), NFR-013 (generic auth-failure messaging).

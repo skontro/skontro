@@ -18,6 +18,11 @@ Entries are grouped under the following change types:
 
 ### Added
 
+- Invoicing core: draft invoices with line items, line-level VAT totals (EN 16931 BR-CO-17), and a server-authoritative state machine (FR-029–FR-040).
+- Invoice lifecycle: draft → issued → sent → partially_paid/paid, with cancel; issuing mints R-YYYY-NNNNN and dispatches document generation (a stub; real ZUGFeRD is a later milestone). Recorded in ADR 0005.
+- Payments: full and partial, driving invoice state (FR-035).
+- Payment-terms precedence (invoice → customer → tenant default) deriving the due date (FR-036, FR-040).
+- Invoice screens in the SPA: list with state filter, draft editor with a live line-level totals preview, detail with state actions.
 - Product & service catalog: create, read, update, archive, unarchive, paginated search (FR-023–FR-028).
 - German VAT rates 19/7/0 (FR-024) and seven units mapped to UN/ECE Rec 20 codes (FR-025).
 - Integer-cents money handling via brick/money, enforced at the cast and the schema (FR-026).

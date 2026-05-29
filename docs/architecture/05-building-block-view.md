@@ -291,7 +291,111 @@ invoice depends on must always resolve.
 | `Unit::uneceCode()` | `Unit` enum | Invoicing (later), `ProductResource` | The EN 16931 line-unit code, on the enum, so there is no separate mapping table. |
 | Route-model binding `{product}` | `SubstituteBindings` (after `ResolveTenant`) | `ProductController` | Resolves the UUID through the tenant scope, so cross-tenant lookups 404 automatically. |
 
-## 5.5 and beyond
+## 5.5 Invoicing core
 
-The remaining building blocks (invoicing core, e-invoicing, expense tracking,
-dashboard, tenant settings) are documented as each is built in its milestone.
+Invoicing is the milestone the whole project was pointed at: it composes the
+customers to bill, the products to bill for, the money to bill in, and the
+numbers to bill under into one aggregate. Like the customer and catalog blocks
+it inherits tenant isolation from §5.1 rather than re-implementing it — `Invoice`
+and `Payment` use `BelongsToTenant`; `InvoiceLine` is not independently scoped
+because it is only ever reached through its parent invoice. What this block adds
+that is genuinely new is **two pieces of pure domain logic kept out of the
+controllers**: a line-level VAT calculator and an explicit state machine.
+
+### Line-level VAT rounding is the load-bearing rule
+
+The single most important correctness rule in the system is EN 16931 **BR-CO-17**:
+VAT is computed **per line, rounded per line, then summed** — never computed once
+on the document subtotal. The two approaches differ by one or two cents on
+multi-rate invoices, and that difference fails KoSIT validation. `InvoiceCalculator`
+implements the rule; it takes plain `InvoiceLineInput` value objects and returns
+an immutable `InvoiceTotals` carrying the subtotal, the total VAT, the grand
+total, and a **per-rate breakdown** (`rate → {net, vat}`) that ZUGFeRD's tax
+subtotal groups require. The calculator is DB-free and pure, so it is testable in
+isolation and reusable by the model layer now and the ZUGFeRD generator later.
+
+All arithmetic is `brick/math` `BigDecimal` with explicit `HALF_UP` rounding to
+whole cents; no PHP float ever touches a monetary value. Quantities are decimal
+strings (2.5 hours is valid) and stay in arbitrary precision until the explicit
+per-line rounding. The decisive evidence that the rule is actually implemented is
+a test that constructs a case where line-level rounding (30 cents) and
+document-level rounding (29) genuinely diverge — if anyone "simplifies" the
+calculator to tax the subtotal, that test goes red.
+
+### The lifecycle is one transition table, not scattered conditionals
+
+An invoice has a legally-meaningful lifecycle, enforced by `InvoiceStateMachine`
+(see [ADR 0005](../adr/0005-invoice-state-machine.md) and the §6 runtime view):
+`draft → issued → sent → (partially_paid | paid)`, with any non-paid state able
+to be cancelled, and `paid`/`cancelled` terminal. The legal transitions live in
+**one table**; `assertCanTransition` is the single gate every transition passes
+through, throwing `InvalidTransitionException` — which renders as **HTTP 409**
+carrying the current and attempted states — on an illegal move. The controller
+never re-encodes legality. Issuing is the pivotal transition: it mints the
+`R-YYYY-NNNNN` number via the §5.3 `SequenceGenerator`, sets `issued_at`, freezes
+the line items (only a draft is editable — a write to an issued invoice 409s), and
+**dispatches** `GenerateInvoiceDocument`.
+
+That job is, in this milestone, a **stub**: it implements `ShouldQueue` and logs.
+The real ZUGFeRD/PDF generation (FR-041–FR-048) is a separate milestone; here the
+issue flow's contract — mint, lock, dispatch — is complete and tested (via
+`Queue::fake`/`assertPushed`) without building the generator prematurely. The
+stub's `handle()` is the seam the e-invoicing milestone plugs into.
+
+### Totals are server-authoritative
+
+The server is the single source of truth for money. `Invoice::recalculateTotals()`
+runs the calculator on every draft create and update and persists both the
+document totals and each line's computed net and VAT; the API ignores any
+client-sent totals entirely. The SPA editor shows a live preview using the same
+line-level algorithm so what the user sees matches what the server stores, but the
+preview never writes totals — it is convenience, not authority.
+
+Payment-terms precedence (FR-036, FR-040) is resolved by a pure static helper,
+`Invoice::resolvePaymentTerms()`: an explicit invoice-level value wins, else the
+customer's default, else the tenant default of 14 days — used at draft creation to
+derive the due date.
+
+```mermaid
+flowchart TD
+    ctrl[InvoiceController::store] --> terms[resolvePaymentTerms<br/>invoice &gt; customer &gt; 14]
+    ctrl --> lines[syncLines<br/>catalog or ad-hoc]
+    lines --> calc[InvoiceCalculator<br/>BR-CO-17 per-line VAT]
+    calc --> totals[InvoiceTotals<br/>subtotal, per-rate, total]
+    totals --> persist[(invoices + invoice_lines<br/>stored cents)]
+    issue[InvoiceActionController::issue] --> sm[InvoiceStateMachine<br/>assertCanTransition]
+    sm --> seq[SequenceGenerator.next<br/>R-YYYY-NNNNN]
+    issue --> job[GenerateInvoiceDocument<br/>stub: dispatched, logs]
+```
+
+### Building blocks
+
+| Block | Type | Responsibility |
+|---|---|---|
+| `InvoiceCalculator` | Service (pure) | Line-level VAT rounding per BR-CO-17 in `BigDecimal`; returns `InvoiceTotals`. DB-free and reusable. |
+| `InvoiceTotals`, `InvoiceLineInput` | Value objects (readonly) | The calculator's output (subtotal, total VAT, grand total, per-rate breakdown) and its decoupled input unit. |
+| `InvoiceStateMachine` | Service (pure) | The lifecycle as one transition table; `assertCanTransition` is the single gate. |
+| `InvalidTransitionException` | Exception | Self-renders as HTTP 409 with current + attempted state. |
+| `InvoiceState`, `PaymentMethod` | Backed enums | Lifecycle states (with `allowsLineEditing()` / `isTerminal()`) and payment methods. |
+| `Invoice` | Eloquent model (`BelongsToTenant`) | Aggregate root owning lines and payments; `recalculateTotals()`, `paidCents()`, `resolvePaymentTerms()`. Number null while draft, unique per tenant once minted. |
+| `InvoiceLine` | Eloquent model | Decimal quantity (never float), cents price, persisted per-line net/vat; optional product reference. Isolation inherited via the aggregate, not its own scope. |
+| `Payment` | Eloquent model (`BelongsToTenant`) | A recorded payment; the sum drives the partially_paid/paid transition. |
+| `GenerateInvoiceDocument` | Queued job (**stub**) | Dispatched on issue; logs only. The seam for ZUGFeRD/PDF (FR-041+). |
+| `InvoiceController` | Controller | Create/update drafts (server-recomputed totals), list, show. |
+| `InvoiceActionController` | Controller | issue / send / record-payment / cancel — every transition through the state machine. |
+| `InvoiceResource`, `InvoiceLineResource`, `PaymentResource` | API resources | Controlled JSON; cents plus formatted strings; per-rate-ready line data. |
+
+### Interfaces
+
+| Interface | Producer | Consumer | Contract |
+|---|---|---|---|
+| `GET/POST/PATCH /api/v1/invoices`, `…/{invoice}/{issue,send,payments,cancel}` | `InvoiceController`, `InvoiceActionController` | SPA, API clients | Reads behind `auth:sanctum` + `tenant`; writes additionally behind `role:admin`. |
+| `InvoiceCalculator::calculate(list<InvoiceLineInput>)` | `InvoiceCalculator` | `Invoice::recalculateTotals`, SPA preview (mirrored), ZUGFeRD (later) | Line-level VAT, `HALF_UP`, float-free; returns `InvoiceTotals` with the per-rate breakdown. |
+| `InvoiceStateMachine::assertCanTransition(from, to)` | `InvoiceStateMachine` | Action controller | Throws `InvalidTransitionException` (409) on an illegal transition; the single legality gate. |
+| `GenerateInvoiceDocument` dispatch | `InvoiceActionController::issue` | Queue (ZUGFeRD milestone) | Issuing dispatches the job; the handler is a stub until e-invoicing lands. |
+| `SequenceGenerator::next(Tenant, DocumentType::Invoice)` | §5.3 | `InvoiceActionController::issue` | Mints the `R-YYYY-NNNNN` number atomically when an invoice is issued. |
+
+## 5.6 and beyond
+
+The remaining building blocks (e-invoicing, expense tracking, dashboard, tenant
+settings) are documented as each is built in its milestone.

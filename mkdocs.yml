@@ -155,3 +155,4 @@ nav:
       - 0002 — Multi-tenancy: adr/0002-multi-tenancy.md
       - 0003 — Commit Conventions: adr/0003-commit-conventions.md
       - 0004 — Documentation Framework: adr/0004-documentation-framework.md
+      - 0005 — Invoice State Machine: adr/0005-invoice-state-machine.md
