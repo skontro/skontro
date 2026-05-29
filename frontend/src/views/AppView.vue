@@ -22,6 +22,20 @@ async function handleLogout(): Promise<void> {
         >{{ auth.tenant.name }}</span>
       </div>
       <div class="flex items-center gap-4">
+        <nav class="flex items-center gap-4 text-sm font-medium text-slate-600">
+          <router-link
+            to="/"
+            class="hover:text-slate-900"
+          >
+            Dashboard
+          </router-link>
+          <router-link
+            to="/customers"
+            class="hover:text-slate-900"
+          >
+            Customers
+          </router-link>
+        </nav>
         <span
           v-if="auth.user"
           class="text-sm text-slate-600"
@@ -35,9 +49,7 @@ async function handleLogout(): Promise<void> {
       </div>
     </header>
     <main class="p-6">
-      <p class="text-slate-600">
-        Signed in. Dashboard and features land in upcoming milestones.
-      </p>
+      <router-view />
     </main>
   </div>
 </template>
