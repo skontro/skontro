@@ -10,21 +10,6 @@ use Tests\Support\Models\TenantScopedTestModel;
 
 uses(RefreshDatabase::class);
 
-/**
- * Bind a tenant into the request context the way ResolveTenant will at runtime.
- */
-function actAsTenant(Tenant $tenant): void
-{
-    app()->instance('currentTenant', $tenant);
-    app()->instance('currentTenantId', $tenant->id);
-}
-
-function clearTenantContext(): void
-{
-    app()->forgetInstance('currentTenant');
-    app()->forgetInstance('currentTenantId');
-}
-
 beforeEach(function () {
     clearTenantContext();
 });
