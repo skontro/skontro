@@ -10,8 +10,13 @@ use Database\Factories\PaymentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
+/**
+ * @property PaymentMethod $method
+ * @property Carbon|null $payment_date
+ */
 class Payment extends Model
 {
     use BelongsToTenant;

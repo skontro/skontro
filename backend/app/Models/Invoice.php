@@ -15,8 +15,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
+/**
+ * @property InvoiceState $state
+ * @property Carbon|null $invoice_date
+ * @property Carbon|null $due_date
+ * @property Carbon|null $service_period_start
+ * @property Carbon|null $service_period_end
+ * @property Carbon|null $issued_at
+ * @property Carbon|null $cancelled_at
+ * @property int $total_cents
+ */
 class Invoice extends Model
 {
     use BelongsToTenant;
