@@ -35,9 +35,13 @@ tests actually exist for it.
 | Requirements | Area | Status | Realized by |
 |---|---|---|---|
 | FR-001 – FR-010 | Authentication & user management | Implemented | Registration, login, logout, current-user endpoints; cookie-session auth. Tests: `tests/Feature/Auth/*`. |
-| FR-011 – FR-014 | Multi-tenancy: model, scoping, stamping, isolation | Implemented | `BelongsToTenant` trait + `TenantScope` global scope; `ResolveTenant` middleware. Tests: `tests/Unit/Tenancy/TenantScopeTest.php`, `tests/Feature/Tenancy/CrossTenantAccessTest.php`. |
-| FR-015 | Cross-tenant resource access (404-not-403) | Partial — contract defined, resource layer pending | Contract captured as a pending test (`CrossTenantAccessTest`); enforced once the first tenant-owned resource endpoint (Customers) lands. |
-| FR-016 – FR-062 | Customers, catalog, invoicing, e-invoicing, expenses, dashboard, settings | TBD | Subsequent milestones. |
+| FR-011, FR-012, FR-014 | Multi-tenancy: model, scoping, stamping, isolation | Implemented | `BelongsToTenant` trait + `TenantScope` global scope; `ResolveTenant` middleware. Tests: `tests/Unit/Tenancy/TenantScopeTest.php`, `tests/Feature/Tenancy/CrossTenantAccessTest.php`. |
+| FR-013 | Atomic per-tenant, annually-resetting document numbering | Implemented | `SequenceGenerator` + `number_sequences` row lock (`SELECT ... FOR UPDATE`); `DocumentType` enum. Tests: `tests/Feature/Numbering/*`. |
+| FR-015 | Cross-tenant resource access (404-not-403) | Implemented | Inherited via `BelongsToTenant` + route-model binding through the tenant scope; no ownership check in controllers. Tests: `tests/Feature/Customers/CustomerTenantIsolationTest.php`. |
+| FR-016 – FR-020 | Customer management: create, read, update, soft-delete + restore, paginated search | Implemented | `CustomerController` (CRUD, soft-delete, search) behind auth + tenant + role. Tests: `tests/Feature/Customers/*`, `tests/Unit/Models/CustomerTest.php`. |
+| FR-021 | VAT-ID validation per country | Implemented (format + DE checksum; VIES online verification deferred to v0.2) | `VatId` rule. Tests: `tests/Unit/Rules/VatIdTest.php`. |
+| FR-022 | EU country support | Implemented | `Country` enum, 27 ISO 3166-1 alpha-2 member states. |
+| FR-023 – FR-062 | Catalog, invoicing, e-invoicing, expenses, dashboard, settings | TBD | Subsequent milestones. (FR-040 per-customer payment terms has its data field laid on the customer record.) |
 
 Security NFRs realized alongside the above: NFR-009 (session security), NFR-010
 (Sanctum), NFR-011 (password hashing), NFR-013 (generic auth-failure messaging).

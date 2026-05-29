@@ -18,6 +18,11 @@ Entries are grouped under the following change types:
 
 ### Added
 
+- Atomic per-tenant document numbering (K-/R-/E-YYYY-NNNNN), gapless and annually resetting (FR-013).
+- Customer management: create, read, update, soft-delete, restore, paginated search (FR-016–FR-020).
+- VAT ID format validation per EU country with German checksum (FR-021); 27 EU member states (FR-022).
+- Customer list, detail, and form screens in the SPA.
+- Cross-tenant isolation enforced on customer endpoints (404 not 403).
 - Single-database multi-tenancy with automatic tenant-scoped queries (ADR 0002).
 - Role-based access control (owner/admin/member) with route-level role gates.
 - SPA authentication via Sanctum cookie sessions: register, login, logout, current-user.
