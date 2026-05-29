@@ -35,6 +35,12 @@ async function handleLogout(): Promise<void> {
           >
             Customers
           </router-link>
+          <router-link
+            to="/products"
+            class="hover:text-slate-900"
+          >
+            Products
+          </router-link>
         </nav>
         <span
           v-if="auth.user"
