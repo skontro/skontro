@@ -41,7 +41,13 @@ tests actually exist for it.
 | FR-016 – FR-020 | Customer management: create, read, update, soft-delete + restore, paginated search | Implemented | `CustomerController` (CRUD, soft-delete, search) behind auth + tenant + role. Tests: `tests/Feature/Customers/*`, `tests/Unit/Models/CustomerTest.php`. |
 | FR-021 | VAT-ID validation per country | Implemented (format + DE checksum; VIES online verification deferred to v0.2) | `VatId` rule. Tests: `tests/Unit/Rules/VatIdTest.php`. |
 | FR-022 | EU country support | Implemented | `Country` enum, 27 ISO 3166-1 alpha-2 member states. |
-| FR-023 – FR-062 | Catalog, invoicing, e-invoicing, expenses, dashboard, settings | TBD | Subsequent milestones. (FR-040 per-customer payment terms has its data field laid on the customer record.) |
+| FR-023 | Create product/service | Implemented | `ProductController` + `StoreProductRequest` behind auth + tenant + role. Tests: `tests/Feature/Products/ProductCrudTest.php`. |
+| FR-024 | German VAT rates 19/7/0 | Implemented | `VatRate` enum (int-backed); decimal-string multipliers for `brick/money`. Tests: `tests/Unit/Enums/VatRateTest.php`, validation test in `ProductCrudTest.php`. |
+| FR-025 | Seven units → UN/ECE Rec 20 codes | Implemented | `Unit` enum carrying `uneceCode()` (H87/HUR/KGM/MTR/MTK/DAY/LS). Tests: `tests/Unit/Enums/UnitTest.php`. |
+| FR-026 | Money as integer cents (no floats) | Implemented | `unit_price_cents` `BIGINT` + `MoneyCast`/`Money` over `brick/money`. Evidence: the `information_schema` column-type assertion and the float-rejection test (`tests/Unit/Money/MoneyCastTest.php`, `tests/Unit/Models/ProductTest.php`). |
+| FR-027 | Archive / unarchive (not delete) | Implemented | `is_active` flag + archive/unarchive endpoints; no destroy route (the 405 test proves it). Tests: `tests/Feature/Products/ProductCrudTest.php`. |
+| FR-028 | Optional SKU | Implemented (optional; **not** unique-constrained in v0.1) | Nullable `sku` column; a partial unique index on `(tenant_id, sku)` is the path if per-tenant uniqueness is ever required. |
+| FR-029 – FR-062 | Invoicing, e-invoicing, expenses, dashboard, settings | TBD | Subsequent milestones. (FR-040 per-customer payment terms has its data field laid on the customer record.) |
 
 Security NFRs realized alongside the above: NFR-009 (session security), NFR-010
 (Sanctum), NFR-011 (password hashing), NFR-013 (generic auth-failure messaging).

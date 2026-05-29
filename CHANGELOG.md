@@ -18,6 +18,10 @@ Entries are grouped under the following change types:
 
 ### Added
 
+- Product & service catalog: create, read, update, archive, unarchive, paginated search (FR-023–FR-028).
+- German VAT rates 19/7/0 (FR-024) and seven units mapped to UN/ECE Rec 20 codes (FR-025).
+- Integer-cents money handling via brick/money, enforced at the cast and the schema (FR-026).
+- Catalog screens in the SPA with EUR pricing.
 - Atomic per-tenant document numbering (K-/R-/E-YYYY-NNNNN), gapless and annually resetting (FR-013).
 - Customer management: create, read, update, soft-delete, restore, paginated search (FR-016–FR-020).
 - VAT ID format validation per EU country with German checksum (FR-021); 27 EU member states (FR-022).
