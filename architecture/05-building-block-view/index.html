@@ -392,9 +392,66 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#52-and-beyond">
+<a class="md-nav__link" href="#52-customer-resource">
 <span class="md-ellipsis">
-      5.2 and beyond
+      5.2 Customer resource
+    </span>
+</a>
+<nav aria-label="5.2 Customer resource" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-create-customer-flow">
+<span class="md-ellipsis">
+      The create-customer flow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_1">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_1">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53-numbering-service">
+<span class="md-ellipsis">
+      5.3 Numbering service
+    </span>
+</a>
+<nav aria-label="5.3 Numbering service" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_2">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_2">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-and-beyond">
+<span class="md-ellipsis">
+      5.4 and beyond
     </span>
 </a>
 </li>
@@ -704,9 +761,66 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#52-and-beyond">
+<a class="md-nav__link" href="#52-customer-resource">
 <span class="md-ellipsis">
-      5.2 and beyond
+      5.2 Customer resource
+    </span>
+</a>
+<nav aria-label="5.2 Customer resource" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-create-customer-flow">
+<span class="md-ellipsis">
+      The create-customer flow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_1">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_1">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#53-numbering-service">
+<span class="md-ellipsis">
+      5.3 Numbering service
+    </span>
+</a>
+<nav aria-label="5.3 Numbering service" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_2">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_2">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#54-and-beyond">
+<span class="md-ellipsis">
+      5.4 and beyond
     </span>
 </a>
 </li>
@@ -872,10 +986,201 @@ JavaScript cannot read, with built-in CSRF protection, immune to the
 XSS token-theft that <code>localStorage</code> bearer tokens invite. Sanctum's token
 abilities remain available for a future mobile client or third-party API; they
 are simply not used now.</p>
-<h2 id="52-and-beyond">5.2 and beyond<a class="headerlink" href="#52-and-beyond" title="Permanent link">¶</a></h2>
-<p>The remaining building blocks (customer management, catalog, invoicing core,
-e-invoicing, expense tracking, dashboard, tenant settings) are documented as each
-is built in its milestone.</p>
+<h2 id="52-customer-resource">5.2 Customer resource<a class="headerlink" href="#52-customer-resource" title="Permanent link">¶</a></h2>
+<p>Customers are the first tenant-owned business resource, and the first feature
+composed almost entirely from the authentication and tenancy primitives of
+§5.1 rather than from new isolation machinery. This is the point of the design:
+the customer building block adds a model, a controller, validation, and an
+output boundary — and <strong>no tenant-ownership logic of its own</strong>. Isolation,
+tenant stamping, and the cross-tenant 404 are all inherited.</p>
+<p>The <code>Customer</code> model opts into tenant ownership with the <code>BelongsToTenant</code>
+trait, so every query against it is already filtered to the active tenant by
+<code>TenantScope</code>. It carries a per-tenant document number (§5.3), a typed
+<code>CustomerType</code> (company/individual) and <code>Country</code> (the 27 EU member states),
+soft-delete support so a deleted customer's history survives, and a
+<code>payment_terms_days</code> field laid down now for invoicing to read later. VAT IDs
+are validated by a per-country format rule with the German checksum verified
+in full; live VIES verification is deferred.</p>
+<h3 id="the-create-customer-flow">The create-customer flow<a class="headerlink" href="#the-create-customer-flow" title="Permanent link">¶</a></h3>
+<p>The flow below is the whole architecture in miniature. Read it for what the
+controller <strong>does not</strong> do: it writes no <code>tenant_id</code>, performs no ownership
+check, and computes no number by hand. The role gate is middleware, the number
+comes from a row-locked sequence, and the <code>tenant_id</code> is stamped by the trait.</p>
+<pre class="mermaid"><code>flowchart TD
+    req[POST /api/v1/customers] --&gt; sanctum[auth:sanctum]
+    sanctum --&gt; tenant[ResolveTenant<br/>binds currentTenant]
+    tenant --&gt; role[role:admin gate]
+    role --&gt; ctrl[CustomerController::store]
+    ctrl --&gt; seq[SequenceGenerator.next<br/>SELECT ... FOR UPDATE]
+    seq --&gt; num[K-YYYY-NNNNN]
+    ctrl --&gt; stamp[BelongsToTenant<br/>auto-stamps tenant_id]
+    stamp --&gt; insert[(customers<br/>tenant-scoped insert)]
+</code></pre>
+<p>The read path makes the same point from the other direction. The controller's
+<code>show</code>, <code>update</code>, and <code>destroy</code> actions take a route-model-bound
+<code>Customer $customer</code>. Because the binding query runs <strong>through the tenant
+global scope</strong> — and because <code>ResolveTenant</code> is forced ahead of route-model
+binding in the middleware priority list so the tenant is bound before the
+lookup runs — a customer belonging to another tenant is simply <em>not found</em>.
+Laravel returns <strong>404, not 403</strong>, with no <code>if ($customer-&gt;tenant_id !== …)</code>
+check anywhere in the controller. 404 rather than 403 is deliberate: a 403
+would confirm the record exists, leaking its existence across the tenant
+boundary; a 404 reveals nothing. This is the cross-tenant contract the tenancy
+milestone defined and deferred, now enforced structurally rather than by
+convention.</p>
+<h3 id="building-blocks_1">Building blocks<a class="headerlink" href="#building-blocks_1" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Type</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Customer</code></td>
+<td>Eloquent model (<code>BelongsToTenant</code>, <code>SoftDeletes</code>)</td>
+<td>The first tenant-owned business model. UUID-keyed externally; per-tenant-unique document number; case-insensitive search scope.</td>
+</tr>
+<tr>
+<td><code>CustomerType</code></td>
+<td>Backed enum</td>
+<td>company / individual, with a <code>requiresCompanyName()</code> predicate the validation reads.</td>
+</tr>
+<tr>
+<td><code>Country</code></td>
+<td>Backed enum</td>
+<td>The 27 EU member states as ISO 3166-1 alpha-2 codes; the basis for VAT-format selection.</td>
+</tr>
+<tr>
+<td><code>VatId</code></td>
+<td>Validation rule</td>
+<td>Per-country VAT-ID format, plus the full German USt-IdNr checksum. VIES online verification deferred to a later version.</td>
+</tr>
+<tr>
+<td><code>StoreCustomerRequest</code>, <code>UpdateCustomerRequest</code></td>
+<td>Form requests</td>
+<td>Validated create/update. The update request deliberately omits <code>number</code>, making it immutable.</td>
+</tr>
+<tr>
+<td><code>CustomerController</code></td>
+<td>Resource controller</td>
+<td>CRUD + soft-delete/restore + paginated search. Contains zero ownership or tenant-assignment code.</td>
+</tr>
+<tr>
+<td><code>CustomerResource</code></td>
+<td>API resource</td>
+<td>The output boundary: exposes the UUID as <code>id</code>, never the internal id or <code>tenant_id</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interfaces_1">Interfaces<a class="headerlink" href="#interfaces_1" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Producer</th>
+<th>Consumer</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET/POST/PATCH/DELETE /api/v1/customers</code></td>
+<td><code>CustomerController</code></td>
+<td>SPA, API clients</td>
+<td>Reads behind <code>auth:sanctum</code> + <code>tenant</code>; writes additionally behind <code>role:admin</code>.</td>
+</tr>
+<tr>
+<td>Route-model binding <code>{customer}</code></td>
+<td><code>SubstituteBindings</code> (after <code>ResolveTenant</code>)</td>
+<td><code>CustomerController</code></td>
+<td>Resolves the UUID through the tenant scope, so cross-tenant lookups 404 automatically.</td>
+</tr>
+<tr>
+<td>Customer number</td>
+<td><code>SequenceGenerator</code> (§5.3)</td>
+<td><code>CustomerController::store</code></td>
+<td>An atomic <code>K-YYYY-NNNNN</code> issued once at creation; immutable thereafter.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="53-numbering-service">5.3 Numbering service<a class="headerlink" href="#53-numbering-service" title="Permanent link">¶</a></h2>
+<p>Every German business document needs a gapless, per-tenant, annually-resetting
+number: customers <code>K-YYYY-NNNNN</code>, invoices <code>R-…</code>, expenses <code>E-…</code>. This block
+provides that once, generically, so customers consume it now and invoices and
+expenses consume it later without change.</p>
+<p>The mechanism is a single counter row per <code>(tenant_id, document_type, year)</code> in
+<code>number_sequences</code>, and a <code>SequenceGenerator</code> service that increments it inside
+a database transaction under a <code>SELECT ... FOR UPDATE</code> row lock. The lock is the
+correctness mechanism: two simultaneous creates for the same tenant, type, and
+year serialize on that one row, so each receives a distinct, consecutive value
+rather than colliding. A unique <code>(tenant_id, document_type, year)</code> index sits
+beneath the application logic as an integrity backstop — even if the logic ever
+faltered, the database itself refuses a duplicate counter row.</p>
+<p><code>NumberSequence</code> is the one tenant-owned-by-convention model that deliberately
+<strong>does not</strong> use <code>BelongsToTenant</code>: the generator manages tenant scoping by hand
+inside the lock, and the trait's global scope and auto-stamp would interfere with
+the locked lookup that may need to create the first row. The numbering year is an
+explicit argument, defaulting to the current year, so a back-dated document lands
+in the correct annual sequence rather than the sequence of its insertion date.</p>
+<h3 id="building-blocks_2">Building blocks<a class="headerlink" href="#building-blocks_2" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Type</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NumberSequence</code></td>
+<td>Eloquent model</td>
+<td>One counter row per (tenant, document type, year). Accessed only through <code>SequenceGenerator</code>, never queried directly.</td>
+</tr>
+<tr>
+<td><code>SequenceGenerator</code></td>
+<td>Service</td>
+<td>Issues <code>PREFIX-YYYY-NNNNN</code> atomically under a row lock. The single producer of document numbers.</td>
+</tr>
+<tr>
+<td><code>DocumentType</code></td>
+<td>Backed enum</td>
+<td>customer/invoice/expense, each with its single-letter prefix (K/R/E).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interfaces_2">Interfaces<a class="headerlink" href="#interfaces_2" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Producer</th>
+<th>Consumer</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SequenceGenerator::next(Tenant, DocumentType, ?year)</code></td>
+<td><code>SequenceGenerator</code></td>
+<td>Resource controllers (Customers now; invoices, expenses later)</td>
+<td>Returns a distinct, gapless, formatted number under a row lock. Correct under concurrency on Postgres.</td>
+</tr>
+<tr>
+<td>Unique <code>(tenant_id, document_type, year)</code> index</td>
+<td><code>number_sequences</code> migration</td>
+<td>Database</td>
+<td>Integrity backstop guaranteeing one counter row per tenant/type/year, independent of application logic.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="54-and-beyond">5.4 and beyond<a class="headerlink" href="#54-and-beyond" title="Permanent link">¶</a></h2>
+<p>The remaining building blocks (catalog, invoicing core, e-invoicing, expense
+tracking, dashboard, tenant settings) are documented as each is built in its
+milestone.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>

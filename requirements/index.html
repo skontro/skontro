@@ -1716,22 +1716,46 @@ tests actually exist for it.</p>
 <td>Registration, login, logout, current-user endpoints; cookie-session auth. Tests: <code>tests/Feature/Auth/*</code>.</td>
 </tr>
 <tr>
-<td>FR-011 – FR-014</td>
+<td>FR-011, FR-012, FR-014</td>
 <td>Multi-tenancy: model, scoping, stamping, isolation</td>
 <td>Implemented</td>
 <td><code>BelongsToTenant</code> trait + <code>TenantScope</code> global scope; <code>ResolveTenant</code> middleware. Tests: <code>tests/Unit/Tenancy/TenantScopeTest.php</code>, <code>tests/Feature/Tenancy/CrossTenantAccessTest.php</code>.</td>
 </tr>
 <tr>
-<td>FR-015</td>
-<td>Cross-tenant resource access (404-not-403)</td>
-<td>Partial — contract defined, resource layer pending</td>
-<td>Contract captured as a pending test (<code>CrossTenantAccessTest</code>); enforced once the first tenant-owned resource endpoint (Customers) lands.</td>
+<td>FR-013</td>
+<td>Atomic per-tenant, annually-resetting document numbering</td>
+<td>Implemented</td>
+<td><code>SequenceGenerator</code> + <code>number_sequences</code> row lock (<code>SELECT ... FOR UPDATE</code>); <code>DocumentType</code> enum. Tests: <code>tests/Feature/Numbering/*</code>.</td>
 </tr>
 <tr>
-<td>FR-016 – FR-062</td>
-<td>Customers, catalog, invoicing, e-invoicing, expenses, dashboard, settings</td>
+<td>FR-015</td>
+<td>Cross-tenant resource access (404-not-403)</td>
+<td>Implemented</td>
+<td>Inherited via <code>BelongsToTenant</code> + route-model binding through the tenant scope; no ownership check in controllers. Tests: <code>tests/Feature/Customers/CustomerTenantIsolationTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-016 – FR-020</td>
+<td>Customer management: create, read, update, soft-delete + restore, paginated search</td>
+<td>Implemented</td>
+<td><code>CustomerController</code> (CRUD, soft-delete, search) behind auth + tenant + role. Tests: <code>tests/Feature/Customers/*</code>, <code>tests/Unit/Models/CustomerTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-021</td>
+<td>VAT-ID validation per country</td>
+<td>Implemented (format + DE checksum; VIES online verification deferred to v0.2)</td>
+<td><code>VatId</code> rule. Tests: <code>tests/Unit/Rules/VatIdTest.php</code>.</td>
+</tr>
+<tr>
+<td>FR-022</td>
+<td>EU country support</td>
+<td>Implemented</td>
+<td><code>Country</code> enum, 27 ISO 3166-1 alpha-2 member states.</td>
+</tr>
+<tr>
+<td>FR-023 – FR-062</td>
+<td>Catalog, invoicing, e-invoicing, expenses, dashboard, settings</td>
 <td>TBD</td>
-<td>Subsequent milestones.</td>
+<td>Subsequent milestones. (FR-040 per-customer payment terms has its data field laid on the customer record.)</td>
 </tr>
 </tbody>
 </table>
