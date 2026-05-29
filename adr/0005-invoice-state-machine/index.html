@@ -12,28 +12,26 @@
         <meta name="author" content="Zeeshan Ahmed Raja">
       
       
-        <link rel="canonical" href="https://docs.skontro.dev/requirements/">
+        <link rel="canonical" href="https://docs.skontro.dev/adr/0005-invoice-state-machine/">
       
       
-        <link rel="prev" href="../vision/vision-and-scope/">
+        <link rel="prev" href="../0004-documentation-framework/">
       
       
-        <link rel="next" href="srs/">
       
-      
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>Overview - Skontro Documentation</title>
+        <title>0005 — Invoice State Machine - Skontro Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,14 +50,14 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+   <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
     html.glightbox-open { overflow: initial; height: 100%; }
     .gslide-title { margin-top: 0px; user-select: text; }
     .gslide-desc { color: #666; user-select: text; }
@@ -68,7 +66,7 @@
     .gdesc-inner { font-size: 0.75rem; }
     body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
     body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -87,7 +85,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#requirements" class="md-skip">
+        <a href="#0005-enforce-the-invoice-lifecycle-with-an-explicit-state-machine" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +101,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Skontro Documentation" class="md-header__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
+    <a href="../.." title="Skontro Documentation" class="md-header__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -123,7 +121,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              0005 — Invoice State Machine
             
           </span>
         </div>
@@ -241,7 +239,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
     
@@ -260,7 +258,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../vision/vision-and-scope/" class="md-tabs__link">
+        <a href="../../vision/vision-and-scope/" class="md-tabs__link">
           
   
   Vision
@@ -274,13 +272,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../requirements/" class="md-tabs__link">
           
   
   Requirements
@@ -298,7 +294,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../architecture/01-introduction-and-goals/" class="md-tabs__link">
+        <a href="../../architecture/01-introduction-and-goals/" class="md-tabs__link">
           
   
   Architecture
@@ -316,7 +312,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../compliance/overview/" class="md-tabs__link">
+        <a href="../../compliance/overview/" class="md-tabs__link">
           
   
   Compliance
@@ -334,7 +330,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../api/overview/" class="md-tabs__link">
+        <a href="../../api/overview/" class="md-tabs__link">
           
   
   API
@@ -352,7 +348,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../operations/deployment/" class="md-tabs__link">
+        <a href="../../operations/deployment/" class="md-tabs__link">
           
   
   Operations
@@ -370,7 +366,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../testing/test-plan/" class="md-tabs__link">
+        <a href="../../testing/test-plan/" class="md-tabs__link">
           
   
   Testing
@@ -384,11 +380,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../adr/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   ADRs
@@ -427,7 +425,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Skontro Documentation" class="md-nav__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
+    <a href="../.." title="Skontro Documentation" class="md-nav__button md-logo" aria-label="Skontro Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -457,7 +455,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -517,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vision/vision-and-scope/" class="md-nav__link">
+      <a href="../../vision/vision-and-scope/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -542,30 +540,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -576,7 +569,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Requirements
@@ -587,30 +580,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Overview
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../requirements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -619,62 +592,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#download" class="md-nav__link">
-    <span class="md-ellipsis">
-      Download
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#categories" class="md-nav__link">
-    <span class="md-ellipsis">
-      Categories
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      Implementation status
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#compliance-basis" class="md-nav__link">
-    <span class="md-ellipsis">
-      Compliance basis
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -687,7 +604,7 @@
   
   
     <li class="md-nav__item">
-      <a href="srs/" class="md-nav__link">
+      <a href="../../requirements/srs/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -755,7 +672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/01-introduction-and-goals/" class="md-nav__link">
+      <a href="../../architecture/01-introduction-and-goals/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -776,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/02-constraints/" class="md-nav__link">
+      <a href="../../architecture/02-constraints/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -797,7 +714,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/03-context-and-scope/" class="md-nav__link">
+      <a href="../../architecture/03-context-and-scope/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -818,7 +735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/04-solution-strategy/" class="md-nav__link">
+      <a href="../../architecture/04-solution-strategy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -839,7 +756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/05-building-block-view/" class="md-nav__link">
+      <a href="../../architecture/05-building-block-view/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -860,7 +777,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/06-runtime-view/" class="md-nav__link">
+      <a href="../../architecture/06-runtime-view/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -881,7 +798,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/07-deployment-view/" class="md-nav__link">
+      <a href="../../architecture/07-deployment-view/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -902,7 +819,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/08-crosscutting-concepts/" class="md-nav__link">
+      <a href="../../architecture/08-crosscutting-concepts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -923,7 +840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/09-architecture-decisions/" class="md-nav__link">
+      <a href="../../architecture/09-architecture-decisions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -944,7 +861,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/10-quality-requirements/" class="md-nav__link">
+      <a href="../../architecture/10-quality-requirements/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -965,7 +882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/11-risks-and-tech-debt/" class="md-nav__link">
+      <a href="../../architecture/11-risks-and-tech-debt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -986,7 +903,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/12-glossary/" class="md-nav__link">
+      <a href="../../architecture/12-glossary/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1054,7 +971,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../compliance/overview/" class="md-nav__link">
+      <a href="../../compliance/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1075,7 +992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../compliance/e-rechnung/" class="md-nav__link">
+      <a href="../../compliance/e-rechnung/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1096,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../compliance/zugferd/" class="md-nav__link">
+      <a href="../../compliance/zugferd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1117,7 +1034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../compliance/gobd/" class="md-nav__link">
+      <a href="../../compliance/gobd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1138,7 +1055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../compliance/vat-handling/" class="md-nav__link">
+      <a href="../../compliance/vat-handling/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1206,7 +1123,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/overview/" class="md-nav__link">
+      <a href="../../api/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1274,7 +1191,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../operations/deployment/" class="md-nav__link">
+      <a href="../../operations/deployment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1295,7 +1212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../operations/runbook/" class="md-nav__link">
+      <a href="../../operations/runbook/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1316,7 +1233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../operations/monitoring/" class="md-nav__link">
+      <a href="../../operations/monitoring/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1337,7 +1254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../operations/incident-response/" class="md-nav__link">
+      <a href="../../operations/incident-response/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1405,7 +1322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../testing/test-plan/" class="md-nav__link">
+      <a href="../../testing/test-plan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1430,25 +1347,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
-          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1459,7 +1381,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             ADRs
@@ -1473,7 +1395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr/" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1494,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr/0001-stack-choice/" class="md-nav__link">
+      <a href="../0001-stack-choice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1515,7 +1437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr/0002-multi-tenancy/" class="md-nav__link">
+      <a href="../0002-multi-tenancy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1536,7 +1458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr/0003-commit-conventions/" class="md-nav__link">
+      <a href="../0003-commit-conventions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1557,7 +1479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../adr/0004-documentation-framework/" class="md-nav__link">
+      <a href="../0004-documentation-framework/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1575,10 +1497,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../adr/0005-invoice-state-machine/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    0005 — Invoice State Machine
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1587,6 +1529,146 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risks-accepted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks accepted
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-a-scattered-if-checks-in-the-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative A — Scattered if checks in the controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-b-a-third-party-state-machine-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative B — A third-party state-machine package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-c-422-for-illegal-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative C — 422 for illegal transitions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#revision-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revision History
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1626,36 +1708,120 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#download" class="md-nav__link">
+  <a href="#context" class="md-nav__link">
     <span class="md-ellipsis">
-      Download
+      Context
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#categories" class="md-nav__link">
+  <a href="#decision" class="md-nav__link">
     <span class="md-ellipsis">
-      Categories
+      Decision
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#implementation-status" class="md-nav__link">
+  <a href="#consequences" class="md-nav__link">
     <span class="md-ellipsis">
-      Implementation status
+      Consequences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#positive" class="md-nav__link">
+    <span class="md-ellipsis">
+      Positive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#negative" class="md-nav__link">
+    <span class="md-ellipsis">
+      Negative
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#risks-accepted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Risks accepted
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives Considered
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alternatives Considered">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-a-scattered-if-checks-in-the-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative A — Scattered if checks in the controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-b-a-third-party-state-machine-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative B — A third-party state-machine package
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternative-c-422-for-illegal-transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative C — 422 for illegal transitions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#compliance-basis" class="md-nav__link">
+  <a href="#revision-history" class="md-nav__link">
     <span class="md-ellipsis">
-      Compliance basis
+      Revision History
     </span>
   </a>
   
@@ -1676,7 +1842,7 @@
                   
 
   
-    <a href="https://github.com/skontro/skontro/edit/main/docs/requirements/index.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/skontro/skontro/edit/main/docs/adr/0005-invoice-state-machine.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -1685,220 +1851,180 @@
     
       
     
-    <a href="https://github.com/skontro/skontro/raw/main/docs/requirements/index.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/skontro/skontro/raw/main/docs/adr/0005-invoice-state-machine.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h1>
-<p>The Software Requirements Specification (SRS) for Skontro follows the ISO/IEC/IEEE 29148:2018 structure. The authoritative version is the LaTeX-compiled PDF.</p>
-<h2 id="download">Download<a class="headerlink" href="#download" title="Permanent link">&para;</a></h2>
-<p><a class="md-button md-button--primary" href="../formal/srs/srs.pdf"><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-9.5 8.5c0 .8-.7 1.5-1.5 1.5H7v2H5.5V9H8c.8 0 1.5.7 1.5 1.5zm5 2c0 .8-.7 1.5-1.5 1.5h-2.5V9H13c.8 0 1.5.7 1.5 1.5zm4-3H17v1h1.5V13H17v2h-1.5V9h3zm-6.5 0h1v3h-1zm-5 0h1v1H7z"/></svg></span> <strong>Software Requirements Specification (PDF, v1.0)</strong></a></p>
-<p>Approximately 40 pages. Contains:</p>
+<h1 id="0005-enforce-the-invoice-lifecycle-with-an-explicit-state-machine">0005. Enforce the Invoice Lifecycle with an Explicit State Machine<a class="headerlink" href="#0005-enforce-the-invoice-lifecycle-with-an-explicit-state-machine" title="Permanent link">&para;</a></h1>
 <ul>
-<li>62 Functional Requirements (FR-001 through FR-062)</li>
-<li>45 Non-Functional Requirements (NFR-001 through NFR-045) covering performance, security, usability, reliability, maintainability, portability, and compliance</li>
-<li>10 Interface Requirements (IR-001 through IR-011)</li>
-<li>Complete Requirements Traceability Matrix</li>
+<li><strong>Status:</strong> Accepted</li>
+<li><strong>Date:</strong> 2026-05-29</li>
+<li><strong>Deciders:</strong> Zeeshan Ahmed Raja (sole maintainer, v0.1.0)</li>
+<li><strong>Consulted:</strong> —</li>
+<li><strong>Informed:</strong> Future contributors via this ADR; SRS FR-032.</li>
 </ul>
-<h2 id="categories">Categories<a class="headerlink" href="#categories" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Authentication and user management:</strong> FR-001 through FR-010</li>
-<li><strong>Multi-tenancy:</strong> FR-011 through FR-015</li>
-<li><strong>Customer management:</strong> FR-016 through FR-022</li>
-<li><strong>Product and service catalog:</strong> FR-023 through FR-028</li>
-<li><strong>Invoicing core:</strong> FR-029 through FR-040</li>
-<li><strong>E-invoicing (ZUGFeRD):</strong> FR-041 through FR-048</li>
-<li><strong>Expense tracking:</strong> FR-049 through FR-053</li>
-<li><strong>Dashboard:</strong> FR-054 through FR-057</li>
-<li><strong>Tenant settings:</strong> FR-058 through FR-062</li>
-</ul>
-<h2 id="implementation-status">Implementation status<a class="headerlink" href="#implementation-status" title="Permanent link">&para;</a></h2>
-<p>The authoritative Requirements Traceability Matrix lives in the SRS PDF. This
-table tracks the build status of the requirements realized so far; it is updated
-honestly as each milestone lands, and a requirement stays <code>TBD</code> until code and
-tests actually exist for it.</p>
+<hr />
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
+<p>An invoice has a legally-meaningful lifecycle: <code>draft → issued → sent →
+(partially_paid | paid)</code>, with any non-paid state able to be cancelled, and
+<code>paid</code>/<code>cancelled</code> terminal. The transitions are not cosmetic. Issuing mints a
+gapless tax-document number and freezes the line items; a paid invoice must not be
+silently reversed; an invoice cannot jump from draft straight to sent without
+being issued first.</p>
+<p>Encoding this lifecycle as ad-hoc <code>if</code> checks scattered across a controller is the
+default path, and it is the wrong one. Legality would be expressed in several
+places, each able to drift from the others; a reviewer could not see the whole
+lifecycle in one glance; and a future "tidy-up" could quietly forbid a legal move
+(for example recording a second partial payment) or permit an illegal one (for
+example cancelling a paid invoice). SRS FR-032 anticipated this and called for an
+ADR on the invoice state machine.</p>
+<p>A second, related question is <strong>which HTTP status</strong> an illegal transition returns.
+A malformed request body is a 422 (validation). But "send a draft" is a
+well-formed request that conflicts with the resource's current state — a
+different category of error that the client should be able to distinguish.</p>
+<hr />
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">&para;</a></h2>
+<p>The invoice lifecycle is enforced by a dedicated <code>InvoiceStateMachine</code> service
+whose legal transitions live in <strong>one transition table</strong>. A single method,
+<code>assertCanTransition(from, to)</code>, is the only gate; it throws
+<code>InvalidTransitionException</code> on an illegal move. Controllers never re-encode
+legality — they call the gate.</p>
+<p>The transition table:</p>
 <table>
 <thead>
 <tr>
-<th>Requirements</th>
-<th>Area</th>
-<th>Status</th>
-<th>Realized by</th>
+<th>From</th>
+<th>Allowed to</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>FR-001 – FR-010</td>
-<td>Authentication &amp; user management</td>
-<td>Implemented</td>
-<td>Registration, login, logout, current-user endpoints; cookie-session auth. Tests: <code>tests/Feature/Auth/*</code>.</td>
+<td><code>draft</code></td>
+<td><code>issued</code>, <code>cancelled</code></td>
 </tr>
 <tr>
-<td>FR-011, FR-012, FR-014</td>
-<td>Multi-tenancy: model, scoping, stamping, isolation</td>
-<td>Implemented</td>
-<td><code>BelongsToTenant</code> trait + <code>TenantScope</code> global scope; <code>ResolveTenant</code> middleware. Tests: <code>tests/Unit/Tenancy/TenantScopeTest.php</code>, <code>tests/Feature/Tenancy/CrossTenantAccessTest.php</code>.</td>
+<td><code>issued</code></td>
+<td><code>sent</code>, <code>partially_paid</code>, <code>paid</code>, <code>cancelled</code></td>
 </tr>
 <tr>
-<td>FR-013</td>
-<td>Atomic per-tenant, annually-resetting document numbering</td>
-<td>Implemented</td>
-<td><code>SequenceGenerator</code> + <code>number_sequences</code> row lock (<code>SELECT ... FOR UPDATE</code>); <code>DocumentType</code> enum. Tests: <code>tests/Feature/Numbering/*</code>.</td>
+<td><code>sent</code></td>
+<td><code>partially_paid</code>, <code>paid</code>, <code>cancelled</code></td>
 </tr>
 <tr>
-<td>FR-015</td>
-<td>Cross-tenant resource access (404-not-403)</td>
-<td>Implemented</td>
-<td>Inherited via <code>BelongsToTenant</code> + route-model binding through the tenant scope; no ownership check in controllers. Tests: <code>tests/Feature/Customers/CustomerTenantIsolationTest.php</code>.</td>
+<td><code>partially_paid</code></td>
+<td><code>partially_paid</code>, <code>paid</code>, <code>cancelled</code></td>
 </tr>
 <tr>
-<td>FR-016 – FR-020</td>
-<td>Customer management: create, read, update, soft-delete + restore, paginated search</td>
-<td>Implemented</td>
-<td><code>CustomerController</code> (CRUD, soft-delete, search) behind auth + tenant + role. Tests: <code>tests/Feature/Customers/*</code>, <code>tests/Unit/Models/CustomerTest.php</code>.</td>
+<td><code>paid</code></td>
+<td>— (terminal)</td>
 </tr>
 <tr>
-<td>FR-021</td>
-<td>VAT-ID validation per country</td>
-<td>Implemented (format + DE checksum; VIES online verification deferred to v0.2)</td>
-<td><code>VatId</code> rule. Tests: <code>tests/Unit/Rules/VatIdTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-022</td>
-<td>EU country support</td>
-<td>Implemented</td>
-<td><code>Country</code> enum, 27 ISO 3166-1 alpha-2 member states.</td>
-</tr>
-<tr>
-<td>FR-023</td>
-<td>Create product/service</td>
-<td>Implemented</td>
-<td><code>ProductController</code> + <code>StoreProductRequest</code> behind auth + tenant + role. Tests: <code>tests/Feature/Products/ProductCrudTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-024</td>
-<td>German VAT rates 19/7/0</td>
-<td>Implemented</td>
-<td><code>VatRate</code> enum (int-backed); decimal-string multipliers for <code>brick/money</code>. Tests: <code>tests/Unit/Enums/VatRateTest.php</code>, validation test in <code>ProductCrudTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-025</td>
-<td>Seven units → UN/ECE Rec 20 codes</td>
-<td>Implemented</td>
-<td><code>Unit</code> enum carrying <code>uneceCode()</code> (H87/HUR/KGM/MTR/MTK/DAY/LS). Tests: <code>tests/Unit/Enums/UnitTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-026</td>
-<td>Money as integer cents (no floats)</td>
-<td>Implemented</td>
-<td><code>unit_price_cents</code> <code>BIGINT</code> + <code>MoneyCast</code>/<code>Money</code> over <code>brick/money</code>. Evidence: the <code>information_schema</code> column-type assertion and the float-rejection test (<code>tests/Unit/Money/MoneyCastTest.php</code>, <code>tests/Unit/Models/ProductTest.php</code>).</td>
-</tr>
-<tr>
-<td>FR-027</td>
-<td>Archive / unarchive (not delete)</td>
-<td>Implemented</td>
-<td><code>is_active</code> flag + archive/unarchive endpoints; no destroy route (the 405 test proves it). Tests: <code>tests/Feature/Products/ProductCrudTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-028</td>
-<td>Optional SKU</td>
-<td>Implemented (optional; <strong>not</strong> unique-constrained in v0.1)</td>
-<td>Nullable <code>sku</code> column; a partial unique index on <code>(tenant_id, sku)</code> is the path if per-tenant uniqueness is ever required.</td>
-</tr>
-<tr>
-<td>FR-029</td>
-<td>Create draft invoice</td>
-<td>Implemented</td>
-<td><code>InvoiceController::store</code> behind auth + tenant + role; at least one line required. Tests: <code>tests/Feature/Invoices/InvoiceCrudTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-030</td>
-<td>Line items (catalog or ad-hoc)</td>
-<td>Implemented</td>
-<td><code>InvoiceLine</code> with optional <code>product_id</code>; lines frozen after issue. Tests: <code>tests/Feature/Invoices/InvoiceLifecycleTest.php</code>, <code>tests/Unit/Models/InvoiceTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-031</td>
-<td>Line-level VAT rounding (EN 16931 BR-CO-17)</td>
-<td>Implemented</td>
-<td><code>InvoiceCalculator</code> in <code>BigDecimal</code>, <code>HALF_UP</code>, per line then summed. Evidence: the line-vs-document divergence test (30 vs 29 cents) in <code>tests/Unit/Invoicing/InvoiceCalculatorTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-032</td>
-<td>Invoice state machine</td>
-<td>Implemented</td>
-<td><code>InvoiceStateMachine</code> (one transition table, 409 on illegal) + <a href="../adr/0005-invoice-state-machine/">ADR 0005</a>. Tests: <code>tests/Unit/Invoicing/InvoiceStateMachineTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-033</td>
-<td>Issue: mint number, lock lines, dispatch document job</td>
-<td>Implemented (document job is a <strong>stub</strong>; real ZUGFeRD is FR-041+)</td>
-<td><code>InvoiceActionController::issue</code> mints <code>R-YYYY-NNNNN</code> via <code>SequenceGenerator</code>, freezes lines, dispatches <code>GenerateInvoiceDocument</code>. Tests: <code>tests/Feature/Invoices/InvoiceLifecycleTest.php</code> (incl. <code>Queue::assertPushed</code>).</td>
-</tr>
-<tr>
-<td>FR-034</td>
-<td>Cancel with reason</td>
-<td>Implemented</td>
-<td><code>cancel</code> requires a reason; a paid invoice cannot be cancelled (409). Tests: <code>tests/Feature/Invoices/InvoiceLifecycleTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-035</td>
-<td>Record payment</td>
-<td>Implemented</td>
-<td><code>Payment</code> + <code>recordPayment</code>; cumulative amount drives partially_paid/paid. Tests: <code>tests/Feature/Invoices/InvoiceLifecycleTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-036</td>
-<td>Payment terms</td>
-<td>Implemented</td>
-<td><code>Invoice::resolvePaymentTerms</code> derives the due date. Tests: <code>tests/Unit/Models/InvoiceTest.php</code>, <code>tests/Feature/Invoices/InvoiceCrudTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-037</td>
-<td>Service period</td>
-<td>Implemented</td>
-<td><code>service_period_start</code>/<code>_end</code> stored and surfaced in <code>InvoiceResource</code>.</td>
-</tr>
-<tr>
-<td>FR-038</td>
-<td>Notes (top / bottom)</td>
-<td>Implemented</td>
-<td><code>notes_top</code> / <code>notes_bottom</code> per invoice.</td>
-</tr>
-<tr>
-<td>FR-039</td>
-<td>Invoice numbering (<code>R-YYYY-NNNNN</code>)</td>
-<td>Implemented</td>
-<td>Via <code>SequenceGenerator</code> on issue; unique per tenant. Tests: <code>tests/Feature/Invoices/InvoiceLifecycleTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-040</td>
-<td>Customer default payment-terms precedence</td>
-<td>Implemented</td>
-<td><code>resolvePaymentTerms</code>: invoice &gt; customer &gt; tenant default (14). Tests: <code>tests/Unit/Models/InvoiceTest.php</code>.</td>
-</tr>
-<tr>
-<td>FR-041 – FR-062</td>
-<td>E-invoicing (ZUGFeRD), expenses, dashboard, settings</td>
-<td>TBD</td>
-<td>Subsequent milestones. Issuing already dispatches the document job (a stub); the real <code>GenerateInvoiceDocument</code> (ZUGFeRD 2.1 PDF/A-3) is the next milestone, and the per-rate VAT breakdown, UN/ECE unit codes, and invoice numbering it needs are already in place.</td>
+<td><code>cancelled</code></td>
+<td>— (terminal)</td>
 </tr>
 </tbody>
 </table>
-<p>Security NFRs realized alongside the above: NFR-009 (session security), NFR-010
-(Sanctum), NFR-011 (password hashing), NFR-013 (generic auth-failure messaging).</p>
-<h2 id="compliance-basis">Compliance basis<a class="headerlink" href="#compliance-basis" title="Permanent link">&para;</a></h2>
-<p>The SRS references:</p>
+<p>Supporting decisions:</p>
 <ul>
-<li>EN 16931 — European standard for electronic invoicing</li>
-<li>Wachstumschancengesetz (BGBl. 2024 I Nr. 108) — the legislative driver</li>
-<li>§14 UStG, §19 UStG — German VAT Act</li>
-<li>GoBD — German digital bookkeeping rules</li>
-<li>ZUGFeRD 2.1 — hybrid PDF/A-3 + XML format specification</li>
+<li><strong><code>InvalidTransitionException</code> renders as HTTP 409 Conflict</strong>, not 422, carrying
+  the current and attempted states in the body. The request is well-formed; it
+  conflicts with the resource's state. The exception renders itself, so the
+  controller stays clean.</li>
+<li><strong>Line items freeze on issue.</strong> <code>InvoiceState::allowsLineEditing()</code> returns true
+  only for <code>draft</code>; an update to any other state is rejected with 409. Immutability
+  of an issued tax document is a property of the state, not a controller check.</li>
+<li><strong><code>partially_paid → partially_paid</code> is intentionally legal.</strong> Recording a further
+  partial payment that still does not settle the invoice is a real transition to
+  the same state; the table includes it so a future change does not accidentally
+  forbid a second partial payment.</li>
+<li><strong><code>paid</code> and <code>cancelled</code> are terminal, and <code>paid → cancelled</code> is absent</strong>, so a
+  settled invoice cannot be cancelled (FR-034).</li>
 </ul>
+<hr />
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>One auditable source of truth.</strong> The whole lifecycle is one table a reviewer
+  reads in a glance, and one place a test exercises as a full transition matrix
+  (every legal move permitted, representative illegal ones rejected).</li>
+<li><strong>Controllers stay thin.</strong> They authorize via the gate and never duplicate
+  legality; the SPA's action buttons and any future caller defer to the same rule.</li>
+<li><strong>409 vs 422 is meaningful.</strong> The client can tell a state conflict from a bad
+  payload and show a precise message; the 409 body names the current and attempted
+  states.</li>
+<li><strong>Immutability is structural.</strong> Because editability is a property of the state,
+  freezing issued invoices needs no per-field guard.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>One more service to call.</strong> Every transition must route through
+  <code>assertCanTransition</code> rather than flipping a column directly. This is the
+  intended cost: the discipline is what keeps legality in one place.</li>
+</ul>
+<h3 id="risks-accepted">Risks accepted<a class="headerlink" href="#risks-accepted" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The table is hand-maintained. A wrong edit could permit an illegal transition.
+  Mitigation: the transition-matrix test pins every legal and a representative set
+  of illegal transitions, so a bad edit fails the suite.</li>
+</ul>
+<hr />
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">&para;</a></h2>
+<h3 id="alternative-a-scattered-if-checks-in-the-controller">Alternative A — Scattered <code>if</code> checks in the controller<a class="headerlink" href="#alternative-a-scattered-if-checks-in-the-controller" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> No new abstraction; the obvious first approach.</li>
+<li><strong>Con:</strong> Legality expressed in many places that drift; no single view of the
+  lifecycle; easy to forbid a legal move or permit an illegal one during a later
+  refactor.</li>
+<li><strong>Verdict:</strong> Rejected. This is precisely what FR-032 asked for an ADR to avoid.</li>
+</ul>
+<h3 id="alternative-b-a-third-party-state-machine-package">Alternative B — A third-party state-machine package<a class="headerlink" href="#alternative-b-a-third-party-state-machine-package" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> Batteries-included transitions, events, guards.</li>
+<li><strong>Con:</strong> A dependency and its conventions for a transition table that fits in a
+  few lines; heavier than the problem warrants at v0.1.</li>
+<li><strong>Verdict:</strong> Rejected. The hand-rolled table is smaller, fully owned, and
+  trivially testable. Revisit only if the lifecycle grows guards/events.</li>
+</ul>
+<h3 id="alternative-c-422-for-illegal-transitions">Alternative C — 422 for illegal transitions<a class="headerlink" href="#alternative-c-422-for-illegal-transitions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pro:</strong> One error category for everything a controller rejects.</li>
+<li><strong>Con:</strong> Conflates a well-formed-but-conflicting request with a malformed one;
+  the client cannot distinguish them.</li>
+<li><strong>Verdict:</strong> Rejected. 409 is the correct semantic for a state conflict.</li>
+</ul>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>SRS FR-032 — invoice state machine (this ADR is the one it forecast)</li>
+<li>SRS FR-033 — issue: mint number, lock lines, dispatch document job</li>
+<li>SRS FR-034 — cancel with reason; a paid invoice cannot be cancelled</li>
+<li>arc42 §5.5 — Invoicing core building block</li>
+<li>arc42 §6.2 — the invoice lifecycle runtime view</li>
+<li>EN 16931 BR-CO-17 — line-level VAT rounding (the related correctness rule)</li>
+</ul>
+<hr />
+<h2 id="revision-history">Revision History<a class="headerlink" href="#revision-history" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2026-05-29</td>
+<td>Zeeshan Ahmed Raja</td>
+<td>Initial decision recorded.</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -1936,7 +2062,7 @@ tests actually exist for it.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../vision/vision-and-scope/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Skontro — Vision and Scope">
+          <a href="../0004-documentation-framework/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 0004 — Documentation Framework">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1946,27 +2072,11 @@ tests actually exist for it.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Skontro — Vision and Scope
+                0004 — Documentation Framework
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="srs/" class="md-footer__link md-footer__link--next" aria-label="Next: Software Requirements Specification">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Software Requirements Specification
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
@@ -2011,10 +2121,10 @@ tests actually exist for it.</p>
       <div class="md-progress" data-md-component="progress" role="progressbar"></div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.edit", "content.action.view"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.path", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.action.edit", "content.action.view"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

@@ -495,9 +495,55 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#55-and-beyond">
+<a class="md-nav__link" href="#55-invoicing-core">
 <span class="md-ellipsis">
-      5.5 and beyond
+      5.5 Invoicing core
+    </span>
+</a>
+<nav aria-label="5.5 Invoicing core" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#line-level-vat-rounding-is-the-load-bearing-rule">
+<span class="md-ellipsis">
+      Line-level VAT rounding is the load-bearing rule
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-lifecycle-is-one-transition-table-not-scattered-conditionals">
+<span class="md-ellipsis">
+      The lifecycle is one transition table, not scattered conditionals
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#totals-are-server-authoritative">
+<span class="md-ellipsis">
+      Totals are server-authoritative
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_4">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_4">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#56-and-beyond">
+<span class="md-ellipsis">
+      5.6 and beyond
     </span>
 </a>
 </li>
@@ -750,6 +796,13 @@
   </span>
 </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../adr/0005-invoice-state-machine/">
+<span class="md-ellipsis">
+    0005 — Invoice State Machine
+  </span>
+</a>
+</li>
 </ul>
 </nav>
 </li>
@@ -910,9 +963,55 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#55-and-beyond">
+<a class="md-nav__link" href="#55-invoicing-core">
 <span class="md-ellipsis">
-      5.5 and beyond
+      5.5 Invoicing core
+    </span>
+</a>
+<nav aria-label="5.5 Invoicing core" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#line-level-vat-rounding-is-the-load-bearing-rule">
+<span class="md-ellipsis">
+      Line-level VAT rounding is the load-bearing rule
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#the-lifecycle-is-one-transition-table-not-scattered-conditionals">
+<span class="md-ellipsis">
+      The lifecycle is one transition table, not scattered conditionals
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#totals-are-server-authoritative">
+<span class="md-ellipsis">
+      Totals are server-authoritative
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#building-blocks_4">
+<span class="md-ellipsis">
+      Building blocks
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interfaces_4">
+<span class="md-ellipsis">
+      Interfaces
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#56-and-beyond">
+<span class="md-ellipsis">
+      5.6 and beyond
     </span>
 </a>
 </li>
@@ -1415,9 +1514,188 @@ invoice depends on must always resolve.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="55-and-beyond">5.5 and beyond<a class="headerlink" href="#55-and-beyond" title="Permanent link">¶</a></h2>
-<p>The remaining building blocks (invoicing core, e-invoicing, expense tracking,
-dashboard, tenant settings) are documented as each is built in its milestone.</p>
+<h2 id="55-invoicing-core">5.5 Invoicing core<a class="headerlink" href="#55-invoicing-core" title="Permanent link">¶</a></h2>
+<p>Invoicing is the milestone the whole project was pointed at: it composes the
+customers to bill, the products to bill for, the money to bill in, and the
+numbers to bill under into one aggregate. Like the customer and catalog blocks
+it inherits tenant isolation from §5.1 rather than re-implementing it — <code>Invoice</code>
+and <code>Payment</code> use <code>BelongsToTenant</code>; <code>InvoiceLine</code> is not independently scoped
+because it is only ever reached through its parent invoice. What this block adds
+that is genuinely new is <strong>two pieces of pure domain logic kept out of the
+controllers</strong>: a line-level VAT calculator and an explicit state machine.</p>
+<h3 id="line-level-vat-rounding-is-the-load-bearing-rule">Line-level VAT rounding is the load-bearing rule<a class="headerlink" href="#line-level-vat-rounding-is-the-load-bearing-rule" title="Permanent link">¶</a></h3>
+<p>The single most important correctness rule in the system is EN 16931 <strong>BR-CO-17</strong>:
+VAT is computed <strong>per line, rounded per line, then summed</strong> — never computed once
+on the document subtotal. The two approaches differ by one or two cents on
+multi-rate invoices, and that difference fails KoSIT validation. <code>InvoiceCalculator</code>
+implements the rule; it takes plain <code>InvoiceLineInput</code> value objects and returns
+an immutable <code>InvoiceTotals</code> carrying the subtotal, the total VAT, the grand
+total, and a <strong>per-rate breakdown</strong> (<code>rate → {net, vat}</code>) that ZUGFeRD's tax
+subtotal groups require. The calculator is DB-free and pure, so it is testable in
+isolation and reusable by the model layer now and the ZUGFeRD generator later.</p>
+<p>All arithmetic is <code>brick/math</code> <code>BigDecimal</code> with explicit <code>HALF_UP</code> rounding to
+whole cents; no PHP float ever touches a monetary value. Quantities are decimal
+strings (2.5 hours is valid) and stay in arbitrary precision until the explicit
+per-line rounding. The decisive evidence that the rule is actually implemented is
+a test that constructs a case where line-level rounding (30 cents) and
+document-level rounding (29) genuinely diverge — if anyone "simplifies" the
+calculator to tax the subtotal, that test goes red.</p>
+<h3 id="the-lifecycle-is-one-transition-table-not-scattered-conditionals">The lifecycle is one transition table, not scattered conditionals<a class="headerlink" href="#the-lifecycle-is-one-transition-table-not-scattered-conditionals" title="Permanent link">¶</a></h3>
+<p>An invoice has a legally-meaningful lifecycle, enforced by <code>InvoiceStateMachine</code>
+(see <a href="../../adr/0005-invoice-state-machine/">ADR 0005</a> and the §6 runtime view):
+<code>draft → issued → sent → (partially_paid | paid)</code>, with any non-paid state able
+to be cancelled, and <code>paid</code>/<code>cancelled</code> terminal. The legal transitions live in
+<strong>one table</strong>; <code>assertCanTransition</code> is the single gate every transition passes
+through, throwing <code>InvalidTransitionException</code> — which renders as <strong>HTTP 409</strong>
+carrying the current and attempted states — on an illegal move. The controller
+never re-encodes legality. Issuing is the pivotal transition: it mints the
+<code>R-YYYY-NNNNN</code> number via the §5.3 <code>SequenceGenerator</code>, sets <code>issued_at</code>, freezes
+the line items (only a draft is editable — a write to an issued invoice 409s), and
+<strong>dispatches</strong> <code>GenerateInvoiceDocument</code>.</p>
+<p>That job is, in this milestone, a <strong>stub</strong>: it implements <code>ShouldQueue</code> and logs.
+The real ZUGFeRD/PDF generation (FR-041–FR-048) is a separate milestone; here the
+issue flow's contract — mint, lock, dispatch — is complete and tested (via
+<code>Queue::fake</code>/<code>assertPushed</code>) without building the generator prematurely. The
+stub's <code>handle()</code> is the seam the e-invoicing milestone plugs into.</p>
+<h3 id="totals-are-server-authoritative">Totals are server-authoritative<a class="headerlink" href="#totals-are-server-authoritative" title="Permanent link">¶</a></h3>
+<p>The server is the single source of truth for money. <code>Invoice::recalculateTotals()</code>
+runs the calculator on every draft create and update and persists both the
+document totals and each line's computed net and VAT; the API ignores any
+client-sent totals entirely. The SPA editor shows a live preview using the same
+line-level algorithm so what the user sees matches what the server stores, but the
+preview never writes totals — it is convenience, not authority.</p>
+<p>Payment-terms precedence (FR-036, FR-040) is resolved by a pure static helper,
+<code>Invoice::resolvePaymentTerms()</code>: an explicit invoice-level value wins, else the
+customer's default, else the tenant default of 14 days — used at draft creation to
+derive the due date.</p>
+<pre class="mermaid"><code>flowchart TD
+    ctrl[InvoiceController::store] --&gt; terms[resolvePaymentTerms<br/>invoice &gt; customer &gt; 14]
+    ctrl --&gt; lines[syncLines<br/>catalog or ad-hoc]
+    lines --&gt; calc[InvoiceCalculator<br/>BR-CO-17 per-line VAT]
+    calc --&gt; totals[InvoiceTotals<br/>subtotal, per-rate, total]
+    totals --&gt; persist[(invoices + invoice_lines<br/>stored cents)]
+    issue[InvoiceActionController::issue] --&gt; sm[InvoiceStateMachine<br/>assertCanTransition]
+    sm --&gt; seq[SequenceGenerator.next<br/>R-YYYY-NNNNN]
+    issue --&gt; job[GenerateInvoiceDocument<br/>stub: dispatched, logs]
+</code></pre>
+<h3 id="building-blocks_4">Building blocks<a class="headerlink" href="#building-blocks_4" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Type</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>InvoiceCalculator</code></td>
+<td>Service (pure)</td>
+<td>Line-level VAT rounding per BR-CO-17 in <code>BigDecimal</code>; returns <code>InvoiceTotals</code>. DB-free and reusable.</td>
+</tr>
+<tr>
+<td><code>InvoiceTotals</code>, <code>InvoiceLineInput</code></td>
+<td>Value objects (readonly)</td>
+<td>The calculator's output (subtotal, total VAT, grand total, per-rate breakdown) and its decoupled input unit.</td>
+</tr>
+<tr>
+<td><code>InvoiceStateMachine</code></td>
+<td>Service (pure)</td>
+<td>The lifecycle as one transition table; <code>assertCanTransition</code> is the single gate.</td>
+</tr>
+<tr>
+<td><code>InvalidTransitionException</code></td>
+<td>Exception</td>
+<td>Self-renders as HTTP 409 with current + attempted state.</td>
+</tr>
+<tr>
+<td><code>InvoiceState</code>, <code>PaymentMethod</code></td>
+<td>Backed enums</td>
+<td>Lifecycle states (with <code>allowsLineEditing()</code> / <code>isTerminal()</code>) and payment methods.</td>
+</tr>
+<tr>
+<td><code>Invoice</code></td>
+<td>Eloquent model (<code>BelongsToTenant</code>)</td>
+<td>Aggregate root owning lines and payments; <code>recalculateTotals()</code>, <code>paidCents()</code>, <code>resolvePaymentTerms()</code>. Number null while draft, unique per tenant once minted.</td>
+</tr>
+<tr>
+<td><code>InvoiceLine</code></td>
+<td>Eloquent model</td>
+<td>Decimal quantity (never float), cents price, persisted per-line net/vat; optional product reference. Isolation inherited via the aggregate, not its own scope.</td>
+</tr>
+<tr>
+<td><code>Payment</code></td>
+<td>Eloquent model (<code>BelongsToTenant</code>)</td>
+<td>A recorded payment; the sum drives the partially_paid/paid transition.</td>
+</tr>
+<tr>
+<td><code>GenerateInvoiceDocument</code></td>
+<td>Queued job (<strong>stub</strong>)</td>
+<td>Dispatched on issue; logs only. The seam for ZUGFeRD/PDF (FR-041+).</td>
+</tr>
+<tr>
+<td><code>InvoiceController</code></td>
+<td>Controller</td>
+<td>Create/update drafts (server-recomputed totals), list, show.</td>
+</tr>
+<tr>
+<td><code>InvoiceActionController</code></td>
+<td>Controller</td>
+<td>issue / send / record-payment / cancel — every transition through the state machine.</td>
+</tr>
+<tr>
+<td><code>InvoiceResource</code>, <code>InvoiceLineResource</code>, <code>PaymentResource</code></td>
+<td>API resources</td>
+<td>Controlled JSON; cents plus formatted strings; per-rate-ready line data.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interfaces_4">Interfaces<a class="headerlink" href="#interfaces_4" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Producer</th>
+<th>Consumer</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET/POST/PATCH /api/v1/invoices</code>, <code>…/{invoice}/{issue,send,payments,cancel}</code></td>
+<td><code>InvoiceController</code>, <code>InvoiceActionController</code></td>
+<td>SPA, API clients</td>
+<td>Reads behind <code>auth:sanctum</code> + <code>tenant</code>; writes additionally behind <code>role:admin</code>.</td>
+</tr>
+<tr>
+<td><code>InvoiceCalculator::calculate(list&lt;InvoiceLineInput&gt;)</code></td>
+<td><code>InvoiceCalculator</code></td>
+<td><code>Invoice::recalculateTotals</code>, SPA preview (mirrored), ZUGFeRD (later)</td>
+<td>Line-level VAT, <code>HALF_UP</code>, float-free; returns <code>InvoiceTotals</code> with the per-rate breakdown.</td>
+</tr>
+<tr>
+<td><code>InvoiceStateMachine::assertCanTransition(from, to)</code></td>
+<td><code>InvoiceStateMachine</code></td>
+<td>Action controller</td>
+<td>Throws <code>InvalidTransitionException</code> (409) on an illegal transition; the single legality gate.</td>
+</tr>
+<tr>
+<td><code>GenerateInvoiceDocument</code> dispatch</td>
+<td><code>InvoiceActionController::issue</code></td>
+<td>Queue (ZUGFeRD milestone)</td>
+<td>Issuing dispatches the job; the handler is a stub until e-invoicing lands.</td>
+</tr>
+<tr>
+<td><code>SequenceGenerator::next(Tenant, DocumentType::Invoice)</code></td>
+<td>§5.3</td>
+<td><code>InvoiceActionController::issue</code></td>
+<td>Mints the <code>R-YYYY-NNNNN</code> number atomically when an invoice is issued.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="56-and-beyond">5.6 and beyond<a class="headerlink" href="#56-and-beyond" title="Permanent link">¶</a></h2>
+<p>The remaining building blocks (e-invoicing, expense tracking, dashboard, tenant
+settings) are documented as each is built in its milestone.</p>
 </article>
 </div>
 <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
