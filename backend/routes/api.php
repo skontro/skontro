@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -35,6 +36,18 @@ Route::prefix('v1')->group(function () {
             Route::patch('/customers/{customer}', [CustomerController::class, 'update']);
             Route::delete('/customers/{customer}', [CustomerController::class, 'destroy']);
             Route::post('/customers/{uuid}/restore', [CustomerController::class, 'restore']);
+        });
+
+        // Products — reads for any authenticated tenant user
+        Route::get('/products', [ProductController::class, 'index']);
+        Route::get('/products/{product}', [ProductController::class, 'show']);
+
+        // Product writes — at least admin role. No destroy: products archive.
+        Route::middleware('role:admin')->group(function () {
+            Route::post('/products', [ProductController::class, 'store']);
+            Route::patch('/products/{product}', [ProductController::class, 'update']);
+            Route::post('/products/{product}/archive', [ProductController::class, 'archive']);
+            Route::post('/products/{product}/unarchive', [ProductController::class, 'unarchive']);
         });
     });
 });
