@@ -200,8 +200,98 @@ in the correct annual sequence rather than the sequence of its insertion date.
 | `SequenceGenerator::next(Tenant, DocumentType, ?year)` | `SequenceGenerator` | Resource controllers (Customers now; invoices, expenses later) | Returns a distinct, gapless, formatted number under a row lock. Correct under concurrency on Postgres. |
 | Unique `(tenant_id, document_type, year)` index | `number_sequences` migration | Database | Integrity backstop guaranteeing one counter row per tenant/type/year, independent of application logic. |
 
-## 5.4 and beyond
+## 5.4 Product catalog & the money/units value layer
 
-The remaining building blocks (catalog, invoicing core, e-invoicing, expense
-tracking, dashboard, tenant settings) are documented as each is built in its
-milestone.
+The catalog is the second tenant-owned business resource, and like customers it
+adds no isolation machinery of its own — `Product` uses `BelongsToTenant`, so
+tenant scoping, stamping, and the cross-tenant 404 are all inherited from §5.1.
+What the catalog introduces instead are two primitives that invoicing depends on
+and will reuse unchanged: a **money value layer** that keeps money as integer
+cents everywhere, and a **unit enum that carries its UN/ECE code** for EN 16931
+line output.
+
+### The cents boundary
+
+The decisive rule for money is FR-026 / TC-12: money is **integer cents, never a
+float**. This milestone makes that rule executable rather than aspirational. The
+amount is integer cents at every hop — the client form, the wire, the column, and
+back — and the only thing that ever performs money arithmetic or formatting is
+`brick/money`, which uses arbitrary-precision `BigDecimal` internally. A PHP
+float is not merely discouraged; it is **rejected** at the cast boundary rather
+than silently rounded.
+
+```mermaid
+flowchart LR
+    eur["EUR input '120,00'"] -->|eurosToCents| cents[integer cents 12000]
+    cents -->|HTTP JSON| api[StoreProductRequest<br/>validates integer]
+    api --> col[(unit_price_cents<br/>BIGINT)]
+    col -->|price accessor| money[brick/money Money]
+    money -->|Money::format| out["'120,00 €'"]
+    float[PHP float] -.->|rejected by MoneyCast| money
+```
+
+Two pieces enforce this rather than leave it to reviewer vigilance. The column is
+a `BIGINT` (`unsignedBigInteger`) — a test queries `information_schema` to assert
+the stored type is an integer family, so even a regression in application code
+cannot make the schema floating point. And `MoneyCast::set` accepts a `Money` or
+integer-like cents and **throws** on anything else, so the one mistake FR-026
+exists to prevent — constructing money from a float — fails loudly at the seam.
+On the client the same discipline holds in miniature: `eurosToCents` converts the
+EUR field to integer cents before the request, and the only division by 100 is in
+`centsToEuros`, a one-way render for the eye that is never fed back into storage.
+
+A deliberate modeling choice worth recording: the column is named
+`unit_price_cents` so the "this is cents" fact is never lost, and `Product`
+exposes it through a `price` accessor returning a `brick/money` `Money`. The
+reusable `MoneyCast` stays available for models whose attribute is literally the
+money name; this model uses the accessor instead. One money approach per model —
+never both, since registering `price` in `casts()` and as an accessor would
+collide.
+
+### Unit codes live on the enum
+
+EN 16931 requires a UN/ECE Recommendation 20 unit code on every invoice line. The
+`Unit` enum carries that code on each case (`Stück → H87`, `Stunde → HUR`,
+`Kilogramm → KGM`, `Meter → MTR`, `Quadratmeter → MTK`, `Tag → DAY`,
+`pauschal → LS`), so invoicing reads `$unit->uneceCode()` directly with **no
+separate lookup table to drift out of sync**. The backed value is the German
+display label; the UN/ECE code is the machine code emitted into ZUGFeRD/XRechnung.
+Placing the mapping on the enum now, ahead of invoicing needing it, is the same
+move as putting numbering on a generic service: the dependency inherits a correct
+implementation instead of reinventing one.
+
+### Archive, not delete
+
+Products are **archived**, never deleted (FR-027). Archiving is an `is_active`
+flag, not a soft delete: an archived product stays fully readable because an
+invoice line may reference it indefinitely, but the `active()` scope drops it from
+the product picker for new invoices. There is deliberately **no destroy
+endpoint** — a `DELETE` returns 405, proven by test — because a product that an
+invoice depends on must always resolve.
+
+### Building blocks
+
+| Block | Type | Responsibility |
+|---|---|---|
+| `Product` | Eloquent model (`BelongsToTenant`) | The catalog model. UUID-keyed externally; integer-cents pricing via a `price` accessor; `active()` and case-insensitive `search()` scopes. No tenant-ownership code of its own. |
+| `VatRate` | Backed enum (int) | The three German rates 19/7/0 (FR-024); multipliers returned as decimal **strings** for `brick/money` arithmetic, never floats. |
+| `Unit` | Backed enum (string) | The seven supported units (FR-025), each carrying its UN/ECE Rec 20 code via `uneceCode()`. |
+| `Money` (support) | Value helper | The single place integer cents become a German EUR string and back, over `brick/money`. |
+| `MoneyCast` | Eloquent cast | Bridges an integer-cents column and a `brick/money` `Money`; throws on a float (FR-026). Reusable; not used by `Product`, which uses the accessor. |
+| `StoreProductRequest`, `UpdateProductRequest` | Form requests | Validated create/update; price arrives as integer cents. The update request omits `is_active` — archiving is an explicit action, not a silent field write. |
+| `ProductController` | Resource controller | CRUD + archive/unarchive + paginated search. No `destroy`. Contains zero ownership or tenant-assignment code. |
+| `ProductResource` | API resource | Exposes `unit_price_cents`, a formatted `unit_price_formatted`, and `unit_code` — so the client computes on cents, displays the string, and has the EN 16931 code ready. |
+
+### Interfaces
+
+| Interface | Producer | Consumer | Contract |
+|---|---|---|---|
+| `GET/POST/PATCH /api/v1/products`, `…/{product}/archive`, `…/unarchive` | `ProductController` | SPA, API clients | Reads behind `auth:sanctum` + `tenant`; writes additionally behind `role:admin`. No `DELETE` (products archive). |
+| `unit_price_cents` (integer cents) | client `eurosToCents` / API | `unit_price_cents` `BIGINT` column | Money crosses every boundary as integer cents; a float is rejected at `MoneyCast`. |
+| `Unit::uneceCode()` | `Unit` enum | Invoicing (later), `ProductResource` | The EN 16931 line-unit code, on the enum, so there is no separate mapping table. |
+| Route-model binding `{product}` | `SubstituteBindings` (after `ResolveTenant`) | `ProductController` | Resolves the UUID through the tenant scope, so cross-tenant lookups 404 automatically. |
+
+## 5.5 and beyond
+
+The remaining building blocks (invoicing core, e-invoicing, expense tracking,
+dashboard, tenant settings) are documented as each is built in its milestone.
