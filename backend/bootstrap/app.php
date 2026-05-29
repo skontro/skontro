@@ -5,6 +5,7 @@ use App\Http\Middleware\ResolveTenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -25,6 +26,17 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant' => ResolveTenant::class,
             'role' => EnsureRole::class,
         ]);
+
+        // Resolve the tenant before route-model binding runs. Implicit binding
+        // (SubstituteBindings) looks up {customer} through the tenant global
+        // scope, so the tenant must be bound first — otherwise the lookup is
+        // unscoped and a cross-tenant fetch would succeed instead of 404ing.
+        // Forcing ResolveTenant ahead of SubstituteBindings in the priority
+        // list is what makes the 404-not-403 contract automatic.
+        $middleware->prependToPriorityList(
+            before: SubstituteBindings::class,
+            prepend: ResolveTenant::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
